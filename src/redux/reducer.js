@@ -16,7 +16,7 @@ const initialState = {
         // },
     ],
     pathID: 0,
-    clearFieldView: false,
+    // clearFieldView: false,
     listenToMouseClicks: false,
     setFiledSize: false,
     showSettings: false,

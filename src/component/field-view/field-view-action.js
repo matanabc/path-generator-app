@@ -13,16 +13,6 @@ export function addWaypoint(waypoint) {
     };
 }
 
-export function fieldViewIsClean() {
-    return {
-        reducer: FIELD_VIEW_REDUCER,
-        type: FILED_VIEW_IS_CLEAN,
-        payload: {
-            fieldViewIsClean: true,
-        }
-    };
-}
-
 export function setMeterToPixel(widthMeterToPixel, hightMeterToPixel) {
     return {
         reducer: FIELD_VIEW_REDUCER,

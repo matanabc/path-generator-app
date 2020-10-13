@@ -9,7 +9,7 @@ class FieldView extends React.Component {
     this.canvasRef = React.createRef();
     this.whenClick = this.whenClick.bind(this);
     this.drawField = this.drawField.bind(this);
-    // this.drawWaypoints = this.drawWaypoints.bind(this);
+    this.drawWaypoints = this.drawWaypoints.bind(this);
     // this.setMeterToPixel = this.setMeterToPixel.bind(this);
   }
 
@@ -21,14 +21,28 @@ class FieldView extends React.Component {
   drawField(canvas) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // this.props.fieldViewIsClean();
     const image = new Image();
     image.src = fieldImage;
     const drawWaypoints = this.drawWaypoints;
     image.onload = function () {
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-      // drawWaypoints(canvas);
+      drawWaypoints(canvas);
     }
+  }
+
+  drawWaypoints(canvas) {
+    const ctx = canvas.getContext("2d");
+    const fieldInfo = this.props.filedInfo;
+    const yMouseToCanvas = canvas.height / canvas.offsetHeight;
+    const xMouseToCanvas = canvas.width / canvas.offsetWidth;
+    this.props.paths[this.props.pathID].waypoints.forEach(waypoint => {
+      const x = waypoint.x / fieldInfo.widthMeterToPixel + fieldInfo.x_min;
+      const y = waypoint.y / fieldInfo.hightMeterToPixel + fieldInfo.y_min;
+      ctx.beginPath();
+      ctx.arc(xMouseToCanvas * x, yMouseToCanvas * y, 2, 0, Math.PI * 2, false);
+      ctx.fillStyle = "red";
+      ctx.fill();
+    });
   }
 
   // setMeterToPixel() {
@@ -55,21 +69,6 @@ class FieldView extends React.Component {
     });
   }
 
-  // drawWaypoints(canvas) {
-  //   const ctx = canvas.getContext("2d");
-  //   const fieldInfo = this.props.filedInfo;
-  //   const yMouseToCanvas = canvas.height / canvas.offsetHeight;
-  //   const xMouseToCanvas = canvas.width / canvas.offsetWidth;
-  //   this.props.waypoints.forEach(waypoint => {
-  //     const x = waypoint.x / fieldInfo.widthMeterToPixel + fieldInfo.x_min;
-  //     const y = waypoint.y / fieldInfo.hightMeterToPixel + fieldInfo.y_min;
-  //     ctx.beginPath();
-  //     ctx.arc(xMouseToCanvas * x, yMouseToCanvas * y, 2, 0, Math.PI * 2, false);
-  //     ctx.fillStyle = "red";
-  //     ctx.fill();
-  //   });
-  // }
-
   componentDidUpdate() {
     const canvas = this.canvasRef.current;
     if (this.props.listenToMouseClicks)
@@ -77,10 +76,7 @@ class FieldView extends React.Component {
     else
       canvas.removeEventListener('mousedown', this.whenClick);
 
-    // if (this.props.clearFieldView)
-    //   this.drawField(canvas);
-    // else
-    //   this.drawWaypoints(canvas);
+    this.drawField(canvas);
   }
 
   render() {
@@ -99,13 +95,14 @@ const mapStateToProps = (state) => {
     clearFieldView: state.clearFieldView,
     setFiledSize: state.setFiledSize,
     filedInfo: state.filedInfo,
+    pathID: state.pathID,
+    update: state.update,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
-    // fieldViewIsClean: () => dispatch(fieldViewIsClean()),
   };
 }
 

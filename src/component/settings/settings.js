@@ -11,6 +11,7 @@ class Settings extends React.Component {
         this.updateRobotVMax = this.updateRobotVMax.bind(this);
         this.updateRobotAcc = this.updateRobotAcc.bind(this);
         this.updateRobotWidth = this.updateRobotWidth.bind(this);
+        this.imageFile = this.imageFile.bind(this);
     }
 
     updateRobotVMax(event) {
@@ -25,6 +26,11 @@ class Settings extends React.Component {
         this.props.setRobotWidth(this.props.robotConfig, event.target.value);
     }
 
+    imageFile(event){
+        const file = URL.createObjectURL(event.target.files[0]);
+        console.log(file);
+    }
+
     render() {
         return (
             <Modal show={this.props.showSettings} onHide={this.props.closeSettings}>
@@ -33,7 +39,7 @@ class Settings extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Row>
-                        <Form.File label="App config file to load" custom disabled/>
+                        <Form.File label="App config file to load" custom onChange={this.imageFile} disabled/>
                     </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col}>
