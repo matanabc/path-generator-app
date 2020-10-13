@@ -1,0 +1,1 @@
+export const LOAD_COOKIE = "LOAD_COOKIE";
