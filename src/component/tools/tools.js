@@ -5,8 +5,18 @@ import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
 import { FiDownload } from "react-icons/fi";
 import { openSettings, changeSelectedPath, changeListenToMouseStatus } from "./tools-action";
+import { saveCSV } from "../../FileHandler";
 
 class Tools extends React.Component {
+  constructor(props){
+    super(props);
+    this.saveToCSV = this.saveToCSV.bind(this);
+  }
+
+  saveToCSV(){
+    saveCSV(this.props.path, this.props.paths[this.props.pathID].name);
+  }
+
   render() {
     return (
       <div className="Tools">
@@ -17,7 +27,8 @@ class Tools extends React.Component {
               onClick={this.props.changeListenToMouseStatus}>
               <GiClick />
             </Button>
-            <Button className="mr-3" size="lg" title="Save csv path to robot" disabled>
+            <Button className="mr-3" size="lg" title="Save csv path to robot"
+              onClick={this.saveToCSV}>
               <FiDownload />
             </Button>
             <Button className="mr-3" size="lg" title="Settings"
@@ -63,6 +74,7 @@ class Tools extends React.Component {
 const mapStateToProps = (state) => {
   return {
     paths: state.paths,
+    path: state.path,
     pathID: state.pathID,
     listenToMouseClicks: state.listenToMouseClicks,
   };

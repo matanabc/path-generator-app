@@ -54,7 +54,6 @@ class FieldView extends React.Component {
     const waypoints = this.props.paths[this.props.pathID].waypoints;
     const config = new RobotConfig(this.props.robotConfig);
     const path = new Generator(waypoints, config);
-
     ctx.beginPath();
     path.leftSetpoints.forEach((setpoint, index) => {
       const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3 - 2;
@@ -64,7 +63,6 @@ class FieldView extends React.Component {
       else
         ctx.lineTo(x, y);
     });
-
     path.rightSetpoints.forEach((setpoint, index) => {
       const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3 - 2;
       const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3 - 2;
@@ -75,12 +73,9 @@ class FieldView extends React.Component {
     });
     ctx.strokeStyle = "Yellow";
     ctx.stroke();
-
     ctx.font = "10px Arial";
     ctx.fillStyle = "black";
     ctx.fillText(`${(path.sourceSetpoints.length * config.robotLoopTime).toFixed(2)}`, 5, 12);
-
-    console.log(path.leftSetpoints, path.rightSetpoints)
     this.props.setPath(path);
   }
 
