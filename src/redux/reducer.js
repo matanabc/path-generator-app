@@ -37,6 +37,7 @@ const initialState = {
         vMax: 4,
         width: 0.8,
     },
+    path: undefined,
 };
 
 function reducer(state = initialState, action) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import fieldImage from '../../images/frc_2020_2.jpg';
-import { addWaypoint } from "./field-view-action";
+import { addWaypoint, setPath } from "./field-view-action";
 import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
 
 class FieldView extends React.Component {
@@ -75,7 +75,13 @@ class FieldView extends React.Component {
     });
     ctx.strokeStyle = "Yellow";
     ctx.stroke();
+
+    ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillText(`${(path.sourceSetpoints.length * config.robotLoopTime).toFixed(2)}`, 5, 12);
+
     console.log(path.leftSetpoints, path.rightSetpoints)
+    this.props.setPath(path);
   }
 
   // setMeterToPixel() {
@@ -142,6 +148,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
+    setPath: path => dispatch(setPath(path)),
   };
 }
 
