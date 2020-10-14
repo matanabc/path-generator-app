@@ -11,7 +11,9 @@ import { renamePathReducer } from "../component/rename-path/rename-path-reducer"
 
 const initialState = {
     update: false,
-    paths: undefined,
+    showDeletePath: false,
+    createNewPath: false,
+    paths: [],
     pathID: 0,
     listenToMouseClicks: false,
     setFiledSize: false,

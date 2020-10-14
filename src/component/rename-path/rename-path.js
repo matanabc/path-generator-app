@@ -22,7 +22,8 @@ class Settings extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <FormControl ref={this.pathNameInput}
-                        defaultValue={this.props.paths ? this.props.paths[this.props.pathID].name : ""} />
+                        defaultValue={this.props.paths.length > 0 ?
+                            this.props.paths[this.props.pathID].name : ""} />
                 </Modal.Body >
                 <Modal.Footer>
                     <Button onClick={this.props.close}>cancel</Button>

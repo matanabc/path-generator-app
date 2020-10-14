@@ -37,6 +37,7 @@ class FieldView extends React.Component {
     const fieldInfo = this.props.filedInfo;
     const yMouseToCanvas = canvas.height / canvas.offsetHeight;
     const xMouseToCanvas = canvas.width / canvas.offsetWidth;
+    if (this.props.paths.length === 0) return;
     this.props.paths[this.props.pathID].waypoints.forEach(waypoint => {
       const x = waypoint.x / fieldInfo.widthMeterToPixel + fieldInfo.x_min;
       const y = waypoint.y / fieldInfo.hightMeterToPixel + fieldInfo.y_min;
