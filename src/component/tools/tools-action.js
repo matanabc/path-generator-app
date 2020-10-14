@@ -1,8 +1,18 @@
 import { TOOLS_REDUCER } from '../../redux/reducer-types'
-import { 
-    OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, RENAME_PATH,
-    SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH , CREATE_NEW_PATH
+import {
+    OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
+    SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME
 } from './tools-action-types';
+
+export function changePathName(name) {
+    return {
+        reducer: TOOLS_REDUCER,
+        type: CHANGE_PATH_NAME,
+        payload: {
+            name: name,
+        },
+    };
+}
 
 export function deletePath() {
     return {
@@ -38,10 +48,10 @@ export function changeShowDeletePathStatus() {
     };
 }
 
-export function renamePath() {
+export function changeShowRenamePathPopup() {
     return {
         reducer: TOOLS_REDUCER,
-        type: RENAME_PATH,
+        type: SHOW_RENAME_PATH_POPUP,
         payload: {},
     };
 }
