@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import fieldImage from '../../images/frc_2020_2.jpg';
 import { addWaypoint } from "./field-view-action";
+import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
 
 class FieldView extends React.Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class FieldView extends React.Component {
     this.whenClick = this.whenClick.bind(this);
     this.drawField = this.drawField.bind(this);
     this.drawWaypoints = this.drawWaypoints.bind(this);
+     this.drawWaypoints = this.drawWaypoints.bind(this);
     // this.setMeterToPixel = this.setMeterToPixel.bind(this);
   }
 
@@ -43,6 +45,17 @@ class FieldView extends React.Component {
       ctx.fillStyle = "red";
       ctx.fill();
     });
+  }
+
+  drawPath(canvas){
+    const waypoints = [
+      new Waypoint(0, 0, 0, 0, 2),
+      new Waypoint(1, 1, 90, 2, 2),
+      new Waypoint(1, 2, 90, 2, 2),
+      new Waypoint(2, 3, 0, 0, 2),
+    ];
+    const config = new RobotConfig(0.6, 4, 3);
+    const path = new Generator(waypoints, config);
   }
 
   // setMeterToPixel() {
