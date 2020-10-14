@@ -1,5 +1,6 @@
 import { boundRadians } from "./util";
 import Segment from "./segment";
+import { d2r } from "./util";
 
 class Spline {
     constructor(startPoint, endPoint, robotConfig) {
@@ -29,8 +30,8 @@ class Spline {
             (this.endPoint.y - this.startPoint.y) * (this.endPoint.y - this.startPoint.y));
         this.angle_offset = Math.atan2(this.endPoint.y - this.startPoint.y, this.endPoint.x - this.startPoint.x);
 
-        const a0_delta = Math.tan(boundRadians(this.startPoint.angle - this.angle_offset));
-        const a1_delta = Math.tan(boundRadians(this.endPoint.angle - this.angle_offset));
+        const a0_delta = Math.tan(boundRadians(d2r(this.startPoint.angle) - this.angle_offset));
+        const a1_delta = Math.tan(boundRadians(d2r(this.endPoint.angle) - this.angle_offset));
 
         this.a = 0;
         this.b = 0;
@@ -46,7 +47,6 @@ class Spline {
         this.arc_length = 0;
         var t = 0, dydt = 0, deriv0 = this.deriv(t), integrand = 0;
         var last_integrand = Math.sqrt(1 + deriv0 * deriv0) / this.sampleCount;
-
         for (let i = 0; i <= this.sampleCount; i = i + 1) {
             t = i / this.sampleCount;
             dydt = this.deriv(t);
@@ -101,7 +101,7 @@ class Spline {
             this.setpoints[i].heading = coords.angle;
             this.setpoints[i].x = coords.x;
             this.setpoints[i].y = coords.y;
-            this.setpoints[i].position += startPosition; 
+            this.setpoints[i].position += startPosition;
         }
     }
 

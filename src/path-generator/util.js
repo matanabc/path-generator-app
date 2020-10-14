@@ -9,9 +9,9 @@ export const boundRadians = (angle) => {
 }
 
 export const d2r = (angleInDegrees) => {
-    return angleInDegrees * Math.PI / 180
+    return angleInDegrees * Math.PI / 180;
 };
 
 export const r2d = (angleInRads) => {
-    return angleInRads * 180 / Math.PI
+    return angleInRads * 180 / Math.PI;
 };
