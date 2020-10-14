@@ -1,6 +1,6 @@
 import { FIELD_VIEW_REDUCER } from '../../redux/reducer-types';
 import {
-    ADD_WAYPOINT, FILED_VIEW_IS_CLEAN, SET_METER_TO_PIXEL
+    ADD_WAYPOINT, SET_METER_TO_PIXEL
 } from './field-view-action-types'
 
 export function addWaypoint(waypoint) {

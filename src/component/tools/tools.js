@@ -7,10 +7,6 @@ import { FiDownload } from "react-icons/fi";
 import { openSettings, changeSelectedPath, changeListenToMouseStatus } from "./tools-action";
 
 class Tools extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="Tools">
@@ -54,6 +50,9 @@ class Tools extends React.Component {
           </Button>
           <Button className="mr-3" size="lg" title="Rename path" disabled>
             <MdEdit />
+          </Button>
+          <Button className="mr-3" size="lg" variant="success" disabled>
+            in reverse
           </Button>
         </Row>
       </div>
