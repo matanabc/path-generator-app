@@ -52,13 +52,13 @@ class FieldView extends React.Component {
     const ctx = canvas.getContext("2d");
     const fieldInfo = this.props.filedInfo;
     const waypoints = this.props.paths[this.props.pathID].waypoints;
-    const config = new RobotConfig(0.8, 4, 3);
+    const config = new RobotConfig(this.props.robotConfig);
     const path = new Generator(waypoints, config);
 
     ctx.beginPath();
     path.leftSetpoints.forEach((setpoint, index) => {
-      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3;
-      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3;
+      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3 - 2;
+      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3 - 2;
       if (index === 0)
         ctx.moveTo(x, y);
       else
@@ -66,8 +66,8 @@ class FieldView extends React.Component {
     });
 
     path.rightSetpoints.forEach((setpoint, index) => {
-      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3;
-      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3;
+      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3 - 2;
+      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3 - 2;
       if (index === 0)
         ctx.moveTo(x, y);
       else
@@ -135,6 +135,7 @@ const mapStateToProps = (state) => {
     filedInfo: state.filedInfo,
     pathID: state.pathID,
     update: state.update,
+    robotConfig: state.robotConfig,
   };
 };
 
