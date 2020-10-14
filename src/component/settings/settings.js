@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { Modal, Button, Form, Col, Tooltip, OverlayTrigger, Row } from 'react-bootstrap';
 import { MdPhotoSizeSelectLarge } from "react-icons/md";
-import { FiUpload } from "react-icons/fi";
+import { FiUpload, FiDownload } from "react-icons/fi";
 import { closeSettings, setRobotVMax, setRobotAcc, setRobotWidth } from './settings-action'
+import { saveProjectFile } from "../../FileHandler";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -12,6 +13,16 @@ class Settings extends React.Component {
         this.updateRobotAcc = this.updateRobotAcc.bind(this);
         this.updateRobotWidth = this.updateRobotWidth.bind(this);
         this.imageFile = this.imageFile.bind(this);
+        this.saveProjectFile = this.saveProjectFile.bind(this);
+    }
+
+    saveProjectFile(){
+        const projectFile = {
+            paths: this.props.paths,
+            robotConfig: this.props.robotConfig,
+            filedInfo: this.props.filedInfo
+        };
+        saveProjectFile(projectFile);
     }
 
     updateRobotVMax(event) {
@@ -26,7 +37,7 @@ class Settings extends React.Component {
         this.props.setRobotWidth(this.props.robotConfig, event.target.value);
     }
 
-    imageFile(event){
+    imageFile(event) {
         const file = URL.createObjectURL(event.target.files[0]);
         console.log(file);
     }
@@ -39,20 +50,25 @@ class Settings extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Row>
-                        <Form.File label="App config file to load" custom onChange={this.imageFile} disabled/>
+                        <Form.File label="App config file to load" custom onChange={this.imageFile} disabled />
                     </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Field width</Form.Label>
                             <Form.Control defaultValue={this.props.filedInfo.fieldWidth}
-                                onChange={this.updateFieldWidth} disabled/>
+                                onChange={this.updateFieldWidth} disabled />
                         </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Field hight</Form.Label>
                             <Form.Control defaultValue={this.props.filedInfo.fieldHeight}
-                                onChange={this.updateFieldHeight} disabled/>
+                                onChange={this.updateFieldHeight} disabled />
                         </Form.Group>
                     </Form.Row>
+                    <OverlayTrigger overlay={<Tooltip>Set filed image size</Tooltip>}>
+                        <Button variant="primary" block disabled>
+                            <MdPhotoSizeSelectLarge />
+                        </Button>
+                    </OverlayTrigger>
                     <Form.Row>
                         <Form.Group as={Col} md="4">
                             <Form.Label>Robot width</Form.Label>
@@ -70,16 +86,22 @@ class Settings extends React.Component {
                                 onChange={this.updateRobotAcc} />
                         </Form.Group>
                     </Form.Row>
-                    <OverlayTrigger overlay={<Tooltip>Set filed image size</Tooltip>}>
-                        <Button variant="primary" block disabled>
-                            <MdPhotoSizeSelectLarge />
-                        </Button>
-                    </OverlayTrigger>
-                    <OverlayTrigger overlay={<Tooltip>Save settings file</Tooltip>}>
-                        <Button variant="primary" block disabled>
-                            <FiUpload />
-                        </Button>
-                    </OverlayTrigger>
+                    <Row>
+                        <Col>
+                            <OverlayTrigger overlay={<Tooltip>Save project file</Tooltip>}>
+                                <Button variant="primary" block onClick={this.saveProjectFile}>
+                                    <FiDownload />
+                                </Button>
+                            </OverlayTrigger>
+                        </Col>
+                        <Col>
+                            <OverlayTrigger overlay={<Tooltip>Load project file</Tooltip>}>
+                                <Button variant="primary" block disabled>
+                                    <FiUpload />
+                                </Button>
+                            </OverlayTrigger>
+                        </Col>
+                    </Row>
                 </Modal.Body >
             </Modal >
         );
@@ -91,6 +113,7 @@ const mapStateToProps = (state) => {
         showSettings: state.showSettings,
         robotConfig: state.robotConfig,
         filedInfo: state.filedInfo,
+        paths: state.paths,
     };
 };
 

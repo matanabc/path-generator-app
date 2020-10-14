@@ -26,3 +26,12 @@ export const saveCSV = (path, pathName) => {
     link.href = url;
     link.click();
 }
+
+export const saveProjectFile = (projectFile) => {
+    const blob = new Blob([JSON.stringify(projectFile)], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.download = 'PathGenerator.json';
+    link.href = url;
+    link.click();
+}
