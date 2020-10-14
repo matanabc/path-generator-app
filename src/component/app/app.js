@@ -4,7 +4,6 @@ import { Container, Row } from 'react-bootstrap';
 import WaypointsView from '../waypoints-view/waypoints-view';
 import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
-import Settings from '../settings/settings'
 import { loadCookies } from '../../CookieHandler'
 import { loadCookiesToState } from './app-action'
 
@@ -16,7 +15,6 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <Settings />
         <Container fluid="md">
           <Row >
             <FieldView />

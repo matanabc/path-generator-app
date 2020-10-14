@@ -6,7 +6,7 @@ class WaypointsView extends React.Component {
   render() {
     return (
       <div className="WaypointsView">
-        {this.props.paths.length > 0 ? this.props.paths[this.props.pathID].waypoints.map((element, index) => {
+        {this.props.paths ? this.props.paths[this.props.pathID].waypoints.map((element, index) => {
           return <WaypointInfo key={index} id={index} />
         }) : <span>There is no waypoint...</span>}
       </div>

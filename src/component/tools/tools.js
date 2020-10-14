@@ -4,22 +4,28 @@ import { Button, Row, Col, Dropdown } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
 import { FiDownload } from "react-icons/fi";
-import { openSettings, changeSelectedPath, changeListenToMouseStatus } from "./tools-action";
 import { saveCSV } from "../../FileHandler";
+import RenamePath from '../rename-path/rename-path'
+import Settings from '../settings/settings'
+import {
+  openSettings, changeSelectedPath, changeListenToMouseStatus, renamePath
+} from "./tools-action";
 
 class Tools extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.saveToCSV = this.saveToCSV.bind(this);
   }
 
-  saveToCSV(){
+  saveToCSV() {
     saveCSV(this.props.path, this.props.paths[this.props.pathID].name);
   }
 
   render() {
     return (
       <div className="Tools">
+        <RenamePath />
+        <Settings />
         <Row>
           <Col>
             <Button className="mr-3" size="lg" title="Add waypoint with mouse"
@@ -38,10 +44,10 @@ class Tools extends React.Component {
           </Col>
           <Dropdown>
             <Dropdown.Toggle size="lg">
-              {this.props.paths.length > 0 ? this.props.paths[this.props.pathID].name : ""}
+              {this.props.paths ? this.props.paths[this.props.pathID].name : ""}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              {this.props.paths.map((element, index) => {
+              {this.props.paths ? this.props.paths.map((element, index) => {
                 if (this.props.paths[this.props.pathID].name === element.name)
                   return <Dropdown.Item as="button" key={index} active>
                     <span size="lg">{element.name}</span>
@@ -49,7 +55,7 @@ class Tools extends React.Component {
                 return <Dropdown.Item as="button" key={index} onClick={() => {
                   this.props.changeSelectedPath(index)
                 }}> {element.name} </Dropdown.Item>
-              })}
+              }) : <span />}
               <Dropdown.Divider />
               <Dropdown.Item as="button" className="AddPath">
                 New path
@@ -59,7 +65,7 @@ class Tools extends React.Component {
           <Button className="mr-3 ml-4" size="lg" title="Delete path" variant="danger" disabled>
             <MdDelete />
           </Button>
-          <Button className="mr-3" size="lg" title="Rename path" disabled>
+          <Button className="mr-3" size="lg" title="Rename path" onClick={this.props.renamePath}>
             <MdEdit />
           </Button>
           <Button className="mr-3" size="lg" variant="success" disabled>
@@ -85,6 +91,7 @@ const mapDispatchToProps = (dispatch) => {
     openSettings: () => dispatch(openSettings()),
     changeSelectedPath: (id) => dispatch(changeSelectedPath(id)),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
+    renamePath: () => dispatch(renamePath()),
   };
 }
 

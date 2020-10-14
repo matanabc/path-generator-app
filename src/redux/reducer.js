@@ -1,22 +1,18 @@
-import { TOOLS_REDUCER, SETTINGS_REDUCER, APP_REDUCER, WAYPOINT_INFO_REDUCER, FIELD_VIEW_REDUCER } from './reducer-types'
+import {
+    TOOLS_REDUCER, SETTINGS_REDUCER, APP_REDUCER, WAYPOINT_INFO_REDUCER, FIELD_VIEW_REDUCER,
+    RENAME_PATH_REDUCER
+} from './reducer-types'
 import { toolsReducer } from "../component/tools/tools-reducer";
 import { settingsReducer } from "../component/settings/settings-reducer";
 import { appReducer } from "../component/app/app-reducer";
 import { waypointInfoReducer } from "../component/waypoint-info/waypoint-info-reducer";
 import { fieldViewReducer } from "../component/field-view/field-view-reducer";
+import { renamePathReducer } from "../component/rename-path/rename-path-reducer";
 
 const initialState = {
     update: false,
-    paths: [
-        // {
-        //     name: "test",
-        //     waypoints: [
-        //         { x: 1 }
-        //     ]
-        // },
-    ],
+    paths: undefined,
     pathID: 0,
-    // clearFieldView: false,
     listenToMouseClicks: false,
     setFiledSize: false,
     showSettings: false,
@@ -38,6 +34,7 @@ const initialState = {
         width: 0.8,
     },
     path: undefined,
+    renamePath: false,
 };
 
 function reducer(state = initialState, action) {
@@ -51,6 +48,8 @@ function reducer(state = initialState, action) {
         return waypointInfoReducer(state, action)
     else if (action.reducer === FIELD_VIEW_REDUCER)
         return fieldViewReducer(state, action)
+    else if (action.reducer === RENAME_PATH_REDUCER)
+        return renamePathReducer(state, action)
     return state;
 };
 

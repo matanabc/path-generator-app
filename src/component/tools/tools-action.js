@@ -1,5 +1,15 @@
 import { TOOLS_REDUCER } from '../../redux/reducer-types'
-import { OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS } from './tools-action-types';
+import { 
+    OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, RENAME_PATH
+} from './tools-action-types';
+
+export function renamePath() {
+    return {
+        reducer: TOOLS_REDUCER,
+        type: RENAME_PATH,
+        payload: {},
+    };
+}
 
 export function openSettings() {
     return {
