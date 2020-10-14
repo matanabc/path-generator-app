@@ -11,7 +11,7 @@ class FieldView extends React.Component {
     this.whenClick = this.whenClick.bind(this);
     this.drawField = this.drawField.bind(this);
     this.drawWaypoints = this.drawWaypoints.bind(this);
-     this.drawWaypoints = this.drawWaypoints.bind(this);
+    this.drawWaypoints = this.drawWaypoints.bind(this);
     // this.setMeterToPixel = this.setMeterToPixel.bind(this);
   }
 
@@ -45,17 +45,37 @@ class FieldView extends React.Component {
       ctx.fillStyle = "red";
       ctx.fill();
     });
+    this.drawPath(canvas)
   }
 
-  drawPath(canvas){
-    const waypoints = [
-      new Waypoint(0, 0, 0, 0, 2),
-      new Waypoint(1, 1, 90, 2, 2),
-      new Waypoint(1, 2, 90, 2, 2),
-      new Waypoint(2, 3, 0, 0, 2),
-    ];
-    const config = new RobotConfig(0.6, 4, 3);
+  drawPath(canvas) {
+    const ctx = canvas.getContext("2d");
+    const fieldInfo = this.props.filedInfo;
+    const waypoints = this.props.paths[this.props.pathID].waypoints;
+    const config = new RobotConfig(0.8, 4, 3);
     const path = new Generator(waypoints, config);
+
+    ctx.beginPath();
+    path.leftSetpoints.forEach((setpoint, index) => {
+      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3;
+      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3;
+      if (index === 0)
+        ctx.moveTo(x, y);
+      else
+        ctx.lineTo(x, y);
+    });
+
+    path.rightSetpoints.forEach((setpoint, index) => {
+      const x = setpoint.x / fieldInfo.widthMeterToPixel / 3 + fieldInfo.x_min / 3;
+      const y = setpoint.y / fieldInfo.hightMeterToPixel / 3 + fieldInfo.y_min / 3;
+      if (index === 0)
+        ctx.moveTo(x, y);
+      else
+        ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = "Yellow";
+    ctx.stroke();
+    console.log(path.leftSetpoints, path.rightSetpoints)
   }
 
   // setMeterToPixel() {
@@ -76,10 +96,15 @@ class FieldView extends React.Component {
     else if (event.layerY > fieldInfo.y_max || event.layerY < fieldInfo.y_min)
       return
 
-    this.props.addWaypoint({
-      x: (event.layerX - fieldInfo.x_min) * fieldInfo.widthMeterToPixel,
-      y: (event.layerY - fieldInfo.y_min) * fieldInfo.hightMeterToPixel,
-    });
+    // this.props.addWaypoint({
+    //   x: (event.layerX - fieldInfo.x_min) * fieldInfo.widthMeterToPixel,
+    //   y: (event.layerY - fieldInfo.y_min) * fieldInfo.hightMeterToPixel,
+    // });
+
+    this.props.addWaypoint(new Waypoint(
+      (event.layerX - fieldInfo.x_min) * fieldInfo.widthMeterToPixel,
+      (event.layerY - fieldInfo.y_min) * fieldInfo.hightMeterToPixel,
+    ));
   }
 
   componentDidUpdate() {
