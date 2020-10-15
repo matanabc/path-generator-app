@@ -27,16 +27,16 @@ class Settings extends React.Component {
         );
 
         const filedInfo = {
-            fieldWidth: this.fieldWidthInput.current.value,
-            fieldHeight: this.fieldHeightInput.current.value,
-            x_min: 130,
-            x_max: 754,
-            y_min: 20,
-            y_max: 440,
+            topLeftX: 43,
+            topLeftY: 7,
+            filedWidthInPixel: 214,
+            filedHeigthInPixel: 137,
+            fieldWidthInMeter: this.fieldWidthInput.current.value,
+            fieldHeightInMeter: this.fieldHeightInput.current.value,
         };
 
-        filedInfo.widthMeterToPixel = (filedInfo.fieldWidth) / (filedInfo.x_max - filedInfo.x_min);
-        filedInfo.hightMeterToPixel = (filedInfo.fieldHeight) / (filedInfo.y_max - filedInfo.y_min);
+        filedInfo.widthPixelToMeter = (filedInfo.fieldWidthInMeter) / (filedInfo.filedWidthInPixel);
+        filedInfo.hightPixelToMeter = (filedInfo.fieldHeightInMeter) / (filedInfo.filedHeigthInPixel);
 
         const settings = {
             projectPath: this.projectFolderInput.current.value,
