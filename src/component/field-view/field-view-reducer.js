@@ -1,10 +1,10 @@
-import { saveCookies, PATHS } from '../../CookieHandler'
+import { savePathToFile } from '../../FileHandler'
 import { ADD_WAYPOINT, SET_PATH } from './field-view-action-types';
 
 function addWaypoint(state, payload) {
     const newState = state;
     newState.paths[state.pathID].waypoints.push(payload.waypoint);
-    saveCookies(PATHS, newState.paths);
+    savePathToFile(state.projectPath, state.paths[state.pathID]);
     return {
         ...newState,
         update: !state.update

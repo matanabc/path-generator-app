@@ -22,16 +22,29 @@ function loadPaths(folderPath, callback) {
     });
 }
 
-export const loadProjectFile = (callback, filedImageCallback, loadPathsCallback) => {
+export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
     const folderPath = coockies.get(PROJECT_FOLDER);
-    if (!folderPath) return;
-    fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
-        if (err) return;
-        const projectFile = JSON.parse(data);
-        loadFieldImage(folderPath, projectFile.fieldImage, filedImageCallback);
-        loadPaths(folderPath, loadPathsCallback);
-        callback(projectFile);
-    });
+    projetcFolderCallback(folderPath);
+    if (folderPath)
+        fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
+            if (err) return;
+            const projectFile = JSON.parse(data);
+            loadFieldImage(folderPath, projectFile.fieldImage, filedImageCallback);
+            loadPaths(folderPath, loadPathsCallback);
+            callback(projectFile);
+        });
+}
+
+export const savePathToFile = (folderPath, path) => {
+    fs.writeFile(`${folderPath}/paths/${path.name}.json`, JSON.stringify(path), () => { });
+}
+
+export const deletePathFile = (folderPath, pathName) => {
+    fs.unlink(`${folderPath}/paths/${pathName}.json`, () => { });
+}
+
+export const renamePathFile = (folderPath, oldName, pathName) => {
+    fs.rename(`${folderPath}/paths/${oldName}.json`, `${folderPath}/paths/${pathName}.json`, () => { });
 }
 
 function pathToCSV(path) {

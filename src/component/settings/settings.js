@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Form, Col, Tooltip, OverlayTrigger, Row } from 'react-bootstrap';
 import { MdPhotoSizeSelectLarge } from "react-icons/md";
-import { FiUpload, FiDownload } from "react-icons/fi";
 import { closeSettings, setRobotVMax, setRobotAcc, setRobotWidth } from './settings-action'
 import { saveProjectFile } from "../../FileHandler";
 
@@ -12,7 +11,6 @@ class Settings extends React.Component {
         this.updateRobotVMax = this.updateRobotVMax.bind(this);
         this.updateRobotAcc = this.updateRobotAcc.bind(this);
         this.updateRobotWidth = this.updateRobotWidth.bind(this);
-        this.imageFile = this.imageFile.bind(this);
         this.saveProjectFile = this.saveProjectFile.bind(this);
     }
 
@@ -37,20 +35,43 @@ class Settings extends React.Component {
         this.props.setRobotWidth(this.props.robotConfig, event.target.value);
     }
 
-    imageFile(event) {
-        const file = URL.createObjectURL(event.target.files[0]);
-        console.log(file);
-    }
-
     render() {
         return (
-            <Modal show={this.props.showSettings} onHide={this.props.closeSettings}>
+            <Modal show={this.props.projectPath === undefined ||
+                this.props.showSettings} onHide={this.props.closeSettings}>
                 <Modal.Header closeButton>
                     <Modal.Title>Settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form.Row>
-                        <Form.File label="App config file to load" custom onChange={this.imageFile} disabled />
+                        <Form.Group as={Col}>
+                            <Form.Label>Project folder</Form.Label>
+                            <Form.Control defaultValue={this.props.projectPath ? this.props.projectPath : ""} />
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Robot CSV folder</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidth : 0}
+                                onChange={this.updateFieldWidth} disabled />
+                        </Form.Group>
+                    </Form.Row>
+                    <Form.Row>
+                        <Form.Group as={Col} md="4">
+                            <Form.Label>Robot width</Form.Label>
+                            <Form.Control type="number" onChange={this.updateRobotWidth}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.width : 0} />
+                        </Form.Group>
+                        <Form.Group as={Col} md="4">
+                            <Form.Label>Robot max V</Form.Label>
+                            <Form.Control type="number" onChange={this.updateRobotVMax}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.vMax : 0} />
+                        </Form.Group>
+                        <Form.Group as={Col} md="4">
+                            <Form.Label>Robot max Acc</Form.Label>
+                            <Form.Control type="number" onChange={this.updateRobotAcc}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.acc : 0} />
+                        </Form.Group>
                     </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col}>
@@ -69,39 +90,6 @@ class Settings extends React.Component {
                             <MdPhotoSizeSelectLarge />
                         </Button>
                     </OverlayTrigger>
-                    <Form.Row>
-                        <Form.Group as={Col} md="4">
-                            <Form.Label>Robot width</Form.Label>
-                            <Form.Control type="number" onChange={this.updateRobotWidth}
-                                defaultValue={this.props.filedInfo ? this.props.robotConfig.width : 0} />
-                        </Form.Group>
-                        <Form.Group as={Col} md="4">
-                            <Form.Label>Robot max V</Form.Label>
-                            <Form.Control type="number" onChange={this.updateRobotVMax}
-                                defaultValue={this.props.filedInfo ? this.props.robotConfig.vMax : 0} />
-                        </Form.Group>
-                        <Form.Group as={Col} md="4">
-                            <Form.Label>Robot max Acc</Form.Label>
-                            <Form.Control type="number" onChange={this.updateRobotAcc}
-                                defaultValue={this.props.filedInfo ? this.props.robotConfig.acc : 0} />
-                        </Form.Group>
-                    </Form.Row>
-                    <Row>
-                        <Col>
-                            <OverlayTrigger overlay={<Tooltip>Save project file</Tooltip>}>
-                                <Button variant="primary" block onClick={this.saveProjectFile}>
-                                    <FiDownload />
-                                </Button>
-                            </OverlayTrigger>
-                        </Col>
-                        <Col>
-                            <OverlayTrigger overlay={<Tooltip>Load project file</Tooltip>}>
-                                <Button variant="primary" block disabled>
-                                    <FiUpload />
-                                </Button>
-                            </OverlayTrigger>
-                        </Col>
-                    </Row>
                 </Modal.Body >
             </Modal >
         );
@@ -111,6 +99,7 @@ class Settings extends React.Component {
 const mapStateToProps = (state) => {
     return {
         showSettings: state.showSettings,
+        projectPath: state.projectPath,
         robotConfig: state.robotConfig,
         filedInfo: state.filedInfo,
         paths: state.paths,

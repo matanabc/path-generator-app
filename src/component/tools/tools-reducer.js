@@ -1,4 +1,4 @@
-import { saveCookies, PATHS } from '../../CookieHandler';
+import { deletePathFile, savePathToFile, renamePathFile } from '../../FileHandler'
 import {
   OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
   SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME
@@ -52,7 +52,7 @@ function deletePath(state, payload) {
     if (index !== state.pathID)
       paths.push(path)
   });
-  saveCookies(PATHS, paths);
+  deletePathFile(state.projectPath, state.paths[state.pathID].name)
   return {
     ...state,
     paths: paths,
@@ -63,8 +63,9 @@ function deletePath(state, payload) {
 
 function createNewPath(state, payload) {
   const paths = state.paths;
-  paths.push({ name: payload.name, waypoints: [] });
-  saveCookies(PATHS, paths);
+  const path = { name: payload.name, waypoints: [], isInReverse: false }
+  paths.push(path);
+  savePathToFile(state.projectPath, path);
   return {
     ...state,
     paths: paths,
@@ -75,8 +76,8 @@ function createNewPath(state, payload) {
 
 function changePathName(state, payload) {
   const paths = state.paths;
+  renamePathFile(state.projectPath, paths[state.pathID].name, payload.name)
   paths[state.pathID].name = payload.name;
-  saveCookies(PATHS, paths);
   return {
     ...state,
     paths: paths,

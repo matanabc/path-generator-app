@@ -1,13 +1,12 @@
 import { APP_REDUCER } from '../../redux/reducer-types';
-import { LOAD_COOKIE, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
+import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
-export function loadCookiesToState(robotConfig, paths) {
+export function setProjectFolderPath(projectPath) {
     return {
         reducer: APP_REDUCER,
-        type: LOAD_COOKIE,
+        type: SET_PROJECT_FOLDER_PATH,
         payload: {
-            robotConfig: robotConfig,
-            paths: paths,
+            projectPath: projectPath
         },
     };
 }

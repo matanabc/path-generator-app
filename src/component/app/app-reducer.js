@@ -1,17 +1,17 @@
-import { LOAD_COOKIE, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
+import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
-function loadCookies(state, payload) {
+function setProjectFolderPath(state, payload) {
     return {
         ...state,
-        robotConfig: payload.robotConfig,
-        paths: payload.paths,
+        projectPath: payload.projectPath
     }
 }
 
 function setFiledImage(state, payload) {
     return {
         ...state,
-        filedImage: payload.filedImage
+        filedImage: payload.filedImage,
+        update: !state.update,
     }
 }
 
@@ -30,12 +30,13 @@ function setProjectSettings(state, payload) {
         ...state,
         robotConfig: payload.settings.robotConfig,
         filedInfo: payload.settings.filedInfo,
+        update: !state.update,
     }
 }
 
 export const appReducer = (state, action) => {
-    if (action.type === LOAD_COOKIE)
-        return loadCookies(state, action.payload);
+    if (action.type === SET_PROJECT_FOLDER_PATH)
+        return setProjectFolderPath(state, action.payload);
     else if (action.type === SET_FIELD_IMAGE)
         return setFiledImage(state, action.payload);
     else if (action.type === ADD_PATH)

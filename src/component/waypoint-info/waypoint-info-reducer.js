@@ -1,4 +1,4 @@
-import { saveCookies, PATHS } from '../../CookieHandler'
+import { savePathToFile } from '../../FileHandler'
 import { ADD_WAYPOINT, REMOVE_WAYPOINT, UPDATE_WAYPOINT } from './waypoint-info-action-type';
 
 function updateWaypoint(state, payload) {
@@ -53,6 +53,6 @@ export const waypointInfoReducer = (state, action) => {
         state = removeWaypoint(state, action.payload);
     else if (action.type === ADD_WAYPOINT)
         state = addWaypoint(state, action.payload);
-    saveCookies(PATHS, state.paths);
+    savePathToFile(state.projectPath, state.paths[state.pathID]);
     return state;
 }

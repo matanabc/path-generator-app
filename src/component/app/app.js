@@ -4,12 +4,13 @@ import { Container, Row } from 'react-bootstrap';
 import WaypointsView from '../waypoints-view/waypoints-view';
 import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
-import { setFiledImage, addPath, setProjectSettings } from './app-action'
+import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from './app-action'
 import { loadProjectFile } from "../../FileHandler";
 
 class App extends React.Component {
   componentDidMount() {
-    loadProjectFile(this.props.setProjectSettings, this.props.setFiledImage, this.props.addPath);
+    loadProjectFile(this.props.setProjectSettings, this.props.setProjectFolderPath,
+      this.props.setFiledImage, this.props.addPath);
   }
 
   render() {
@@ -37,6 +38,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setProjectFolderPath: projectFolderPath => dispatch(setProjectFolderPath(projectFolderPath)),
     setProjectSettings: settings => dispatch(setProjectSettings(settings)),
     setFiledImage: filedImage => dispatch(setFiledImage(filedImage)),
     addPath: path => dispatch(addPath(path)),
