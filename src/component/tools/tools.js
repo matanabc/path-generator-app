@@ -25,7 +25,8 @@ class Tools extends React.Component {
 
   saveToCSV() {
     if (this.props.paths.length > 0 && this.props.paths[this.props.pathID].waypoints.length > 0)
-      savePathToCSV(this.props.saveCSVTo, this.props.path, this.props.paths[this.props.pathID].name);
+      savePathToCSV(this.props.saveCSVTo, this.props.path, this.props.paths[this.props.pathID].name,
+        this.props.paths[this.props.pathID].isInReverse);
   }
 
   createNewPath() {
