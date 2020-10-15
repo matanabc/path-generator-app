@@ -1,4 +1,38 @@
 import { r2d } from "./path-generator/util";
+import coockies from 'js-cookie';
+const fs = window.require('fs');
+const PROJECT_FOLDER = "projectFolder"
+
+function loadFieldImage(folderPath, imageName, callback) {
+    fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
+        if (!err)
+            callback(URL.createObjectURL(new Blob([data])));
+    });
+}
+
+function loadPaths(folderPath, callback) {
+    fs.readdir(`${folderPath}/paths`, (err, files) => {
+        if (err) return;
+        files.forEach(file => {
+            fs.readFile(`${folderPath}/paths/${file}`, (err, data) => {
+                if (err) return;
+                callback(JSON.parse(data));
+            });
+        });
+    });
+}
+
+export const loadProjectFile = (callback, filedImageCallback, loadPathsCallback) => {
+    const folderPath = coockies.get(PROJECT_FOLDER);
+    if (!folderPath) return;
+    fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
+        if (err) return;
+        const projectFile = JSON.parse(data);
+        loadFieldImage(folderPath, projectFile.fieldImage, filedImageCallback);
+        loadPaths(folderPath, loadPathsCallback);
+        callback(projectFile);
+    });
+}
 
 function pathToCSV(path) {
     var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y \n";
@@ -17,7 +51,7 @@ function pathToCSV(path) {
 }
 
 export const saveCSV = (path, pathName) => {
-    if(path === undefined || pathName === undefined) return;
+    if (path === undefined || pathName === undefined) return;
     const csv = pathToCSV(path);
     const blob = new Blob([csv], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
@@ -35,3 +69,8 @@ export const saveProjectFile = (projectFile) => {
     link.href = url;
     link.click();
 }
+
+// fs.writeFile('/home/user/Desktop/PathGenerator/nodejs/test.txt', 'This is my text', function (err) {
+//   if (err) throw err;
+//   console.log('Replaced!');
+// }); 

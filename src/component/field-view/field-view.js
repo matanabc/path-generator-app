@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import fieldImage from '../../images/frc_2020_2.jpg';
 import { addWaypoint, setPath } from "./field-view-action";
 import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
 
@@ -23,10 +22,10 @@ class FieldView extends React.Component {
   drawField(canvas) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const image = new Image();
-    image.src = fieldImage;
     const drawWaypoints = this.drawWaypoints;
-    image.onload = function () {
+    const image = new Image();
+    image.src = this.props.filedImage
+    image.onload = () => {
       ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
       drawWaypoints(canvas);
     }
@@ -138,6 +137,7 @@ const mapStateToProps = (state) => {
     pathID: state.pathID,
     update: state.update,
     robotConfig: state.robotConfig,
+    filedImage: state.filedImage
   };
 };
 

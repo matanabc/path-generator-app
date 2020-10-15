@@ -16,7 +16,7 @@ class Settings extends React.Component {
         this.saveProjectFile = this.saveProjectFile.bind(this);
     }
 
-    saveProjectFile(){
+    saveProjectFile() {
         const projectFile = {
             paths: this.props.paths,
             robotConfig: this.props.robotConfig,
@@ -55,12 +55,12 @@ class Settings extends React.Component {
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Field width</Form.Label>
-                            <Form.Control defaultValue={this.props.filedInfo.fieldWidth}
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidth : 0}
                                 onChange={this.updateFieldWidth} disabled />
                         </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Field hight</Form.Label>
-                            <Form.Control defaultValue={this.props.filedInfo.fieldHeight}
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldHeight : 0}
                                 onChange={this.updateFieldHeight} disabled />
                         </Form.Group>
                     </Form.Row>
@@ -72,18 +72,18 @@ class Settings extends React.Component {
                     <Form.Row>
                         <Form.Group as={Col} md="4">
                             <Form.Label>Robot width</Form.Label>
-                            <Form.Control type="number" defaultValue={this.props.robotConfig.width}
-                                onChange={this.updateRobotWidth} />
+                            <Form.Control type="number" onChange={this.updateRobotWidth}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.width : 0} />
                         </Form.Group>
                         <Form.Group as={Col} md="4">
                             <Form.Label>Robot max V</Form.Label>
-                            <Form.Control type="number" defaultValue={this.props.robotConfig.vMax}
-                                onChange={this.updateRobotVMax} />
+                            <Form.Control type="number" onChange={this.updateRobotVMax}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.vMax : 0} />
                         </Form.Group>
                         <Form.Group as={Col} md="4">
                             <Form.Label>Robot max Acc</Form.Label>
-                            <Form.Control type="number" defaultValue={this.props.robotConfig.acc}
-                                onChange={this.updateRobotAcc} />
+                            <Form.Control type="number" onChange={this.updateRobotAcc}
+                                defaultValue={this.props.filedInfo ? this.props.robotConfig.acc : 0} />
                         </Form.Group>
                     </Form.Row>
                     <Row>

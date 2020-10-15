@@ -1,1 +1,4 @@
 export const LOAD_COOKIE = "LOAD_COOKIE";
+export const SET_FIELD_IMAGE = "SET_FIELD_IMAGE";
+export const ADD_PATH = "ADD_PATH";
+export const SET_PROJECT_SETTINGS = "SET_PROJECT_SETTINGS"

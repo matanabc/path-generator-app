@@ -4,12 +4,12 @@ import { Container, Row } from 'react-bootstrap';
 import WaypointsView from '../waypoints-view/waypoints-view';
 import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
-import { loadCookies } from '../../CookieHandler'
-import { loadCookiesToState } from './app-action'
+import { setFiledImage, addPath, setProjectSettings } from './app-action'
+import { loadProjectFile } from "../../FileHandler";
 
 class App extends React.Component {
   componentDidMount() {
-    loadCookies(this.props.loadCookiesToState);
+    loadProjectFile(this.props.setProjectSettings, this.props.setFiledImage, this.props.addPath);
   }
 
   render() {
@@ -37,8 +37,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadCookiesToState: (robotConfig, paths, filedConfig) =>
-      dispatch(loadCookiesToState(robotConfig, paths, filedConfig)),
+    setProjectSettings: settings => dispatch(setProjectSettings(settings)),
+    setFiledImage: filedImage => dispatch(setFiledImage(filedImage)),
+    addPath: path => dispatch(addPath(path)),
   };
 }
 

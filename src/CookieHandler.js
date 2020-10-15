@@ -3,8 +3,12 @@ import coockies from 'js-cookie';
 export const FILED_CONFIG = "filed_config"
 export const ROBOT_CONFIG = "robot_config"
 export const PATHS = "paths"
+export const PROJECT_FOLDER = "projectFolder"
+
 
 export const saveCookies = async (key, value) => {
+    if (key === PROJECT_FOLDER)
+        coockies.set(key, value, { expires: 999999 });
     if (key === FILED_CONFIG || key === ROBOT_CONFIG || key === PATHS)
         coockies.set(key, JSON.stringify(value), { expires: 999999 });
 }
