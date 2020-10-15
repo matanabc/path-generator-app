@@ -1,4 +1,4 @@
-import { savePathToFile } from '../../FileHandler'
+import { savePathToFile } from '../../ProjectHandler'
 import { ADD_WAYPOINT, SET_PATH } from './field-view-action-types';
 
 function addWaypoint(state, payload) {

@@ -4,7 +4,7 @@ import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
 import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
-import { savePathToCSV } from "../../FileHandler";
+import { savePathToCSV } from "../../ProjectHandler";
 import Settings from '../settings/settings'
 import Popup from "../popup/popup";
 import {

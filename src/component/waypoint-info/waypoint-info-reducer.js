@@ -1,4 +1,4 @@
-import { savePathToFile } from '../../FileHandler'
+import { savePathToFile } from '../../ProjectHandler'
 import { ADD_WAYPOINT, REMOVE_WAYPOINT, UPDATE_WAYPOINT } from './waypoint-info-action-type';
 
 function updateWaypoint(state, payload) {

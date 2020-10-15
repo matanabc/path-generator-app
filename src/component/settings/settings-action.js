@@ -1,7 +1,5 @@
 import { SETTINGS_REDUCER } from '../../redux/reducer-types';
-import {
-    CLOSE_SETTINGS, SET_ROBOT_CONFIG
-} from './settings-action-types'
+import { CLOSE_SETTINGS, SET_SETTINGS } from './settings-action-types'
 
 export function closeSettings() {
     return {
@@ -11,13 +9,12 @@ export function closeSettings() {
     };
 }
 
-export function setRobotConfig(key, value) {
+export function setSettings(settings) {
     return {
         reducer: SETTINGS_REDUCER,
-        type: SET_ROBOT_CONFIG,
+        type: SET_SETTINGS,
         payload: {
-            key: key,
-            value: Number(value),
+            settings: settings,
         }
     };
 }

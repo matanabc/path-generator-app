@@ -5,7 +5,7 @@ import WaypointsView from '../waypoints-view/waypoints-view';
 import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
 import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from './app-action'
-import { loadProjectFile } from "../../FileHandler";
+import { loadProjectFile } from "../../ProjectHandler";
 
 class App extends React.Component {
   componentDidMount() {

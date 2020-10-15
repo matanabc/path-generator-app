@@ -71,3 +71,7 @@ function pathToCSV(path) {
     }
     return csv;
 }
+
+export const saveProjectFolderPath = folderPath => {
+    coockies.set(PROJECT_FOLDER, folderPath, { expires: 999999 });
+}
