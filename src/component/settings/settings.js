@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
-import { MdPhotoSizeSelectLarge } from "react-icons/md";
+import { Modal, Button, Form, Col } from 'react-bootstrap';
 import { closeSettings, setSettings } from './settings-action';
 import RobotConfig from '../../path-generator/robot-config';
 
@@ -15,8 +14,12 @@ class Settings extends React.Component {
         this.robotMaxVInput = React.createRef();
         this.robotMaxAccInput = React.createRef();
         this.filedImageNameInput = React.createRef();
-        this.fieldWidthInput = React.createRef();
-        this.fieldHeightInput = React.createRef();
+        this.fieldWidthInMeterInput = React.createRef();
+        this.fieldHeightInMeterInput = React.createRef();
+        this.fieldTopLeftXInput = React.createRef();
+        this.fieldTopLeftYInput = React.createRef();
+        this.fieldWidthInPixelInput = React.createRef();
+        this.fieldHeightInPixelInput = React.createRef();
     }
 
     saveSettings() {
@@ -27,12 +30,12 @@ class Settings extends React.Component {
         );
 
         const filedInfo = {
-            topLeftX: 43,
-            topLeftY: 7,
-            filedWidthInPixel: 214,
-            filedHeigthInPixel: 137,
-            fieldWidthInMeter: this.fieldWidthInput.current.value,
-            fieldHeightInMeter: this.fieldHeightInput.current.value,
+            topLeftX: Number(this.fieldTopLeftXInput.current.value),
+            topLeftY: Number(this.fieldTopLeftYInput.current.value),
+            filedWidthInPixel: Number(this.fieldWidthInPixelInput.current.value),
+            filedHeigthInPixel: Number(this.fieldHeightInPixelInput.current.value),
+            fieldWidthInMeter: Number(this.fieldWidthInMeterInput.current.value),
+            fieldHeightInMeter: Number(this.fieldHeightInMeterInput.current.value),
         };
 
         filedInfo.widthPixelToMeter = (filedInfo.fieldWidthInMeter) / (filedInfo.filedWidthInPixel);
@@ -53,7 +56,7 @@ class Settings extends React.Component {
         return (
             <Modal show={this.props.projectPath === undefined || this.props.showSettings}
                 onHide={this.props.closeSettings} backdrop="static">
-                <Modal.Header>
+                <Modal.Header closeButton>
                     <Modal.Title>Settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -94,21 +97,42 @@ class Settings extends React.Component {
                             <Form.Control defaultValue={this.props.filedImageName} ref={this.filedImageNameInput} />
                         </Form.Group>
                         <Form.Group as={Col}>
-                            <Form.Label>Field width</Form.Label>
-                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidth : 0}
-                                ref={this.fieldWidthInput} />
+                            <Form.Label>Field width in meter</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidthInMeter : 0}
+                                ref={this.fieldWidthInMeterInput} type="number" />
                         </Form.Group>
                         <Form.Group as={Col}>
-                            <Form.Label>Field height</Form.Label>
-                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldHeight : 0}
-                                ref={this.fieldHeightInput} />
+                            <Form.Label>Field height in meter</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldHeightInMeter : 0}
+                                ref={this.fieldHeightInMeterInput} type="number" />
                         </Form.Group>
                     </Form.Row>
-                    <OverlayTrigger overlay={<Tooltip>Set filed image size</Tooltip>}>
-                        <Button variant="primary" block disabled>
-                            <MdPhotoSizeSelectLarge />
-                        </Button>
-                    </OverlayTrigger>
+
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Top left x pixel</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.topLeftX : 0}
+                                ref={this.fieldTopLeftXInput} type="number" />
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Top left y pixel</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.topLeftY : 0}
+                                ref={this.fieldTopLeftYInput} type="number" />
+                        </Form.Group>
+                    </Form.Row>
+
+                    <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Filed width in pixel</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.filedWidthInPixel : 0}
+                                ref={this.fieldWidthInPixelInput} type="number" />
+                        </Form.Group>
+                        <Form.Group as={Col}>
+                            <Form.Label>Filed heigth in pixel</Form.Label>
+                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.filedHeigthInPixel : 0}
+                                ref={this.fieldHeightInPixelInput} type="number" />
+                        </Form.Group>
+                    </Form.Row>
                 </Modal.Body >
                 <Modal.Footer >
                     <Button variant="outline-primary" onClick={this.props.closeSettings}>cancel</Button>
