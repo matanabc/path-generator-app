@@ -37,6 +37,8 @@ export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallb
 }
 
 export const savePathToFile = (folderPath, path) => {
+    if (!fs.existsSync(`${folderPath}/paths`))
+        fs.mkdirSync(`${folderPath}/paths`);
     fs.writeFile(`${folderPath}/paths/${path.name}.json`, JSON.stringify(path), () => { });
 }
 
