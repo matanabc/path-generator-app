@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
-import { FiDownload } from "react-icons/fi";
+import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
 import { savePathToCSV } from "../../FileHandler";
 import Settings from '../settings/settings'
 import Popup from "../popup/popup";
 import {
   openSettings, changeSelectedPath, changeListenToMouseStatus, changeShowRenamePathPopup,
-  changeShowDeletePathStatus, deletePath, changeShowCreateNewPathStatus,
+  changeShowDeletePathStatus, deletePath, changeShowCreateNewPathStatus, isPathInReverse,
   createPath, changePathName
 } from "./tools-action";
 
@@ -101,11 +101,13 @@ class Tools extends React.Component {
             onClick={this.props.changeShowRenamePathPopup}>
             <MdEdit />
           </Button>
-          <Button className="mr-3" size="lg" variant="success" disabled>
+          <Button className="mr-4" size="lg" title="Rename path" onClick={this.props.isPathInReverse}>
+            {this.props.paths.length > 0 && this.props.paths[this.props.pathID].isInReverse ?
+              <FiCheckCircle className="mr-2" /> : <FiCircle className="mr-2" />}
             in reverse
           </Button>
         </Row>
-      </div>
+      </div >
     );
   }
 }
@@ -131,6 +133,7 @@ const mapDispatchToProps = (dispatch) => {
     changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
     changePathName: name => dispatch(changePathName(name)),
+    isPathInReverse: () => dispatch(isPathInReverse()),
     createPath: name => dispatch(createPath(name)),
     openSettings: () => dispatch(openSettings()),
     deletePath: () => dispatch(deletePath()),

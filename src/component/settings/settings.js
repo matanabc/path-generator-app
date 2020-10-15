@@ -35,13 +35,13 @@ class Settings extends React.Component {
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Project folder</Form.Label>
-                            <Form.Control defaultValue={this.props.projectPath ? this.props.projectPath : ""} />
+                            <Form.Control defaultValue={this.props.projectPath ? this.props.projectPath : ""} disabled />
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Robot CSV folder</Form.Label>
-                            <Form.Control defaultValue={this.props.saveCSVTo ? this.props.saveCSVTo : ""} />
+                            <Form.Control defaultValue={this.props.saveCSVTo ? this.props.saveCSVTo : ""} disabled />
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
@@ -62,6 +62,10 @@ class Settings extends React.Component {
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
+                        <Form.Group as={Col}>
+                            <Form.Label>Filed image name</Form.Label>
+                            <Form.Control defaultValue={this.props.filedImageName} disabled />
+                        </Form.Group>
                         <Form.Group as={Col}>
                             <Form.Label>Field width</Form.Label>
                             <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidth : 0}
@@ -86,6 +90,7 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        filedImageName: state.filedImageName,
         showSettings: state.showSettings,
         projectPath: state.projectPath,
         robotConfig: state.robotConfig,

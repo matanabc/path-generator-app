@@ -14,10 +14,11 @@ function loadPaths(folderPath, callback) {
     fs.readdir(`${folderPath}/paths`, (err, files) => {
         if (err) return;
         files.forEach(file => {
-            fs.readFile(`${folderPath}/paths/${file}`, (err, data) => {
-                if (err) return;
-                callback(JSON.parse(data));
-            });
+            if (file.endsWith(".json"))
+                fs.readFile(`${folderPath}/paths/${file}`, (err, data) => {
+                    if (err) return;
+                    callback(JSON.parse(data));
+                });
         });
     });
 }

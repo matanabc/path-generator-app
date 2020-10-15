@@ -1,8 +1,17 @@
 import { TOOLS_REDUCER } from '../../redux/reducer-types'
 import {
     OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
-    SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME
+    SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME,
+    IS_PATH_IN_REVERSE
 } from './tools-action-types';
+
+export function isPathInReverse() {
+    return {
+        reducer: TOOLS_REDUCER,
+        type: IS_PATH_IN_REVERSE,
+        payload: {},
+    };
+}
 
 export function changePathName(name) {
     return {

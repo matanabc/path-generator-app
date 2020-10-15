@@ -1,7 +1,8 @@
 import { deletePathFile, savePathToFile, renamePathFile } from '../../FileHandler'
 import {
   OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
-  SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME
+  SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME,
+  IS_PATH_IN_REVERSE
 } from './tools-action-types';
 
 function openSettings(state, payload) {
@@ -87,6 +88,17 @@ function changePathName(state, payload) {
   }
 }
 
+function isPathInReverse(state, payload) {
+  const paths = state.paths;
+  paths[state.pathID].isInReverse = !paths[state.pathID].isInReverse;
+  savePathToFile(state.projectPath, paths[state.pathID])
+  return {
+    ...state,
+    paths: paths,
+    update: !state.update
+  }
+}
+
 export const toolsReducer = (state, action) => {
   if (action.type === OPEN_SETTINGS)
     return openSettings(state, action.payload);
@@ -106,5 +118,7 @@ export const toolsReducer = (state, action) => {
     return createNewPath(state, action.payload);
   else if (action.type === CHANGE_PATH_NAME)
     return changePathName(state, action.payload);
+  else if (action.type === IS_PATH_IN_REVERSE)
+    return isPathInReverse(state, action.payload);
   return state;
 };
