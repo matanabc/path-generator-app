@@ -1,6 +1,7 @@
 import { r2d } from "./path-generator/util";
 import coockies from 'js-cookie';
 const fs = window.require('fs');
+const os = window.require('os');
 const PROJECT_FOLDER = "projectFolder"
 
 function loadFieldImage(folderPath, imageName, callback) {
@@ -24,7 +25,11 @@ function loadPaths(folderPath, callback) {
 }
 
 export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
-    const folderPath = coockies.get(PROJECT_FOLDER);
+    var folderPath = "";
+    if (os.platform() === 'win32')
+        folderPath = "C:/PathGenerator";
+    else
+        folderPath = "/PathGenerator";
     projetcFolderCallback(folderPath);
     if (folderPath)
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {

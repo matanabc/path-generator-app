@@ -8,7 +8,6 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.saveSettings = this.saveSettings.bind(this);
-        this.projectFolderInput = React.createRef();
         this.robotCSVFolderInput = React.createRef();
         this.robotWidthInput = React.createRef();
         this.robotMaxVInput = React.createRef();
@@ -42,7 +41,7 @@ class Settings extends React.Component {
         filedInfo.hightPixelToMeter = (filedInfo.fieldHeightInMeter) / (filedInfo.filedHeigthInPixel);
 
         const settings = {
-            projectPath: this.projectFolderInput.current.value,
+            projectPath: this.props.projectPath,
             saveCSVTo: this.robotCSVFolderInput.current.value,
             filedImageName: this.filedImageNameInput.current.value,
             filedInfo: filedInfo,
@@ -60,13 +59,6 @@ class Settings extends React.Component {
                     <Modal.Title>Settings</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form.Row>
-                        <Form.Group as={Col}>
-                            <Form.Label>Project folder</Form.Label>
-                            <Form.Control defaultValue={this.props.projectPath ? this.props.projectPath : ""}
-                                ref={this.projectFolderInput} />
-                        </Form.Group>
-                    </Form.Row>
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Robot CSV folder</Form.Label>
