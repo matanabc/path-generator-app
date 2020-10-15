@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Col, Tooltip, OverlayTrigger, Row } from 'react-bootstrap';
+import { Modal, Button, Form, Col, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { MdPhotoSizeSelectLarge } from "react-icons/md";
-import { closeSettings, setRobotVMax, setRobotAcc, setRobotWidth } from './settings-action'
-import { saveProjectFile } from "../../FileHandler";
+import { closeSettings, setRobotConfig } from './settings-action'
 
 class Settings extends React.Component {
     constructor(props) {
@@ -11,28 +10,18 @@ class Settings extends React.Component {
         this.updateRobotVMax = this.updateRobotVMax.bind(this);
         this.updateRobotAcc = this.updateRobotAcc.bind(this);
         this.updateRobotWidth = this.updateRobotWidth.bind(this);
-        this.saveProjectFile = this.saveProjectFile.bind(this);
-    }
-
-    saveProjectFile() {
-        const projectFile = {
-            paths: this.props.paths,
-            robotConfig: this.props.robotConfig,
-            filedInfo: this.props.filedInfo
-        };
-        saveProjectFile(projectFile);
     }
 
     updateRobotVMax(event) {
-        this.props.setRobotVMax(this.props.robotConfig, event.target.value);
+        this.props.setRobotConfig("vMax", event.target.value);
     }
 
     updateRobotAcc(event) {
-        this.props.setRobotAcc(this.props.robotConfig, event.target.value);
+        this.props.setRobotConfig("acc", event.target.value);
     }
 
     updateRobotWidth(event) {
-        this.props.setRobotWidth(this.props.robotConfig, event.target.value);
+        this.props.setRobotConfig("width", event.target.value);
     }
 
     render() {
@@ -109,9 +98,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         closeSettings: () => dispatch(closeSettings()),
-        setRobotVMax: (robotConfig, vMax) => dispatch(setRobotVMax(robotConfig, vMax)),
-        setRobotAcc: (robotConfig, acc) => dispatch(setRobotAcc(robotConfig, acc)),
-        setRobotWidth: (robotConfig, width) => dispatch(setRobotWidth(robotConfig, width)),
+        setRobotConfig: (key, value) => dispatch(setRobotConfig(key, value)),
     };
 }
 

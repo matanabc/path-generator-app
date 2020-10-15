@@ -1,4 +1,5 @@
-import { CLOSE_SETTINGS, SET_ROBOT_V_MAX, SET_ROBOT_ACC, SET_ROBOT_WIDTH } from './settings-action-types';
+import { CLOSE_SETTINGS, SET_ROBOT_CONFIG } from './settings-action-types';
+import { saveProjectFile } from "../../FileHandler";
 
 function closeSettings(state, payload) {
     return {
@@ -8,16 +9,26 @@ function closeSettings(state, payload) {
 }
 
 function setRobotConfig(state, payload) {
+    const robotConfig = state.robotConfig;
+    robotConfig[payload.key] = payload.value;
+    const projectFile = {
+        fieldImage: state.filedImageName,
+        saveCSVTo: state.saveCSVTo,
+        filedInfo: state.filedInfo,
+        robotConfig: robotConfig,
+    };
+    saveProjectFile(state.projectPath ,projectFile);
     return {
         ...state,
-        robotConfig: payload.robotConfig,
+        robotConfig: robotConfig,
+        update: !state.update,
     }
 }
 
 export const settingsReducer = (state, action) => {
     if (action.type === CLOSE_SETTINGS)
         return closeSettings(state, action.payload);
-    else if (action.type === SET_ROBOT_V_MAX || action.type === SET_ROBOT_ACC || action.type === SET_ROBOT_WIDTH)
+    else if (action.type === SET_ROBOT_CONFIG)
         return setRobotConfig(state, action.payload);
     return state;
 };

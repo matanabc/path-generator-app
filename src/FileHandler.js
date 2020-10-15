@@ -6,7 +6,7 @@ const PROJECT_FOLDER = "projectFolder"
 function loadFieldImage(folderPath, imageName, callback) {
     fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
         if (!err)
-            callback(URL.createObjectURL(new Blob([data])));
+            callback(URL.createObjectURL(new Blob([data])), imageName);
     });
 }
 
@@ -47,6 +47,10 @@ export const renamePathFile = (folderPath, oldName, pathName) => {
     fs.rename(`${folderPath}/paths/${oldName}.json`, `${folderPath}/paths/${pathName}.json`, () => { });
 }
 
+export const saveProjectFile = (folderPath, projectFile) => {
+    fs.writeFile(`${folderPath}/PathGenerator.json`, JSON.stringify(projectFile), () => { });
+}
+
 function pathToCSV(path) {
     var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y \n";
     for (let i = 0; i < path.sourceSetpoints.length; i++) {
@@ -73,17 +77,3 @@ export const saveCSV = (path, pathName) => {
     link.href = url;
     link.click();
 }
-
-export const saveProjectFile = (projectFile) => {
-    const blob = new Blob([JSON.stringify(projectFile)], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = 'PathGenerator.json';
-    link.href = url;
-    link.click();
-}
-
-// fs.writeFile('/home/user/Desktop/PathGenerator/nodejs/test.txt', 'This is my text', function (err) {
-//   if (err) throw err;
-//   console.log('Replaced!');
-// }); 

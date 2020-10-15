@@ -10,6 +10,7 @@ function setProjectFolderPath(state, payload) {
 function setFiledImage(state, payload) {
     return {
         ...state,
+        filedImageName: payload.imageName,
         filedImage: payload.filedImage,
         update: !state.update,
     }
@@ -30,6 +31,7 @@ function setProjectSettings(state, payload) {
         ...state,
         robotConfig: payload.settings.robotConfig,
         filedInfo: payload.settings.filedInfo,
+        saveCSVTo: payload.settings.saveCSVTo,
         update: !state.update,
     }
 }

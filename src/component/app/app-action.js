@@ -11,12 +11,13 @@ export function setProjectFolderPath(projectPath) {
     };
 }
 
-export function setFiledImage(filedImage) {
+export function setFiledImage(filedImage, imageName) {
     return {
         reducer: APP_REDUCER,
         type: SET_FIELD_IMAGE,
         payload: {
             filedImage: filedImage,
+            imageName: imageName,
         },
     };
 }

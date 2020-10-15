@@ -39,8 +39,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setProjectFolderPath: projectFolderPath => dispatch(setProjectFolderPath(projectFolderPath)),
+    setFiledImage: (filedImage, imageName) => dispatch(setFiledImage(filedImage, imageName)),
     setProjectSettings: settings => dispatch(setProjectSettings(settings)),
-    setFiledImage: filedImage => dispatch(setFiledImage(filedImage)),
     addPath: path => dispatch(addPath(path)),
   };
 }
