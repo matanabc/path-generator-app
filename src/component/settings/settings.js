@@ -41,8 +41,7 @@ class Settings extends React.Component {
                     <Form.Row>
                         <Form.Group as={Col}>
                             <Form.Label>Robot CSV folder</Form.Label>
-                            <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidth : 0}
-                                onChange={this.updateFieldWidth} disabled />
+                            <Form.Control defaultValue={this.props.saveCSVTo ? this.props.saveCSVTo : ""} />
                         </Form.Group>
                     </Form.Row>
                     <Form.Row>
@@ -91,14 +90,15 @@ const mapStateToProps = (state) => {
         projectPath: state.projectPath,
         robotConfig: state.robotConfig,
         filedInfo: state.filedInfo,
+        saveCSVTo: state.saveCSVTo,
         paths: state.paths,
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        closeSettings: () => dispatch(closeSettings()),
         setRobotConfig: (key, value) => dispatch(setRobotConfig(key, value)),
+        closeSettings: () => dispatch(closeSettings()),
     };
 }
 

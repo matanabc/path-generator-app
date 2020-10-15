@@ -51,6 +51,10 @@ export const saveProjectFile = (folderPath, projectFile) => {
     fs.writeFile(`${folderPath}/PathGenerator.json`, JSON.stringify(projectFile), () => { });
 }
 
+export const savePathToCSV = (folderPath, path, pathName) => {
+    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path), () => { });
+}
+
 function pathToCSV(path) {
     var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y \n";
     for (let i = 0; i < path.sourceSetpoints.length; i++) {
@@ -65,15 +69,4 @@ function pathToCSV(path) {
         csv += `${angleD},${source.x},${source.y},\n`;
     }
     return csv;
-}
-
-export const saveCSV = (path, pathName) => {
-    if (path === undefined || pathName === undefined) return;
-    const csv = pathToCSV(path);
-    const blob = new Blob([csv], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.download = pathName + '.csv';
-    link.href = url;
-    link.click();
 }

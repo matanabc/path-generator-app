@@ -4,7 +4,7 @@ import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
 import { FiDownload } from "react-icons/fi";
-import { saveCSV } from "../../FileHandler";
+import { savePathToCSV } from "../../FileHandler";
 import Settings from '../settings/settings'
 import Popup from "../popup/popup";
 import {
@@ -25,7 +25,7 @@ class Tools extends React.Component {
 
   saveToCSV() {
     if (this.props.paths.length > 0 && this.props.paths[this.props.pathID].waypoints.length > 0)
-      saveCSV(this.props.path, this.props.paths[this.props.pathID].name);
+      savePathToCSV(this.props.saveCSVTo, this.props.path, this.props.paths[this.props.pathID].name);
   }
 
   createNewPath() {
@@ -112,13 +112,14 @@ class Tools extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
+    showRenamePathPopup: state.showRenamePathPopup,
     listenToMouseClicks: state.listenToMouseClicks,
     showDeletePath: state.showDeletePath,
     createNewPath: state.createNewPath,
+    saveCSVTo: state.saveCSVTo,
     pathID: state.pathID,
     paths: state.paths,
     path: state.path,
-    showRenamePathPopup: state.showRenamePathPopup
   };
 };
 
@@ -127,12 +128,12 @@ const mapDispatchToProps = (dispatch) => {
     changeShowCreateNewPathStatus: () => dispatch(changeShowCreateNewPathStatus()),
     changeShowDeletePathStatus: () => dispatch(changeShowDeletePathStatus()),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
+    changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
+    changePathName: name => dispatch(changePathName(name)),
     createPath: name => dispatch(createPath(name)),
     openSettings: () => dispatch(openSettings()),
-    changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     deletePath: () => dispatch(deletePath()),
-    changePathName: name => dispatch(changePathName(name)),
   };
 }
 
