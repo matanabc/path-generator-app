@@ -25,11 +25,7 @@ function loadPaths(folderPath, callback) {
 }
 
 export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
-    var folderPath = "";
-    if (os.platform() === 'win32')
-        folderPath = "C:/PathGenerator";
-    else
-        folderPath = "/PathGenerator";
+    const folderPath = `${os.homedir()}/PathGenerator`;
     projetcFolderCallback(folderPath);
     if (folderPath)
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
