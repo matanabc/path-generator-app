@@ -8,14 +8,15 @@ function setRangePosition(state, payload) {
 }
 
 function addToRangePosition(state, payload) {
+    const newState = { ...state };
     if (state.rangePosition === 100 && payload.add > 0)
         payload.add = 0;
     else if (state.rangePosition === 0 && payload.add < 0)
         payload.add = 0;
-    return {
-        ...state,
-        rangePosition: state.rangePosition + payload.add,
-    }
+    else if (state.rangePosition === 100)
+        newState.drawRobotInterval = undefined;
+    newState.rangePosition = state.rangePosition + payload.add;
+    return newState;
 }
 
 export const playingBarReducer = (state, action) => {

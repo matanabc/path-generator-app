@@ -2,7 +2,7 @@ import { deletePathFile, savePathToFile, renamePathFile } from '../../ProjectHan
 import {
   OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
   SHOW_DELETE_PATH, DELETE_PATH, SHOW_CREATE_NEW_PATH, CREATE_NEW_PATH, CHANGE_PATH_NAME,
-  IS_PATH_IN_REVERSE
+  IS_PATH_IN_REVERSE, SET_DRAW_ROBOT
 } from './tools-action-types';
 
 function openSettings(state, payload) {
@@ -16,6 +16,7 @@ function changeSelectedPath(state, payload) {
   return {
     ...state,
     pathID: payload.id,
+    rangePosition: 0,
   }
 }
 
@@ -23,6 +24,7 @@ function changeListenToMouseStatus(state, payload) {
   return {
     ...state,
     listenToMouseClicks: !state.listenToMouseClicks,
+    rangePosition: 0,
   }
 }
 
@@ -99,6 +101,13 @@ function isPathInReverse(state, payload) {
   }
 }
 
+function setDrawRobotInterval(state, payload) {
+  return {
+    ...state,
+    drawRobotInterval: payload.interval
+  }
+}
+
 export const toolsReducer = (state, action) => {
   if (action.type === OPEN_SETTINGS)
     return openSettings(state, action.payload);
@@ -120,5 +129,7 @@ export const toolsReducer = (state, action) => {
     return changePathName(state, action.payload);
   else if (action.type === IS_PATH_IN_REVERSE)
     return isPathInReverse(state, action.payload);
+  else if (action.type === SET_DRAW_ROBOT)
+    return setDrawRobotInterval(state, action.payload);
   return state;
 };

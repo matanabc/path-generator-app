@@ -135,7 +135,7 @@ class FieldView extends React.Component {
           backgroundRepeat: 'no-repeat',
           backgroundImage: "url(" + this.props.filedImage + ")"
         }} />
-        <PlayingBar />
+        <PlayingBar canvasRef={this.canvasRef}/>
       </div>
     );
   }

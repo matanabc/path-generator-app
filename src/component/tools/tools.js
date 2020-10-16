@@ -7,10 +7,11 @@ import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
 import { savePathToCSV } from "../../ProjectHandler";
 import Settings from '../settings/settings'
 import Popup from "../popup/popup";
+import { addToRangePosition } from "../playing-bar/playing-bar-action";
 import {
   openSettings, changeSelectedPath, changeListenToMouseStatus, changeShowRenamePathPopup,
   changeShowDeletePathStatus, deletePath, changeShowCreateNewPathStatus, isPathInReverse,
-  createPath, changePathName
+  createPath, changePathName, setDrawRobotInterval
 } from "./tools-action";
 
 class Tools extends React.Component {
@@ -21,6 +22,8 @@ class Tools extends React.Component {
     this.renamePath = this.renamePath.bind(this);
     this.newPathInput = React.createRef();
     this.renamePathInput = React.createRef();
+    this.setDrawRobotInterval = this.setDrawRobotInterval.bind(this);
+    this.drawRobotInterval = this.drawRobotInterval.bind(this);
   }
 
   saveToCSV() {
@@ -37,6 +40,26 @@ class Tools extends React.Component {
   renamePath() {
     if (this.renamePathInput.current.value)
       this.props.changePathName(this.renamePathInput.current.value);
+  }
+
+  drawRobotInterval() {
+    if (this.props.rangePosition === 100) {
+      clearInterval(this.props.drawRobotInterval);
+      this.props.setDrawRobotInterval(undefined);
+    }
+    else
+      this.props.addToRangePosition();
+  }
+
+  setDrawRobotInterval() {
+    var drawRobotInterval = undefined;
+    if (this.props.drawRobotInterval === undefined) {
+      drawRobotInterval = setInterval(this.drawRobotInterval,
+        1000 * this.props.robotConfig.robotLoopTime);
+    } else {
+      clearInterval(this.props.drawRobotInterval);
+    }
+    this.props.setDrawRobotInterval(drawRobotInterval);
   }
 
   render() {
@@ -94,7 +117,10 @@ class Tools extends React.Component {
               </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
-          <Button className="mr-3 ml-4" size="lg" title="Delete path" variant="danger"
+          <Button className="mr-3 ml-4" size="lg" onClick={this.setDrawRobotInterval}>
+            {this.props.drawRobotInterval ? <MdPause /> : <MdPlayArrow />}
+          </Button>
+          <Button className="mr-3" size="lg" title="Delete path" variant="danger"
             onClick={this.props.changeShowDeletePathStatus}>
             <MdDelete />
           </Button>
@@ -102,14 +128,10 @@ class Tools extends React.Component {
             onClick={this.props.changeShowRenamePathPopup}>
             <MdEdit />
           </Button>
-          <Button className="mr-4" size="lg" title="Rename path" onClick={this.props.isPathInReverse}>
+          <Button className="mr-3" size="lg" title="Rename path" onClick={this.props.isPathInReverse}>
             {this.props.paths.length > 0 && this.props.paths[this.props.pathID].isInReverse ?
               <FiCheckCircle className="mr-2" /> : <FiCircle className="mr-2" />}
             in reverse
-          </Button>
-          <Button className="mr-3" size="lg" disabled>
-            <MdPause />
-            <MdPlayArrow />
           </Button>
         </Row>
       </div >
@@ -121,8 +143,11 @@ const mapStateToProps = (state) => {
   return {
     showRenamePathPopup: state.showRenamePathPopup,
     listenToMouseClicks: state.listenToMouseClicks,
+    drawRobotInterval: state.drawRobotInterval,
     showDeletePath: state.showDeletePath,
+    rangePosition: state.rangePosition,
     createNewPath: state.createNewPath,
+    robotConfig: state.robotConfig,
     saveCSVTo: state.saveCSVTo,
     pathID: state.pathID,
     paths: state.paths,
@@ -133,10 +158,12 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeShowCreateNewPathStatus: () => dispatch(changeShowCreateNewPathStatus()),
+    setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
     changeShowDeletePathStatus: () => dispatch(changeShowDeletePathStatus()),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
     changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
+    addToRangePosition: () => dispatch(addToRangePosition(1)),
     changePathName: name => dispatch(changePathName(name)),
     isPathInReverse: () => dispatch(isPathInReverse()),
     createPath: name => dispatch(createPath(name)),

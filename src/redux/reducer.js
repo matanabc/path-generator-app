@@ -10,6 +10,7 @@ import { fieldViewReducer } from "../component/field-view/field-view-reducer";
 import { playingBarReducer } from "../component/playing-bar/playing-bar-reducer";
 
 const initialState = {
+    drawRobotInterval: undefined,
     showRenamePathPopup: false,
     listenToMouseClicks: false,
     robotConfig: undefined,
