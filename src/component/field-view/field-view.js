@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addWaypoint, setPath } from "./field-view-action";
-import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
+import { Waypoint, RobotConfig } from "../../path-generator/path";
 import PlayingBar from "../playing-bar/playing-bar";
 
 class FieldView extends React.Component {
@@ -52,9 +52,9 @@ class FieldView extends React.Component {
   }
 
   drawPath(ctx) {
-    const waypoints = this.props.paths[this.props.pathID].waypoints;
+    if (!this.props.path) return;
     const config = new RobotConfig(this.props.robotConfig);
-    const path = new Generator(waypoints, config);
+    const path = this.props.path;
     ctx.beginPath();
     path.leftSetpoints.forEach((setpoint, index) => {
       const x = setpoint.x / this.props.filedInfo.widthPixelToMeter + this.props.filedInfo.topLeftX;
@@ -72,21 +72,17 @@ class FieldView extends React.Component {
       else
         ctx.lineTo(x, y);
     });
+
     ctx.strokeStyle = "Yellow";
     ctx.stroke();
     ctx.font = "10px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(`${(path.sourceSetpoints.length * config.robotLoopTime).toFixed(2)}`, 5, 12);
-    this.props.setPath(path);
     this.drawRobot(ctx, path, config);
   }
 
   drawRobot(ctx, path, config) {
-    const rangePosition = Number(this.props.rangePosition) / 100;
-    var setpointNumber = Number((path.sourceSetpoints.length * rangePosition).toFixed(0));
-    if (setpointNumber === path.sourceSetpoints.length)
-      setpointNumber = path.sourceSetpoints.length - 1;
-    const setpoint = path.sourceSetpoints[setpointNumber];
+    const setpoint = path.sourceSetpoints[this.props.rangePosition];
     if (setpoint === undefined) return;
     ctx.beginPath();
     const w = (Number(config.width) + 0.2) / this.props.filedInfo.widthPixelToMeter + 5;
@@ -135,7 +131,7 @@ class FieldView extends React.Component {
           backgroundRepeat: 'no-repeat',
           backgroundImage: "url(" + this.props.filedImage + ")"
         }} />
-        <PlayingBar canvasRef={this.canvasRef}/>
+        <PlayingBar canvasRef={this.canvasRef} />
       </div>
     );
   }
@@ -153,6 +149,7 @@ const mapStateToProps = (state) => {
     pathID: state.pathID,
     update: state.update,
     paths: state.paths,
+    path: state.path,
   };
 };
 

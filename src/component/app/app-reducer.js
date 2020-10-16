@@ -1,3 +1,5 @@
+import Generator from '../../path-generator/generator';
+import { RobotConfig } from '../../path-generator/path';
 import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
 function setProjectFolderPath(state, payload) {
@@ -19,8 +21,12 @@ function setFiledImage(state, payload) {
 function addPath(state, payload) {
     const paths = state.paths;
     paths.push(payload.path);
+    const waypoints = paths[state.pathID].waypoints;
+    const config = new RobotConfig(state.robotConfig);
+    const path = new Generator(waypoints, config);
     return {
         ...state,
+        path: path,
         paths: paths,
         update: !state.update,
     }

@@ -1,3 +1,5 @@
+import Generator from '../../path-generator/generator';
+import { RobotConfig } from '../../path-generator/path';
 import { deletePathFile, savePathToFile, renamePathFile } from '../../ProjectHandler'
 import {
   OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
@@ -13,10 +15,14 @@ function openSettings(state, payload) {
 }
 
 function changeSelectedPath(state, payload) {
+  const waypoints = state.paths[payload.id].waypoints;
+  const config = new RobotConfig(state.robotConfig);
+  const path = new Generator(waypoints, config);
   return {
     ...state,
     pathID: payload.id,
     rangePosition: 0,
+    path: path,
   }
 }
 
@@ -55,11 +61,19 @@ function deletePath(state, payload) {
     if (index !== state.pathID)
       paths.push(path)
   });
-  deletePathFile(state.projectPath, state.paths[state.pathID].name)
+  deletePathFile(state.projectPath, state.paths[state.pathID].name);
+  var path = undefined;
+  if (paths.length > 0) {
+    const waypoints = paths[0].waypoints;
+    const config = new RobotConfig(state.robotConfig);
+    path = new Generator(waypoints, config);
+  }
   return {
     ...state,
-    paths: paths,
     pathID: 0,
+    path: path,
+    paths: paths,
+    rangePosition: 0,
     showDeletePath: false,
   }
 }
@@ -104,6 +118,7 @@ function isPathInReverse(state, payload) {
 function setDrawRobotInterval(state, payload) {
   return {
     ...state,
+    listenToMouseClicks: false,
     drawRobotInterval: payload.interval
   }
 }

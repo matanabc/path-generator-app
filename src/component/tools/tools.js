@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
-import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause } from "react-icons/md";
+import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from "react-icons/md";
 import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
 import { savePathToCSV } from "../../ProjectHandler";
 import Settings from '../settings/settings'
 import Popup from "../popup/popup";
-import { addToRangePosition } from "../playing-bar/playing-bar-action";
+import { addToRangePosition, setRangePosition } from "../playing-bar/playing-bar-action";
 import {
   openSettings, changeSelectedPath, changeListenToMouseStatus, changeShowRenamePathPopup,
   changeShowDeletePathStatus, deletePath, changeShowCreateNewPathStatus, isPathInReverse,
@@ -43,7 +43,7 @@ class Tools extends React.Component {
   }
 
   drawRobotInterval() {
-    if (this.props.rangePosition === 100) {
+    if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1) {
       clearInterval(this.props.drawRobotInterval);
       this.props.setDrawRobotInterval(undefined);
     }
@@ -54,6 +54,8 @@ class Tools extends React.Component {
   setDrawRobotInterval() {
     var drawRobotInterval = undefined;
     if (this.props.drawRobotInterval === undefined) {
+      if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1)
+        this.props.resetRangePosition();
       drawRobotInterval = setInterval(this.drawRobotInterval,
         1000 * this.props.robotConfig.robotLoopTime);
     } else {
@@ -63,6 +65,13 @@ class Tools extends React.Component {
   }
 
   render() {
+    var playButtonToShow = <MdPlayArrow />;
+    if (this.props.drawRobotInterval)
+      playButtonToShow = <MdPause />;
+    else if ((this.props.path) &&
+      (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1))
+      playButtonToShow = <MdReplay />;
+
     return (
       <div className="Tools">
         <Popup show={this.props.showDeletePath && this.props.paths.length > 0}
@@ -118,7 +127,7 @@ class Tools extends React.Component {
             </Dropdown.Menu>
           </Dropdown>
           <Button className="mr-3 ml-4" size="lg" onClick={this.setDrawRobotInterval}>
-            {this.props.drawRobotInterval ? <MdPause /> : <MdPlayArrow />}
+            {playButtonToShow}
           </Button>
           <Button className="mr-3" size="lg" title="Delete path" variant="danger"
             onClick={this.props.changeShowDeletePathStatus}>
@@ -149,6 +158,7 @@ const mapStateToProps = (state) => {
     createNewPath: state.createNewPath,
     robotConfig: state.robotConfig,
     saveCSVTo: state.saveCSVTo,
+    update: state.update,
     pathID: state.pathID,
     paths: state.paths,
     path: state.path,
@@ -164,6 +174,7 @@ const mapDispatchToProps = (dispatch) => {
     changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
     addToRangePosition: () => dispatch(addToRangePosition(1)),
+    resetRangePosition: () => dispatch(setRangePosition(0)),
     changePathName: name => dispatch(changePathName(name)),
     isPathInReverse: () => dispatch(isPathInReverse()),
     createPath: name => dispatch(createPath(name)),

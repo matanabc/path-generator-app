@@ -8,6 +8,7 @@ class PlayingBar extends React.Component {
   constructor(props) {
     super(props);
     this.changeRangePosition = this.changeRangePosition.bind(this);
+    this.rangeInput = React.createRef();
   }
 
   componentDidMount() {
@@ -21,6 +22,12 @@ class PlayingBar extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    if (this.props.path !== undefined) {
+      this.rangeInput.current.max = this.props.path.sourceSetpoints.length - 1;
+    }
+  }
+
   changeRangePosition(event) {
     this.props.setRangePosition(event.target.value);
   }
@@ -28,8 +35,8 @@ class PlayingBar extends React.Component {
   render() {
     return (
       <div className="PlayingBar">
-        <Form.Control value={this.props.rangePosition} type="range" 
-          onChange={this.changeRangePosition} />
+        <Form.Control ref={this.rangeInput} value={this.props.rangePosition} type="range"
+          onChange={this.changeRangePosition}/>
       </div>
     );
   }
@@ -39,6 +46,7 @@ const mapStateToProps = (state) => {
   return {
     drawRobotInterval: state.drawRobotInterval,
     rangePosition: state.rangePosition,
+    path: state.path,
   };
 };
 

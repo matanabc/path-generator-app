@@ -3,19 +3,22 @@ import { SET_RANGE_POSITION, ADD_TO_RANGE_POSITION } from './playing-bar-types';
 function setRangePosition(state, payload) {
     return {
         ...state,
+        listenToMouseClicks: false,
         rangePosition: payload.rangePosition,
     }
 }
 
 function addToRangePosition(state, payload) {
     const newState = { ...state };
-    if (state.rangePosition === 100 && payload.add > 0)
+    const maxRange = state.path.sourceSetpoints.length - 1;
+    if (state.rangePosition === maxRange && payload.add > 0)
         payload.add = 0;
     else if (state.rangePosition === 0 && payload.add < 0)
         payload.add = 0;
-    else if (state.rangePosition === 100)
+    else if (state.rangePosition === maxRange)
         newState.drawRobotInterval = undefined;
     newState.rangePosition = state.rangePosition + payload.add;
+    newState.listenToMouseClicks = false;
     return newState;
 }
 
