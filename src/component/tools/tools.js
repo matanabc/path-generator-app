@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
-import { MdBuild, MdDelete, MdEdit } from "react-icons/md";
+import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause } from "react-icons/md";
 import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
 import { savePathToCSV } from "../../ProjectHandler";
 import Settings from '../settings/settings'
@@ -106,6 +106,10 @@ class Tools extends React.Component {
             {this.props.paths.length > 0 && this.props.paths[this.props.pathID].isInReverse ?
               <FiCheckCircle className="mr-2" /> : <FiCircle className="mr-2" />}
             in reverse
+          </Button>
+          <Button className="mr-3" size="lg" disabled>
+            <MdPause />
+            <MdPlayArrow />
           </Button>
         </Row>
       </div >

@@ -2,13 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addWaypoint, setPath } from "./field-view-action";
 import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
-import { Form } from "react-bootstrap";
+import PlayingBar from "../playing-bar/playing-bar";
 
 class FieldView extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
-    this.rangeInput = React.createRef();
     this.drawFieldBorders = this.drawFieldBorders.bind(this);
     this.drawWaypoints = this.drawWaypoints.bind(this);
     this.drawWaypoints = this.drawWaypoints.bind(this);
@@ -83,7 +82,7 @@ class FieldView extends React.Component {
   }
 
   drawRobot(ctx, path, config) {
-    const rangePosition = Number(this.rangeInput.current.value) / 100;
+    const rangePosition = Number(this.props.rangePosition) / 100;
     var setpointNumber = Number((path.sourceSetpoints.length * rangePosition).toFixed(0));
     if (setpointNumber === path.sourceSetpoints.length)
       setpointNumber = path.sourceSetpoints.length - 1;
@@ -136,7 +135,7 @@ class FieldView extends React.Component {
           backgroundRepeat: 'no-repeat',
           backgroundImage: "url(" + this.props.filedImage + ")"
         }} />
-        <Form.Control ref={this.rangeInput} onChange={this.drawField} defaultValue="0" type="range" custom />
+        <PlayingBar />
       </div>
     );
   }
@@ -146,6 +145,7 @@ const mapStateToProps = (state) => {
   return {
     listenToMouseClicks: state.listenToMouseClicks,
     clearFieldView: state.clearFieldView,
+    rangePosition: state.rangePosition,
     setFiledSize: state.setFiledSize,
     robotConfig: state.robotConfig,
     filedImage: state.filedImage,
