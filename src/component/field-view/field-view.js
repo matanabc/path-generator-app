@@ -2,35 +2,33 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addWaypoint, setPath } from "./field-view-action";
 import { Generator, Waypoint, RobotConfig } from "../../path-generator/path";
+import { Form } from "react-bootstrap";
 
 class FieldView extends React.Component {
   constructor(props) {
     super(props);
     this.canvasRef = React.createRef();
+    this.rangeInput = React.createRef();
+    this.drawFieldBorders = this.drawFieldBorders.bind(this);
+    this.drawWaypoints = this.drawWaypoints.bind(this);
+    this.drawWaypoints = this.drawWaypoints.bind(this);
     this.whenClick = this.whenClick.bind(this);
     this.drawField = this.drawField.bind(this);
-    this.drawWaypoints = this.drawWaypoints.bind(this);
-    this.drawWaypoints = this.drawWaypoints.bind(this);
-    this.drawFieldBorders = this.drawFieldBorders.bind(this);
+    this.drawRobot = this.drawRobot.bind(this);
   }
 
   componentDidMount() {
-    const canvas = this.canvasRef.current;
-    this.drawField(canvas);
+    this.drawField();
   }
 
-  drawField(canvas) {
+  drawField() {
+    if (this.props.filedInfo === undefined) return;
+    if (this.props.paths.length === 0) return;
+    const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const drawFieldBorders = this.drawFieldBorders;
-    const drawWaypoints = this.drawWaypoints;
-    const image = new Image();
-    image.src = this.props.filedImage
-    image.onload = () => {
-      ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-      drawWaypoints(canvas);
-      drawFieldBorders(canvas);
-    }
+    this.drawFieldBorders(canvas);
+    this.drawWaypoints(ctx);
   }
 
   drawFieldBorders(canvas) {
@@ -42,9 +40,7 @@ class FieldView extends React.Component {
     ctx.stroke();
   }
 
-  drawWaypoints(canvas) {
-    const ctx = canvas.getContext("2d");
-    if (this.props.paths.length === 0) return;
+  drawWaypoints(ctx) {
     this.props.paths[this.props.pathID].waypoints.forEach(waypoint => {
       const x = waypoint.x / this.props.filedInfo.widthPixelToMeter + this.props.filedInfo.topLeftX;
       const y = waypoint.y / this.props.filedInfo.hightPixelToMeter + this.props.filedInfo.topLeftY;
@@ -53,11 +49,10 @@ class FieldView extends React.Component {
       ctx.fillStyle = "red";
       ctx.fill();
     });
-    this.drawPath(canvas)
+    this.drawPath(ctx)
   }
 
-  drawPath(canvas) {
-    const ctx = canvas.getContext("2d");
+  drawPath(ctx) {
     const waypoints = this.props.paths[this.props.pathID].waypoints;
     const config = new RobotConfig(this.props.robotConfig);
     const path = new Generator(waypoints, config);
@@ -81,9 +76,33 @@ class FieldView extends React.Component {
     ctx.strokeStyle = "Yellow";
     ctx.stroke();
     ctx.font = "10px Arial";
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.fillText(`${(path.sourceSetpoints.length * config.robotLoopTime).toFixed(2)}`, 5, 12);
     this.props.setPath(path);
+    this.drawRobot(ctx, path, config);
+  }
+
+  drawRobot(ctx, path, config) {
+    const rangePosition = Number(this.rangeInput.current.value) / 100;
+    var setpointNumber = Number((path.sourceSetpoints.length * rangePosition).toFixed(0));
+    if (setpointNumber === path.sourceSetpoints.length)
+      setpointNumber = path.sourceSetpoints.length - 1;
+    const setpoint = path.sourceSetpoints[setpointNumber];
+    if (setpoint === undefined) return;
+    ctx.beginPath();
+    const w = (Number(config.width) + 0.2) / this.props.filedInfo.widthPixelToMeter + 5;
+    const h = (Number(config.width) + 0.2) / this.props.filedInfo.widthPixelToMeter;
+    const x = setpoint.x / this.props.filedInfo.widthPixelToMeter - w / 2 +
+      this.props.filedInfo.topLeftX;
+    const y = setpoint.y / this.props.filedInfo.hightPixelToMeter - h / 2 +
+      this.props.filedInfo.topLeftY;
+
+    ctx.save();
+    ctx.translate(x + w / 2, y + h / 2);
+    ctx.rotate(setpoint.heading);
+    ctx.fillStyle = "white";
+    ctx.fillRect(-w / 2, -h / 2, w, h);
+    ctx.restore();
   }
 
   whenClick(event) {
@@ -105,13 +124,19 @@ class FieldView extends React.Component {
     else
       canvas.removeEventListener('mousedown', this.whenClick);
 
-    this.drawField(canvas);
+    this.drawField();
   }
 
   render() {
     return (
       <div className="FieldView">
-        <canvas className="FieldImage" ref={this.canvasRef} />
+        <canvas className="FieldImage" ref={this.canvasRef} style={{
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage: "url(" + this.props.filedImage + ")"
+        }} />
+        <Form.Control ref={this.rangeInput} onChange={this.drawField} defaultValue="0" type="range" custom />
       </div>
     );
   }
@@ -120,14 +145,14 @@ class FieldView extends React.Component {
 const mapStateToProps = (state) => {
   return {
     listenToMouseClicks: state.listenToMouseClicks,
-    paths: state.paths,
     clearFieldView: state.clearFieldView,
     setFiledSize: state.setFiledSize,
+    robotConfig: state.robotConfig,
+    filedImage: state.filedImage,
     filedInfo: state.filedInfo,
     pathID: state.pathID,
     update: state.update,
-    robotConfig: state.robotConfig,
-    filedImage: state.filedImage
+    paths: state.paths,
   };
 };
 
