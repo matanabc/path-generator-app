@@ -80,9 +80,16 @@ function deletePath(state, payload) {
 
 function createNewPath(state, payload) {
   const paths = state.paths;
-  const path = { name: payload.name, waypoints: [], isInReverse: false }
-  paths.push(path);
-  savePathToFile(state.projectPath, path);
+  var isNewPath = true;
+  paths.forEach(path => {
+    if (path.name === payload.name)
+      isNewPath = false;
+  });
+  if (isNewPath) {
+    const path = { name: payload.name, waypoints: [], isInReverse: false };
+    paths.push(path);
+    savePathToFile(state.projectPath, path);
+  }
   return {
     ...state,
     paths: paths,
@@ -93,8 +100,15 @@ function createNewPath(state, payload) {
 
 function changePathName(state, payload) {
   const paths = state.paths;
-  renamePathFile(state.projectPath, paths[state.pathID].name, payload.name)
-  paths[state.pathID].name = payload.name;
+  var isNewPath = true;
+  paths.forEach(path => {
+    if (path.name === payload.name)
+      isNewPath = false;
+  });
+  if (isNewPath) {
+    renamePathFile(state.projectPath, paths[state.pathID].name, payload.name);
+    paths[state.pathID].name = payload.name;
+  }
   return {
     ...state,
     paths: paths,
