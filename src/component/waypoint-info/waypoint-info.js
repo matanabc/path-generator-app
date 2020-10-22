@@ -49,7 +49,9 @@ class WaypointInfo extends React.Component {
     return (
       <div className="WaypointInfo">
         <Alert variant="primary">
-          <InputGroup size="sm">
+          <InputGroup>
+            <span className="mr-4"> {this.props.id + 1} </span>
+
             <InputGroup.Prepend>
               <InputGroup.Text>X</InputGroup.Text>
             </InputGroup.Prepend>
@@ -75,11 +77,11 @@ class WaypointInfo extends React.Component {
             </InputGroup.Prepend>
             <FormControl className="mr-2" type="number" value={info.vMax ? info.vMax : 0} onChange={this.updateVMax} />
 
-            <Button className="mr-2" variant="danger" size="sm" onClick={this.remove}>
+            <Button className="mr-2" variant="danger" onClick={this.remove}>
               <MdDelete />
             </Button>
 
-            <Button size="sm" onClick={this.add}>
+            <Button onClick={this.add}>
               <MdAddCircle />
             </Button>
           </InputGroup>
