@@ -76,6 +76,8 @@ class FieldView extends React.Component {
     ctx.strokeStyle = "Yellow";
     ctx.stroke();
     ctx.font = "10px Arial";
+    ctx.fillStyle = "black";
+    ctx.fillRect(4, 3, 21, 10);
     ctx.fillStyle = "white";
     ctx.fillText(`${(path.sourceSetpoints.length * config.robotLoopTime).toFixed(2)}`, 5, 12);
     this.drawRobot(ctx, path, config);

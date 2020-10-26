@@ -141,12 +141,12 @@ class Settings extends React.Component {
 
                         <Form.Row>
                             <Form.Group as={Col}>
-                                <Form.Label>Top left x pixel</Form.Label>
+                                <Form.Label>Top left x</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.topLeftXPixel}
                                     ref={this.fieldTopLeftXInput} type="number" />
                             </Form.Group>
                             <Form.Group as={Col}>
-                                <Form.Label>Top left y pixel</Form.Label>
+                                <Form.Label>Top left y</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.topLeftYPixel}
                                     ref={this.fieldTopLeftYInput} type="number" />
                             </Form.Group>
