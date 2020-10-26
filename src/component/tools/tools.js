@@ -44,7 +44,7 @@ class Tools extends React.Component {
 
   drawRobotInterval() {
     if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1) {
-      clearInterval(this.props.drawRobotInterval);
+      clearInterval(this.props.robotDrawConfig.drawRobotInterval);
       this.props.setDrawRobotInterval(undefined);
     }
     else
@@ -53,20 +53,20 @@ class Tools extends React.Component {
 
   setDrawRobotInterval() {
     var drawRobotInterval = undefined;
-    if (this.props.drawRobotInterval === undefined) {
+    if (this.props.robotDrawConfig.drawRobotInterval === undefined) {
       if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1)
         this.props.resetRangePosition();
       drawRobotInterval = setInterval(this.drawRobotInterval,
-        1000 * this.props.robotConfig.robotLoopTime);
+        1000 * this.props.pathConfig.robotLoopTime);
     } else {
-      clearInterval(this.props.drawRobotInterval);
+      clearInterval(this.props.robotDrawConfig.drawRobotInterval);
     }
     this.props.setDrawRobotInterval(drawRobotInterval);
   }
 
   render() {
     var playButtonToShow = <MdPlayArrow />;
-    if (this.props.drawRobotInterval)
+    if (this.props.robotDrawConfig.drawRobotInterval)
       playButtonToShow = <MdPause />;
     else if ((this.props.path) &&
       (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1))
@@ -152,11 +152,11 @@ const mapStateToProps = (state) => {
   return {
     showRenamePathPopup: state.showRenamePathPopup,
     listenToMouseClicks: state.listenToMouseClicks,
-    drawRobotInterval: state.drawRobotInterval,
+    robotDrawConfig: state.robotDrawConfig,
     showDeletePath: state.showDeletePath,
     rangePosition: state.rangePosition,
     createNewPath: state.createNewPath,
-    robotConfig: state.robotConfig,
+    pathConfig: state.pathConfig,
     saveCSVTo: state.saveCSVTo,
     update: state.update,
     pathID: state.pathID,
@@ -168,7 +168,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeShowCreateNewPathStatus: () => dispatch(changeShowCreateNewPathStatus()),
-    setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
+    setDrawRobotInterval: interval => dispatch(setDrawRobotInterval(interval)),
     changeShowDeletePathStatus: () => dispatch(changeShowDeletePathStatus()),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
     changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),

@@ -1,6 +1,8 @@
-class robotConfig {
+class PathConfig {
     constructor(a, b, c, d) {
-        if (b === undefined)
+        if (a === undefined)
+            this.constructorB();
+        else if (b === undefined)
             this.constructorA(a);
         else
             this.constructorB(a, b, c, d);
@@ -13,7 +15,7 @@ class robotConfig {
         this.robotLoopTime = config.robotLoopTime ? config.robotLoopTime : 0.02;
     }
 
-    constructorB(width = 0.6, vMax = 1, acc = 1, robotLoopTime = 0.02) {
+    constructorB(width = 0.6, vMax = 2, acc = 2, robotLoopTime = 0.02) {
         this.width = width ? width : 0.8;
         this.vMax = vMax ? vMax : 2;
         this.acc = acc ? acc : 2;
@@ -21,4 +23,4 @@ class robotConfig {
     }
 }
 
-export default robotConfig;
+export default PathConfig;

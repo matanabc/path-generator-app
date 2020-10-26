@@ -1,5 +1,5 @@
 import Generator from '../../path-generator/generator';
-import { RobotConfig } from '../../path-generator/path';
+import { PathConfig } from '../../path-generator/path-generator';
 import { savePathToFile } from '../../ProjectHandler'
 import { ADD_WAYPOINT, REMOVE_WAYPOINT, UPDATE_WAYPOINT } from './waypoint-info-action-type';
 
@@ -57,7 +57,7 @@ export const waypointInfoReducer = (state, action) => {
         state = addWaypoint(state, action.payload);
     savePathToFile(state.projectPath, state.paths[state.pathID]);
     const waypoints = state.paths[state.pathID].waypoints;
-    const config = new RobotConfig(state.robotConfig);
+    const config = new PathConfig(state.pathConfig);
     const path = new Generator(waypoints, config);
     state.rangePosition = 0;
     state.path = path;

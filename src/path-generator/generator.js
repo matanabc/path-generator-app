@@ -2,9 +2,9 @@ import Spline from "./spline";
 import { tank } from "./modifier";
 
 class Generator {
-    constructor(waypoints, robotConfig) {
+    constructor(waypoints, pathConfig) {
         this.isLegal = { legal: true };
-        this.robotConfig = robotConfig;
+        this.pathConfig = pathConfig;
         this.waypoints = waypoints;
         this.sourceSetpoints = [];
         this.leftSetpoints = [];
@@ -22,11 +22,11 @@ class Generator {
         }
         this.splines = [];
         for (let i = 0; i < this.waypoints.length - 1; i++) {
-            this.splines[i] = new Spline(this.waypoints[i], this.waypoints[i + 1], this.robotConfig);
+            this.splines[i] = new Spline(this.waypoints[i], this.waypoints[i + 1], this.pathConfig);
             if (!this.splines[i].isLegal.legal) return;
         }
         this.sourceSetpoints = this.getSetpoints(this.splines);
-        const tankSetpoints = tank(this.sourceSetpoints, this.robotConfig);
+        const tankSetpoints = tank(this.sourceSetpoints, this.pathConfig);
         this.leftSetpoints = tankSetpoints.left;
         this.rightSetpoints = tankSetpoints.right;
     }

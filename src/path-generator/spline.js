@@ -3,9 +3,9 @@ import Segment from "./segment";
 import { d2r } from "./util";
 
 class Spline {
-    constructor(startPoint, endPoint, robotConfig) {
+    constructor(startPoint, endPoint, pathConfig) {
         this.isLegal = { legal: true };
-        this.robotConfig = robotConfig;
+        this.pathConfig = pathConfig;
         this.nextSplineStartTime = 0;
         this.startPoint = startPoint;
         this.sampleCount = 100000;
@@ -19,10 +19,10 @@ class Spline {
     }
 
     setVellAndAcc() {
-        this.V0 = Math.min(Math.abs(this.startPoint.v), Math.abs(this.robotConfig.vMax));
-        this.vMax = Math.min(Math.abs(this.startPoint.vMax), Math.abs(this.robotConfig.vMax));
-        this.vEnd = Math.min(Math.abs(this.endPoint.v), Math.abs(this.robotConfig.vMax));
-        this.acc = Math.abs(this.robotConfig.acc);
+        this.V0 = Math.min(Math.abs(this.startPoint.v), Math.abs(this.pathConfig.vMax));
+        this.vMax = Math.min(Math.abs(this.startPoint.vMax), Math.abs(this.pathConfig.vMax));
+        this.vEnd = Math.min(Math.abs(this.endPoint.v), Math.abs(this.pathConfig.vMax));
+        this.acc = Math.abs(this.pathConfig.acc);
     }
 
     fit_hermite_cubic() {
@@ -89,7 +89,7 @@ class Spline {
         var lastPos = 0, time = startTime;
         for (let i = 0; i < this.segmets.length; i++) {
             if (this.segmets[i].distance === 0) continue;
-            for (; time < this.segmets[i].totalTime; time += this.robotConfig.robotLoopTime)
+            for (; time < this.segmets[i].totalTime; time += this.pathConfig.robotLoopTime)
                 this.setpoints.push(this.segmets[i].getSetpoint(time, lastPos));
             lastPos += this.segmets[i].distance;
             time = time - this.segmets[i].totalTime;

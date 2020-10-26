@@ -16,7 +16,7 @@ function addToRangePosition(state, payload) {
     else if (state.rangePosition === 0 && payload.add < 0)
         payload.add = 0;
     else if (state.rangePosition === maxRange)
-        newState.drawRobotInterval = undefined;
+        newState.robotDrawConfig.drawRobotInterval = undefined;
     newState.rangePosition = state.rangePosition + payload.add;
     newState.listenToMouseClicks = false;
     return newState;

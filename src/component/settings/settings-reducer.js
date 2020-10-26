@@ -1,5 +1,6 @@
 import { CLOSE_SETTINGS, SET_SETTINGS } from './settings-action-types';
 import { saveProjectFolderPath, saveProjectFile } from "../../ProjectHandler";
+import { PathGenerator } from "../../path-generator/path-generator";
 
 function closeSettings(state, payload) {
     return {
@@ -10,16 +11,20 @@ function closeSettings(state, payload) {
 
 function setSettings(state, payload) {
     saveProjectFolderPath(payload.settings.projectPath);
+    const waypoints = state.paths[state.pathID].waypoints;
+    const config = state.pathConfig;
+    const path = new PathGenerator(waypoints, config);
     const newState = {
         ...state,
         ...payload.settings,
         showSettings: false,
+        rangePosition: 0,
+        path: path,
     };
     const projectFile = {
-        fieldImage: newState.filedImageName,
         saveCSVTo: newState.saveCSVTo,
-        filedInfo: newState.filedInfo,
-        robotConfig: payload.settings.robotConfig,
+        fieldConfig: newState.fieldConfig,
+        pathConfig: payload.settings.pathConfig,
     };
     saveProjectFile(newState.projectPath, projectFile);
     return newState;

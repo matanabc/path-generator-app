@@ -1,8 +1,8 @@
 import { r2d } from "./path-generator/util";
-import coockies from 'js-cookie';
+// import coockies from 'js-cookie';
 const fs = window.require('fs');
 const os = window.require('os');
-const PROJECT_FOLDER = "projectFolder"
+// const PROJECT_FOLDER = "projectFolder"
 
 function loadFieldImage(folderPath, imageName, callback) {
     fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
@@ -31,7 +31,7 @@ export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallb
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
             if (err) return;
             const projectFile = JSON.parse(data);
-            loadFieldImage(folderPath, projectFile.fieldImage, filedImageCallback);
+            loadFieldImage(folderPath, projectFile.fieldConfig.imageName, filedImageCallback);
             loadPaths(folderPath, loadPathsCallback);
             callback(projectFile);
         });
@@ -66,7 +66,7 @@ function pathToCSV(path, isInReverse) {
         const left = isInReverse ? path.rightSetpoints[i] : path.leftSetpoints[i];
         const source = path.sourceSetpoints[i];
         const angleR = isInReverse ? right.position - left.position : left.position - right.position;
-        const angleD = path.waypoints[0].angle + (r2d(angleR) / path.robotConfig.width);
+        const angleD = path.waypoints[0].angle + (r2d(angleR) / path.pathConfig.width);
         csv += `${left.position},${right.position},`;
         csv += `${left.velocity},${right.velocity},`;
         csv += `${left.acceleration},${right.acceleration},`;
@@ -76,5 +76,5 @@ function pathToCSV(path, isInReverse) {
 }
 
 export const saveProjectFolderPath = folderPath => {
-    coockies.set(PROJECT_FOLDER, folderPath, { expires: 999999 });
+    // coockies.set(PROJECT_FOLDER, folderPath, { expires: 999999 });
 }

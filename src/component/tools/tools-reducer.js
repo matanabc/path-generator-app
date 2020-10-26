@@ -1,5 +1,4 @@
-import Generator from '../../path-generator/generator';
-import { RobotConfig } from '../../path-generator/path';
+import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
 import { deletePathFile, savePathToFile, renamePathFile } from '../../ProjectHandler'
 import {
   OPEN_SETTINGS, CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, SHOW_RENAME_PATH_POPUP,
@@ -16,8 +15,8 @@ function openSettings(state, payload) {
 
 function changeSelectedPath(state, payload) {
   const waypoints = state.paths[payload.id].waypoints;
-  const config = new RobotConfig(state.robotConfig);
-  const path = new Generator(waypoints, config);
+  const config = new PathConfig(state.pathConfig);
+  const path = new PathGenerator(waypoints, config);
   return {
     ...state,
     pathID: payload.id,
@@ -65,8 +64,8 @@ function deletePath(state, payload) {
   var path = undefined;
   if (paths.length > 0) {
     const waypoints = paths[0].waypoints;
-    const config = new RobotConfig(state.robotConfig);
-    path = new Generator(waypoints, config);
+    const config = new PathConfig(state.pathConfig);
+    path = new PathGenerator(waypoints, config);
   }
   return {
     ...state,
@@ -130,11 +129,13 @@ function isPathInReverse(state, payload) {
 }
 
 function setDrawRobotInterval(state, payload) {
-  return {
+  const newState = {
     ...state,
     listenToMouseClicks: false,
-    drawRobotInterval: payload.interval
-  }
+    update: !state.update
+  };
+  newState.robotDrawConfig.drawRobotInterval = payload.interval;
+  return newState;
 }
 
 export const toolsReducer = (state, action) => {

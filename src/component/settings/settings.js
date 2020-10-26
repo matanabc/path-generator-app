@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Form, Col } from 'react-bootstrap';
 import { closeSettings, setSettings } from './settings-action';
-import RobotConfig from '../../path-generator/robot-config';
+import { PathConfig } from '../../path-generator/path-generator';
+import { FieldConfig } from "../field-view/field-view-config";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -22,36 +23,35 @@ class Settings extends React.Component {
     }
 
     saveSettings() {
-        const robotConfig = new RobotConfig(
+        const pathConfig = new PathConfig(
             this.robotWidthInput.current.value,
             this.robotMaxVInput.current.value,
             this.robotMaxAccInput.current.value,
         );
 
-        const filedInfo = {
-            topLeftX: Number(this.fieldTopLeftXInput.current.value),
-            topLeftY: Number(this.fieldTopLeftYInput.current.value),
-            filedWidthInPixel: Number(this.fieldWidthInPixelInput.current.value),
-            filedHeigthInPixel: Number(this.fieldHeightInPixelInput.current.value),
-            fieldWidthInMeter: Number(this.fieldWidthInMeterInput.current.value),
-            fieldHeightInMeter: Number(this.fieldHeightInMeterInput.current.value),
-        };
-
-        filedInfo.widthPixelToMeter = (filedInfo.fieldWidthInMeter) / (filedInfo.filedWidthInPixel);
-        filedInfo.hightPixelToMeter = (filedInfo.fieldHeightInMeter) / (filedInfo.filedHeigthInPixel);
+        const fieldConfig = new FieldConfig(
+            this.filedImageNameInput.current.value,
+            this.fieldWidthInMeterInput.current.value,
+            this.fieldHeightInMeterInput.current.value,
+            this.fieldTopLeftXInput.current.value,
+            this.fieldTopLeftYInput.current.value,
+            this.fieldWidthInPixelInput.current.value,
+            this.fieldHeightInPixelInput.current.value,
+        );
 
         const settings = {
             projectPath: this.props.projectPath,
             saveCSVTo: this.robotCSVFolderInput.current.value,
-            filedImageName: this.filedImageNameInput.current.value,
-            filedInfo: filedInfo,
-            robotConfig: robotConfig,
+            fieldConfig: fieldConfig,
+            pathConfig: pathConfig,
         };
 
         this.props.setSettings(settings);
     }
 
     render() {
+        const style = { fontSize: 20, fontWeight: "bold" };
+        const fieldConfig = this.props.fieldConfig;
         return (
             <Modal show={this.props.projectPath === undefined || this.props.showSettings}
                 onHide={this.props.closeSettings} backdrop="static">
@@ -70,7 +70,7 @@ class Settings extends React.Component {
 
                         <Form.Row>
                             <Form.Group as={Col}>
-                                <Form.Label style={{ fontSize: 20 }}> Path config: </Form.Label>
+                                <Form.Label style={style}> Path config: </Form.Label>
                             </Form.Group>
                         </Form.Row>
 
@@ -78,23 +78,23 @@ class Settings extends React.Component {
                             <Form.Group as={Col} md="4">
                                 <Form.Label>Width</Form.Label>
                                 <Form.Control type="number" ref={this.robotWidthInput}
-                                    defaultValue={this.props.filedInfo ? this.props.robotConfig.width : 0} />
+                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.width : 0} />
                             </Form.Group>
                             <Form.Group as={Col} md="4">
                                 <Form.Label>Max V</Form.Label>
                                 <Form.Control type="number" ref={this.robotMaxVInput}
-                                    defaultValue={this.props.filedInfo ? this.props.robotConfig.vMax : 0} />
+                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.vMax : 0} />
                             </Form.Group>
                             <Form.Group as={Col} md="4">
                                 <Form.Label>Max Acc</Form.Label>
                                 <Form.Control type="number" ref={this.robotMaxAccInput}
-                                    defaultValue={this.props.filedInfo ? this.props.robotConfig.acc : 0} />
+                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.acc : 0} />
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Row>
                             <Form.Group as={Col}>
-                                <Form.Label style={{ fontSize: 20 }}> Robot config: </Form.Label>
+                                <Form.Label style={style}> Robot config: </Form.Label>
                             </Form.Group>
                         </Form.Row>
 
@@ -115,26 +115,26 @@ class Settings extends React.Component {
 
                         <Form.Row>
                             <Form.Group as={Col}>
-                                <Form.Label style={{ fontSize: 20 }}> Filed config: </Form.Label>
+                                <Form.Label style={style}> Filed config: </Form.Label>
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Image name</Form.Label>
-                                <Form.Control defaultValue={this.props.filedImageName} ref={this.filedImageNameInput} />
+                                <Form.Control defaultValue={fieldConfig.imageName} ref={this.filedImageNameInput} />
                             </Form.Group>
                         </Form.Row>
 
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Width in meter</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldWidthInMeter : 0}
+                                <Form.Control defaultValue={fieldConfig.widthInMeter}
                                     ref={this.fieldWidthInMeterInput} type="number" />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Height in meter</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.fieldHeightInMeter : 0}
+                                <Form.Control defaultValue={fieldConfig.heightInMeter}
                                     ref={this.fieldHeightInMeterInput} type="number" />
                             </Form.Group>
                         </Form.Row>
@@ -142,22 +142,22 @@ class Settings extends React.Component {
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Top left x pixel</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.topLeftX : 0}
+                                <Form.Control defaultValue={fieldConfig.topLeftXPixel}
                                     ref={this.fieldTopLeftXInput} type="number" />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Top left y pixel</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.topLeftY : 0}
+                                <Form.Control defaultValue={fieldConfig.topLeftYPixel}
                                     ref={this.fieldTopLeftYInput} type="number" />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Width in pixel</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.filedWidthInPixel : 0}
+                                <Form.Control defaultValue={fieldConfig.widthInPixel}
                                     ref={this.fieldWidthInPixelInput} type="number" />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Heigth in pixel</Form.Label>
-                                <Form.Control defaultValue={this.props.filedInfo ? this.props.filedInfo.filedHeigthInPixel : 0}
+                                <Form.Control defaultValue={fieldConfig.heigthInPixel}
                                     ref={this.fieldHeightInPixelInput} type="number" />
                             </Form.Group>
                         </Form.Row>
@@ -174,11 +174,10 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        filedImageName: state.filedImageName,
         showSettings: state.showSettings,
         projectPath: state.projectPath,
-        robotConfig: state.robotConfig,
-        filedInfo: state.filedInfo,
+        pathConfig: state.pathConfig,
+        fieldConfig: state.fieldConfig,
         saveCSVTo: state.saveCSVTo,
         paths: state.paths,
     };

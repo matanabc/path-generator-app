@@ -1,6 +1,6 @@
 import {
-    TOOLS_REDUCER, SETTINGS_REDUCER, APP_REDUCER, WAYPOINT_INFO_REDUCER, FIELD_VIEW_REDUCER,
-    PLAYING_BAR_REDUCER
+    TOOLS_REDUCER, SETTINGS_REDUCER, APP_REDUCER, WAYPOINT_INFO_REDUCER,
+    FIELD_VIEW_REDUCER, PLAYING_BAR_REDUCER
 } from './reducer-types'
 import { toolsReducer } from "../component/tools/tools-reducer";
 import { settingsReducer } from "../component/settings/settings-reducer";
@@ -8,18 +8,19 @@ import { appReducer } from "../component/app/app-reducer";
 import { waypointInfoReducer } from "../component/waypoint-info/waypoint-info-reducer";
 import { fieldViewReducer } from "../component/field-view/field-view-reducer";
 import { playingBarReducer } from "../component/playing-bar/playing-bar-reducer";
+import { PathConfig } from "../path-generator/path-generator";
+import { FieldConfig, RobotDrawConfig } from "../component/field-view/field-view-config";
 
 const initialState = {
-    drawRobotInterval: undefined,
+    pathConfig: new PathConfig(),
+    robotDrawConfig: new RobotDrawConfig(),
+    fieldConfig: new FieldConfig(),
+        
     showRenamePathPopup: false,
     listenToMouseClicks: false,
-    robotConfig: undefined,
     showDeletePath: false,
     createNewPath: false,
-    filedInfo: undefined,
-    setFiledSize: false,
     showSettings: false,
-    filedImageName: "",
     rangePosition: 0,
     projectPath: "",
     path: undefined,

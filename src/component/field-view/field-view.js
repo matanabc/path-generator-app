@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { addWaypoint, setPath } from "./field-view-action";
-import { Waypoint, RobotConfig } from "../../path-generator/path";
+import { PathWaypoint } from "../../path-generator/path-generator";
 import PlayingBar from "../playing-bar/playing-bar";
 
 class FieldView extends React.Component {
@@ -21,7 +21,7 @@ class FieldView extends React.Component {
   }
 
   drawField() {
-    if (this.props.filedInfo === undefined) return;
+    if (this.props.fieldConfig === undefined) return;
     if (this.props.paths.length === 0) return;
     const canvas = this.canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -33,16 +33,16 @@ class FieldView extends React.Component {
   drawFieldBorders(canvas) {
     const ctx = canvas.getContext('2d');
     ctx.beginPath();
-    ctx.rect(this.props.filedInfo.topLeftX, this.props.filedInfo.topLeftY,
-      this.props.filedInfo.filedWidthInPixel, this.props.filedInfo.filedHeigthInPixel);
+    ctx.rect(this.props.fieldConfig.topLeftXPixel, this.props.fieldConfig.topLeftYPixel,
+      this.props.fieldConfig.widthInPixel, this.props.fieldConfig.heigthInPixel);
     ctx.strokeStyle = "blue";
     ctx.stroke();
   }
 
   drawWaypoints(ctx) {
     this.props.paths[this.props.pathID].waypoints.forEach(waypoint => {
-      const x = waypoint.x / this.props.filedInfo.widthPixelToMeter + this.props.filedInfo.topLeftX;
-      const y = waypoint.y / this.props.filedInfo.hightPixelToMeter + this.props.filedInfo.topLeftY;
+      const x = waypoint.x / this.props.fieldConfig.widthPixelToMeter + this.props.fieldConfig.topLeftXPixel;
+      const y = waypoint.y / this.props.fieldConfig.hightPixelToMeter + this.props.fieldConfig.topLeftYPixel;
       ctx.beginPath();
       ctx.arc(x, y, 2, 0, Math.PI * 2, false);
       ctx.fillStyle = "red";
@@ -53,20 +53,20 @@ class FieldView extends React.Component {
 
   drawPath(ctx) {
     if (!this.props.path) return;
-    const config = new RobotConfig(this.props.robotConfig);
+    const config = this.props.pathConfig;
     const path = this.props.path;
     ctx.beginPath();
     path.leftSetpoints.forEach((setpoint, index) => {
-      const x = setpoint.x / this.props.filedInfo.widthPixelToMeter + this.props.filedInfo.topLeftX;
-      const y = setpoint.y / this.props.filedInfo.hightPixelToMeter + this.props.filedInfo.topLeftY;
+      const x = setpoint.x / this.props.fieldConfig.widthPixelToMeter + this.props.fieldConfig.topLeftXPixel;
+      const y = setpoint.y / this.props.fieldConfig.hightPixelToMeter + this.props.fieldConfig.topLeftYPixel;
       if (index === 0)
         ctx.moveTo(x, y);
       else
         ctx.lineTo(x, y);
     });
     path.rightSetpoints.forEach((setpoint, index) => {
-      const x = setpoint.x / this.props.filedInfo.widthPixelToMeter + this.props.filedInfo.topLeftX;
-      const y = setpoint.y / this.props.filedInfo.hightPixelToMeter + this.props.filedInfo.topLeftY;
+      const x = setpoint.x / this.props.fieldConfig.widthPixelToMeter + this.props.fieldConfig.topLeftXPixel;
+      const y = setpoint.y / this.props.fieldConfig.hightPixelToMeter + this.props.fieldConfig.topLeftYPixel;
       if (index === 0)
         ctx.moveTo(x, y);
       else
@@ -85,12 +85,12 @@ class FieldView extends React.Component {
     const setpoint = path.sourceSetpoints[this.props.rangePosition];
     if (setpoint === undefined) return;
     ctx.beginPath();
-    const w = (Number(config.width) + 0.2) / this.props.filedInfo.widthPixelToMeter + 5;
-    const h = (Number(config.width) + 0.2) / this.props.filedInfo.widthPixelToMeter;
-    const x = setpoint.x / this.props.filedInfo.widthPixelToMeter - w / 2 +
-      this.props.filedInfo.topLeftX;
-    const y = setpoint.y / this.props.filedInfo.hightPixelToMeter - h / 2 +
-      this.props.filedInfo.topLeftY;
+    const w = (Number(config.width) + 0.2) / this.props.fieldConfig.widthPixelToMeter + 5;
+    const h = (Number(config.width) + 0.2) / this.props.fieldConfig.widthPixelToMeter;
+    const x = setpoint.x / this.props.fieldConfig.widthPixelToMeter - w / 2 +
+      this.props.fieldConfig.topLeftXPixel;
+    const y = setpoint.y / this.props.fieldConfig.hightPixelToMeter - h / 2 +
+      this.props.fieldConfig.topLeftYPixel;
 
     ctx.save();
     ctx.translate(x + w / 2, y + h / 2);
@@ -105,11 +105,11 @@ class FieldView extends React.Component {
     const rect = canvas.getBoundingClientRect();
     const scaleX = canvas.width / rect.width;
     const scaleY = canvas.height / rect.height;
-    const x = ((event.clientX - rect.left) * scaleX - this.props.filedInfo.topLeftX)
-      * this.props.filedInfo.widthPixelToMeter;
-    const y = ((event.clientY - rect.top) * scaleY - this.props.filedInfo.topLeftY)
-      * this.props.filedInfo.hightPixelToMeter;
-    this.props.addWaypoint(new Waypoint(x, y));
+    const x = ((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel)
+      * this.props.fieldConfig.widthPixelToMeter;
+    const y = ((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel)
+      * this.props.fieldConfig.hightPixelToMeter;
+    this.props.addWaypoint(new PathWaypoint(x, y));
   }
 
   componentDidUpdate() {
@@ -142,10 +142,9 @@ const mapStateToProps = (state) => {
     listenToMouseClicks: state.listenToMouseClicks,
     clearFieldView: state.clearFieldView,
     rangePosition: state.rangePosition,
-    setFiledSize: state.setFiledSize,
-    robotConfig: state.robotConfig,
+    fieldConfig: state.fieldConfig,
+    pathConfig: state.pathConfig,
     filedImage: state.filedImage,
-    filedInfo: state.filedInfo,
     pathID: state.pathID,
     update: state.update,
     paths: state.paths,
