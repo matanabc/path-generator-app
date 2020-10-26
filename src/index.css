@@ -29,8 +29,14 @@ body {
 }
 
 .WaypointsView{
-  height: 20vh;
+  height: 22vh;
   overflow-y:  auto;
+}
+
+.SettingsBody {
+  height: 65vh;
+  overflow-y:  auto;
+  overflow-x:  hidden;
 }
 
 .Tools{
@@ -40,7 +46,6 @@ body {
 /* width */
 ::-webkit-scrollbar {
   width: 10px;
-  padding-left: 10px;
 }
  
 /* Handle */
