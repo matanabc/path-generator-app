@@ -30,8 +30,10 @@ class Spline {
             (this.endPoint.y - this.startPoint.y) * (this.endPoint.y - this.startPoint.y));
         this.angle_offset = Math.atan2(this.endPoint.y - this.startPoint.y, this.endPoint.x - this.startPoint.x);
 
-        const a0_delta = Math.tan(boundRadians(d2r(this.startPoint.angle) - this.angle_offset));
-        const a1_delta = Math.tan(boundRadians(d2r(this.endPoint.angle) - this.angle_offset));
+        const startAngle = this.startPoint.angle === "-" ? 0 : this.startPoint.angle;
+        const endAngle = this.endPoint.angle === "-" ? 0 : this.endPoint.angle;
+        const a0_delta = Math.tan(boundRadians(d2r(startAngle) - this.angle_offset));
+        const a1_delta = Math.tan(boundRadians(d2r(endAngle) - this.angle_offset));
 
         this.a = 0;
         this.b = 0;

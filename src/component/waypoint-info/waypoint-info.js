@@ -65,7 +65,7 @@ class WaypointInfo extends React.Component {
             <InputGroup.Prepend>
               <InputGroup.Text>Angle</InputGroup.Text>
             </InputGroup.Prepend>
-            <FormControl className="mr-2" type="number" value={info.angle ? info.angle : 0} onChange={this.updateAngle} />
+            <FormControl className="mr-2" value={info.angle} onChange={this.updateAngle} />
 
             <InputGroup.Prepend>
               <InputGroup.Text>V</InputGroup.Text>
