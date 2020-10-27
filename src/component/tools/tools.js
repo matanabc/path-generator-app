@@ -21,8 +21,10 @@ class Tools extends React.Component {
 
   saveToCSV() {
     if (this.props.paths.length > 0 && this.props.paths[this.props.pathID].waypoints.length > 0)
-      savePathToCSV(this.props.saveCSVTo, this.props.path, this.props.paths[this.props.pathID].name,
-        this.props.paths[this.props.pathID].isInReverse);
+      savePathToCSV(this.props.saveCSVTo, this.props.path,
+        this.props.paths[this.props.pathID].name,
+        this.props.paths[this.props.pathID].isInReverse,
+        this.props.showSavePathCSVPopup);
   }
 
   drawRobotInterval() {
@@ -135,6 +137,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     showCreateNewPathPopup: () => dispatch(changePopupStatus("createNewPathPopup")),
+    showSavePathCSVPopup: () => dispatch(changePopupStatus("savePathCSVPopup")),
     showRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
     showDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
     showSettingsPopup: () => dispatch(changePopupStatus("settingsPopup")),

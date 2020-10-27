@@ -63,7 +63,7 @@ class Settings extends React.Component {
                     <div className="SettingsBody ml-1">
                         <Form.Row>
                             <Form.Group as={Col}>
-                                <Form.Label>Robot CSV folder</Form.Label>
+                                <Form.Label>Paths CSV folder</Form.Label>
                                 <Form.Control defaultValue={this.props.saveCSVTo ? this.props.saveCSVTo : ""}
                                     ref={this.robotCSVFolderInput} />
                             </Form.Group>

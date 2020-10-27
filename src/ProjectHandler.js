@@ -55,8 +55,10 @@ export const saveProjectFile = (folderPath, projectFile) => {
     fs.writeFile(`${folderPath}/PathGenerator.json`, JSON.stringify(projectFile), () => { });
 }
 
-export const savePathToCSV = (folderPath, path, pathName, isInReverse) => {
-    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path, isInReverse), () => { });
+export const savePathToCSV = (folderPath, path, pathName, isInReverse, callback) => {
+    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path, isInReverse), () => { 
+        callback();
+    });
 }
 
 function pathToCSV(path, isInReverse) {

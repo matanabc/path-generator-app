@@ -17,7 +17,7 @@ class Popups extends React.Component {
   }
 
   componentDidUpdate() {
-    if (this.props.popupsStatus.renamePathPopup) 
+    if (this.props.popupsStatus.renamePathPopup)
       this.renamePathInput.current.defaultValue = this.props.paths[this.props.pathID].name;
   }
 
@@ -54,6 +54,18 @@ class Popups extends React.Component {
           title="Create a new path"
         />
 
+        <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo === ""}
+          body="Can't save path CSV, you need to set CSV folder path in settings!"
+          close={this.props.closeSavePathCSVPopup}
+          title="Save path CSV"
+        />
+
+        <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo !== ""}
+          body="Path CSV saved!"
+          close={this.props.closeSavePathCSVPopup}
+          title="Save path CSV"
+        />
+
         <Settings />
       </div>
     );
@@ -63,6 +75,7 @@ class Popups extends React.Component {
 const mapStateToProps = (state) => {
   return {
     popupsStatus: state.popupsStatus,
+    saveCSVTo: state.saveCSVTo,
     pathID: state.pathID,
     paths: state.paths,
   };
@@ -71,6 +84,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     closeCreateNewPathPopup: () => dispatch(changePopupStatus("createNewPathPopup")),
+    closeSavePathCSVPopup: () => dispatch(changePopupStatus("savePathCSVPopup")),
     closeRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
     closeDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
     changePathName: pathName => dispatch(changePathName(pathName)),

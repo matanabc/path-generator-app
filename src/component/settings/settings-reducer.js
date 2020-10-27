@@ -1,6 +1,7 @@
 import { SET_SETTINGS } from './settings-action-types';
 import { saveProjectFolderPath, saveProjectFile } from "../../ProjectHandler";
 import { PathGenerator } from "../../path-generator/path-generator";
+import { PopupsConfig } from "../popups/popups-config";
 
 function setSettings(state, payload) {
     saveProjectFolderPath(payload.settings.projectPath);
@@ -10,6 +11,7 @@ function setSettings(state, payload) {
     const newState = {
         ...state,
         ...payload.settings,
+        popupsStatus: new PopupsConfig(),
         showSettings: false,
         rangePosition: 0,
         path: path,
