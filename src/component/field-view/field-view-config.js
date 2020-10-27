@@ -35,10 +35,24 @@ export class FieldConfig {
 }
 
 export class RobotDrawConfig {
-    constructor(width = 0.8, length = 1.2, center = 0) {
+    constructor(a, b, c) {
+        if (typeof (a) === "object")
+            this.constructorB(a);
+        else
+            this.constructorA(a, b, c);
+    }
+
+    constructorA(width = 0.8, length = 1.2, center = 0) {
         this.center = center;
         this.length = length;
         this.width = width;
+        this.drawRobotInterval = undefined;
+    }
+
+    constructorB(config) {
+        this.center = config.center ? config.center : 0;
+        this.length = config.length ? config.length : 1.2;
+        this.width = config.width ? config.width : 0.8;
         this.drawRobotInterval = undefined;
     }
 }

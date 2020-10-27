@@ -1,19 +1,24 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Button, Form, Col } from 'react-bootstrap';
+import { Modal, Button, Form, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { setSettings } from './settings-action';
 import { PathConfig } from '../../path-generator/path-generator';
 import { FieldConfig } from "../field-view/field-view-config";
 import { changePopupStatus } from "../popups/popups-action";
+import { RobotDrawConfig } from "../field-view/field-view-config";
 
 class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.saveSettings = this.saveSettings.bind(this);
         this.robotCSVFolderInput = React.createRef();
-        this.robotWidthInput = React.createRef();
+        this.pathWidthInput = React.createRef();
         this.robotMaxVInput = React.createRef();
         this.robotMaxAccInput = React.createRef();
+        this.robotLoopTimeInput = React.createRef();
+        this.robotWidthInput = React.createRef();
+        this.robotLengthInput = React.createRef();
+        this.robotCenterInput = React.createRef();
         this.filedImageNameInput = React.createRef();
         this.fieldWidthInMeterInput = React.createRef();
         this.fieldHeightInMeterInput = React.createRef();
@@ -25,9 +30,10 @@ class Settings extends React.Component {
 
     saveSettings() {
         const pathConfig = new PathConfig(
-            this.robotWidthInput.current.value,
+            this.pathWidthInput.current.value,
             this.robotMaxVInput.current.value,
             this.robotMaxAccInput.current.value,
+            Number(this.robotLoopTimeInput.current.value),
         );
 
         const fieldConfig = new FieldConfig(
@@ -40,9 +46,16 @@ class Settings extends React.Component {
             this.fieldHeightInPixelInput.current.value,
         );
 
+        const robotDrawConfig = new RobotDrawConfig(
+            this.robotWidthInput.current.value,
+            this.robotLengthInput.current.value,
+            this.robotCenterInput.current.value,
+        );
+
         const settings = {
-            projectPath: this.props.projectPath,
             saveCSVTo: this.robotCSVFolderInput.current.value,
+            projectPath: this.props.projectPath,
+            robotDrawConfig: robotDrawConfig,
             fieldConfig: fieldConfig,
             pathConfig: pathConfig,
         };
@@ -64,8 +77,9 @@ class Settings extends React.Component {
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Paths CSV folder</Form.Label>
-                                <Form.Control defaultValue={this.props.saveCSVTo ? this.props.saveCSVTo : ""}
-                                    ref={this.robotCSVFolderInput} />
+                                <Form.Control defaultValue={this.props.saveCSVTo}
+                                    ref={this.robotCSVFolderInput}
+                                />
                             </Form.Group>
                         </Form.Row>
 
@@ -76,20 +90,25 @@ class Settings extends React.Component {
                         </Form.Row>
 
                         <Form.Row>
-                            <Form.Group as={Col} md="4">
+                            <Form.Group as={Col} >
                                 <Form.Label>Width</Form.Label>
-                                <Form.Control type="number" ref={this.robotWidthInput}
-                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.width : 0} />
+                                <Form.Control type="number" ref={this.pathWidthInput}
+                                    defaultValue={this.props.pathConfig.width} />
                             </Form.Group>
-                            <Form.Group as={Col} md="4">
+                            <Form.Group as={Col} >
                                 <Form.Label>Max V</Form.Label>
                                 <Form.Control type="number" ref={this.robotMaxVInput}
-                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.vMax : 0} />
+                                    defaultValue={this.props.pathConfig.vMax} />
                             </Form.Group>
-                            <Form.Group as={Col} md="4">
+                            <Form.Group as={Col} >
                                 <Form.Label>Max Acc</Form.Label>
                                 <Form.Control type="number" ref={this.robotMaxAccInput}
-                                    defaultValue={this.props.pathConfig ? this.props.pathConfig.acc : 0} />
+                                    defaultValue={this.props.pathConfig.acc} />
+                            </Form.Group>
+                            <Form.Group as={Col} >
+                                <Form.Label>Loop time</Form.Label>
+                                <Form.Control type="number" ref={this.robotLoopTimeInput}
+                                    defaultValue={this.props.pathConfig.robotLoopTime} />
                             </Form.Group>
                         </Form.Row>
 
@@ -101,16 +120,30 @@ class Settings extends React.Component {
 
                         <Form.Row>
                             <Form.Group as={Col} md="4">
-                                <Form.Label>Width</Form.Label>
-                                <Form.Control type="number" disabled />
+                                <OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
+                                    <Form.Label>Width</Form.Label>
+                                </OverlayTrigger>
+                                <Form.Control type="number" ref={this.robotWidthInput}
+                                    defaultValue={this.props.robotDrawConfig.width}
+                                />
                             </Form.Group>
                             <Form.Group as={Col} md="4">
-                                <Form.Label>Length</Form.Label>
-                                <Form.Control type="number" disabled />
+                                <OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
+                                    <Form.Label>Length</Form.Label>
+                                </OverlayTrigger>
+                                <Form.Control type="number" ref={this.robotLengthInput}
+                                    defaultValue={this.props.robotDrawConfig.length}
+                                />
                             </Form.Group>
                             <Form.Group as={Col} md="4">
-                                <Form.Label>Center</Form.Label>
-                                <Form.Control type="number" disabled />
+                                <OverlayTrigger overlay={
+                                    <Tooltip> {"back < center (0) < front"} </Tooltip>
+                                }>
+                                    <Form.Label>Center</Form.Label>
+                                </OverlayTrigger>
+                                <Form.Control type="number" ref={this.robotCenterInput}
+                                    defaultValue={this.props.robotDrawConfig.center}
+                                />
                             </Form.Group>
                         </Form.Row>
 
@@ -123,7 +156,9 @@ class Settings extends React.Component {
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Image name</Form.Label>
-                                <Form.Control defaultValue={fieldConfig.imageName} ref={this.filedImageNameInput} />
+                                <Form.Control defaultValue={fieldConfig.imageName}
+                                    ref={this.filedImageNameInput}
+                                />
                             </Form.Group>
                         </Form.Row>
 
@@ -131,12 +166,14 @@ class Settings extends React.Component {
                             <Form.Group as={Col}>
                                 <Form.Label>Width in meter</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.widthInMeter}
-                                    ref={this.fieldWidthInMeterInput} type="number" />
+                                    ref={this.fieldWidthInMeterInput} type="number"
+                                />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Height in meter</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.heightInMeter}
-                                    ref={this.fieldHeightInMeterInput} type="number" />
+                                    ref={this.fieldHeightInMeterInput} type="number"
+                                />
                             </Form.Group>
                         </Form.Row>
 
@@ -144,22 +181,26 @@ class Settings extends React.Component {
                             <Form.Group as={Col}>
                                 <Form.Label>Top left x</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.topLeftXPixel}
-                                    ref={this.fieldTopLeftXInput} type="number" />
+                                    ref={this.fieldTopLeftXInput} type="number"
+                                />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Top left y</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.topLeftYPixel}
-                                    ref={this.fieldTopLeftYInput} type="number" />
+                                    ref={this.fieldTopLeftYInput} type="number"
+                                />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Width in pixel</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.widthInPixel}
-                                    ref={this.fieldWidthInPixelInput} type="number" />
+                                    ref={this.fieldWidthInPixelInput} type="number"
+                                />
                             </Form.Group>
                             <Form.Group as={Col}>
                                 <Form.Label>Heigth in pixel</Form.Label>
                                 <Form.Control defaultValue={fieldConfig.heigthInPixel}
-                                    ref={this.fieldHeightInPixelInput} type="number" />
+                                    ref={this.fieldHeightInPixelInput} type="number"
+                                />
                             </Form.Group>
                         </Form.Row>
                     </div>
@@ -175,6 +216,7 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        robotDrawConfig: state.robotDrawConfig,
         popupsStatus: state.popupsStatus,
         projectPath: state.projectPath,
         pathConfig: state.pathConfig,

@@ -1,5 +1,5 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
-import { FieldConfig } from "../field-view/field-view-config";
+import { FieldConfig, RobotDrawConfig } from "../field-view/field-view-config";
 import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
 function setProjectFolderPath(state, payload) {
@@ -36,6 +36,7 @@ function setProjectSettings(state, payload) {
         ...state,
         pathConfig: new PathConfig(payload.settings.pathConfig),
         fieldConfig: new FieldConfig(payload.settings.fieldConfig),
+        robotDrawConfig: new RobotDrawConfig(payload.settings.robotDrawConfig),
         saveCSVTo: payload.settings.saveCSVTo,
         update: !state.update,
     }

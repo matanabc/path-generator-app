@@ -20,6 +20,7 @@ function setSettings(state, payload) {
         saveCSVTo: newState.saveCSVTo,
         fieldConfig: newState.fieldConfig,
         pathConfig: payload.settings.pathConfig,
+        robotDrawConfig: payload.settings.robotDrawConfig,
     };
     saveProjectFile(newState.projectPath, projectFile);
     return newState;
