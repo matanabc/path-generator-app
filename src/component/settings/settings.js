@@ -6,6 +6,8 @@ import { PathConfig } from '../../path-generator/path-generator';
 import { FieldConfig } from "../field-view/field-view-config";
 import { changePopupStatus } from "../popups/popups-action";
 import { RobotDrawConfig } from "../field-view/field-view-config";
+import { setFiledImage } from '../app/app-action'
+import { loadFieldImage } from "../../ProjectHandler";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -61,6 +63,8 @@ class Settings extends React.Component {
         };
 
         this.props.setSettings(settings);
+        if (fieldConfig.imageName !== this.props.fieldConfig.imageName)
+            loadFieldImage(this.props.projectPath, fieldConfig.imageName, this.props.setFiledImage);
     }
 
     render() {
@@ -228,6 +232,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setFiledImage: (filedImage, imageName) => dispatch(setFiledImage(filedImage, imageName)),
         closeSettings: () => dispatch(changePopupStatus("settingsPopup")),
         setSettings: settings => dispatch(setSettings(settings)),
     };

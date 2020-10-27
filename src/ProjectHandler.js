@@ -1,13 +1,13 @@
 import { r2d } from "./path-generator/util";
-// import coockies from 'js-cookie';
 const fs = window.require('fs');
 const os = window.require('os');
-// const PROJECT_FOLDER = "projectFolder"
 
-function loadFieldImage(folderPath, imageName, callback) {
+export function loadFieldImage(folderPath, imageName, callback) {
     fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
         if (!err)
             callback(URL.createObjectURL(new Blob([data])), imageName);
+        else
+            callback(undefined, imageName);
     });
 }
 

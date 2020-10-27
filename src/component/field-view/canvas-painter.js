@@ -5,6 +5,10 @@ export const drawOnCanvas = (canvas, props) => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (props.fieldConfig === undefined) return;
+    if (props.filedImage === undefined) {
+        drawImageNotFound(ctx, props);
+        return;
+    };
     if (props.paths.length === 0) return;
     if (!props.path) return;
 
@@ -13,6 +17,12 @@ export const drawOnCanvas = (canvas, props) => {
     drawSetpoints(ctx, props);
     drawRobot(ctx, props);
     drawPathTime(ctx, props);
+}
+
+function drawImageNotFound(ctx, props) {
+    ctx.beginPath();
+    ctx.fillStyle = "white";
+    ctx.fillText(`Can't find image ${props.fieldConfig.imageName}`, 5, 12);
 }
 
 function drawFieldBorders(ctx, props) {
