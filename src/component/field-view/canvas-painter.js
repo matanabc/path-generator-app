@@ -1,3 +1,5 @@
+import { TankModifier, PathConfig } from "../../path-generator/path-generator";
+
 export const drawOnCanvas = (canvas, props) => {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -34,7 +36,9 @@ function drawWaypoints(ctx, props) {
 
 function drawSetpoints(ctx, props) {
     ctx.beginPath();
-    props.path.leftSetpoints.forEach((setpoint, index) => {
+    const config = new PathConfig(props.robotDrawConfig.width, 0, 0);
+    const tankModifier = TankModifier(props.path.sourceSetpoints, config);
+    tankModifier.left.forEach((setpoint, index) => {
         const x = setpoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
         const y = setpoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
         if (index === 0)
@@ -42,7 +46,7 @@ function drawSetpoints(ctx, props) {
         else
             ctx.lineTo(x, y);
     });
-    props.path.rightSetpoints.forEach((setpoint, index) => {
+    tankModifier.right.forEach((setpoint, index) => {
         const x = setpoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
         const y = setpoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
         if (index === 0)
@@ -91,13 +95,13 @@ function drawRobot(ctx, props) {
     ctx.moveTo((robotInReverse * (robotLength / 2) - robotCenter), (-robotWidth / 2));
     ctx.lineTo((robotInReverse * (robotLength / 2) - robotCenter), (robotWidth / 2));
     ctx.strokeStyle = "blue";
-    ctx.stroke(); 
+    ctx.stroke();
 
     ctx.beginPath();
     ctx.moveTo((robotInReverse * (-robotLength / 2) - robotCenter), (-robotWidth / 2));
     ctx.lineTo((robotInReverse * (-robotLength / 2) - robotCenter), (robotWidth / 2));
     ctx.strokeStyle = "red";
-    ctx.stroke(); 
+    ctx.stroke();
 
     ctx.restore();
 }
