@@ -63,7 +63,7 @@ export const savePathToCSV = (folderPath, path, pathName, isInReverse, callback)
 }
 
 function pathToCSV(path, isInReverse) {
-    var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y \n";
+    var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y, \n";
     for (let i = 0; i < path.sourceSetpoints.length; i++) {
         const right = isInReverse ? path.leftSetpoints[i] : path.rightSetpoints[i];
         const left = isInReverse ? path.rightSetpoints[i] : path.leftSetpoints[i];
