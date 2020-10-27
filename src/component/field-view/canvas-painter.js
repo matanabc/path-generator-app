@@ -12,7 +12,7 @@ export const drawOnCanvas = (canvas, props) => {
     drawWaypoints(ctx, props);
     drawSetpoints(ctx, props);
     drawRobot(ctx, props);
-    drawPathTotalTime(ctx, props);
+    drawPathTime(ctx, props);
 }
 
 function drawFieldBorders(ctx, props) {
@@ -58,13 +58,17 @@ function drawSetpoints(ctx, props) {
     ctx.stroke();
 }
 
-function drawPathTotalTime(ctx, props) {
+function drawPathTime(ctx, props) {
     const pathSetpointLength = props.path.sourceSetpoints.length;
     const robotLoopTime = props.pathConfig.robotLoopTime;
-    const pathTotalTime = (pathSetpointLength * robotLoopTime).toFixed(2);
+    var pathTotalTime = 0;
+    if (props.rangePosition > 0)
+        pathTotalTime = (props.rangePosition * robotLoopTime).toFixed(2);
+    else
+        pathTotalTime = (pathSetpointLength * robotLoopTime).toFixed(2);
     ctx.font = "10px Arial";
     ctx.fillStyle = "black";
-    ctx.fillRect(4, 3, 21, 10);
+    ctx.fillRect(4, 3, 21.5, 10);
     ctx.fillStyle = "white";
     ctx.fillText(`${pathTotalTime}`, 5, 12);
 }
