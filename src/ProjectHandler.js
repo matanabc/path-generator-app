@@ -31,7 +31,8 @@ export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallb
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
             if (err) return;
             const projectFile = JSON.parse(data);
-            loadFieldImage(folderPath, projectFile.fieldConfig.imageName, filedImageCallback);
+            if (projectFile.fieldConfig && projectFile.fieldConfig.imageName)
+                loadFieldImage(folderPath, projectFile.fieldConfig.imageName, filedImageCallback);
             loadPaths(folderPath, loadPathsCallback);
             callback(projectFile);
         });
@@ -56,7 +57,7 @@ export const saveProjectFile = (folderPath, projectFile) => {
 }
 
 export const savePathToCSV = (folderPath, path, pathName, isInReverse, callback) => {
-    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path, isInReverse), () => { 
+    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path, isInReverse), () => {
         callback();
     });
 }

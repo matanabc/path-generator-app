@@ -5,11 +5,14 @@ import { ADD_WAYPOINT, SET_PATH } from './field-view-action-types';
 
 function addWaypoint(state, payload) {
     const newState = state;
-    newState.paths[state.pathID].waypoints.push(payload.waypoint);
-    savePathToFile(state.projectPath, state.paths[state.pathID]);
-    const waypoints = newState.paths[state.pathID].waypoints;
-    const config = new PathConfig(state.pathConfig);
-    const path = new Generator(waypoints, config);
+    var path = undefined;
+    if(state.paths.length > 0){
+        newState.paths[state.pathID].waypoints.push(payload.waypoint);
+        savePathToFile(state.projectPath, state.paths[state.pathID]);
+        const waypoints = newState.paths[state.pathID].waypoints;
+        const config = new PathConfig(state.pathConfig);
+        path = new Generator(waypoints, config);
+    }
     return {
         ...newState,
         update: !state.update,

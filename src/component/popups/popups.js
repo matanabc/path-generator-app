@@ -17,6 +17,7 @@ class Popups extends React.Component {
   }
 
   componentDidUpdate() {
+    if (this.props.paths.length === 0) return;
     if (this.props.popupsStatus.renamePathPopup)
       this.renamePathInput.current.defaultValue = this.props.paths[this.props.pathID].name;
   }

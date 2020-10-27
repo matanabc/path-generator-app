@@ -17,6 +17,7 @@ function changeSelectedPath(state, payload) {
 }
 
 function changeListenToMouseStatus(state, payload) {
+  if (state.paths.length === 0) return state;
   return {
     ...state,
     listenToMouseClicks: !state.listenToMouseClicks,
@@ -26,8 +27,10 @@ function changeListenToMouseStatus(state, payload) {
 
 function isPathInReverse(state, payload) {
   const paths = state.paths;
-  paths[state.pathID].isInReverse = !paths[state.pathID].isInReverse;
-  savePathToFile(state.projectPath, paths[state.pathID])
+  if (paths.length > 0) {
+    paths[state.pathID].isInReverse = !paths[state.pathID].isInReverse;
+    savePathToFile(state.projectPath, paths[state.pathID])
+  }
   return {
     ...state,
     paths: paths,

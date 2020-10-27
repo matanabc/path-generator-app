@@ -5,9 +5,12 @@ import { PopupsConfig } from "../popups/popups-config";
 
 function setSettings(state, payload) {
     saveProjectFolderPath(payload.settings.projectPath);
-    const waypoints = state.paths[state.pathID].waypoints;
-    const config = state.pathConfig;
-    const path = new PathGenerator(waypoints, config);
+    var path = undefined;
+    if (state.paths.length > 0){
+        const waypoints = state.paths[state.pathID].waypoints;
+        const config = state.pathConfig;
+        path = new PathGenerator(waypoints, config);
+    }
     const newState = {
         ...state,
         ...payload.settings,
