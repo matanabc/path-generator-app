@@ -3,7 +3,15 @@ import {
     CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, IS_PATH_IN_REVERSE, SET_DRAW_ROBOT
 } from './tools-action-types';
 
-export function setDrawRobotInterval(interval) {
+export function setDrawRobotInterval(interval, drawRobotInterval, robotLoopTime) {
+    if (interval) {
+        clearInterval(interval);
+        interval = undefined;
+    } else if (!interval && drawRobotInterval && robotLoopTime)
+        interval = setInterval(drawRobotInterval, 1000 * robotLoopTime);
+    else
+        interval = undefined;
+
     return {
         reducer: TOOLS_REDUCER,
         type: SET_DRAW_ROBOT,

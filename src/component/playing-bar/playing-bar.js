@@ -14,10 +14,8 @@ class PlayingBar extends React.Component {
   componentDidMount() {
     const canvas = this.props.canvasRef.current;
     canvas.addEventListener("wheel", event => {
-      if (this.props.drawRobotInterval !== undefined) {
-        clearInterval(this.props.drawRobotInterval);
-        this.props.setDrawRobotInterval(undefined);
-      }
+      if (this.props.robotDrawConfig.drawRobotInterval)
+        this.props.setDrawRobotInterval(this.props.robotDrawConfig.drawRobotInterval);
       this.props.addToRangePosition(-Math.sign(event.deltaY));
     });
   }
@@ -36,7 +34,7 @@ class PlayingBar extends React.Component {
     return (
       <div className="PlayingBar">
         <Form.Control ref={this.rangeInput} value={this.props.rangePosition} type="range"
-          onChange={this.changeRangePosition}/>
+          onChange={this.changeRangePosition} />
       </div>
     );
   }
@@ -44,7 +42,7 @@ class PlayingBar extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    drawRobotInterval: state.drawRobotInterval,
+    robotDrawConfig: state.robotDrawConfig,
     rangePosition: state.rangePosition,
     path: state.path,
   };

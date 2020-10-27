@@ -11,7 +11,6 @@ export function setRangePosition(rangePosition) {
     };
 }
 
-
 export function addToRangePosition(add) {
     return {
         reducer: PLAYING_BAR_REDUCER,

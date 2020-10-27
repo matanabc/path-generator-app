@@ -28,26 +28,19 @@ class Tools extends React.Component {
   }
 
   drawRobotInterval() {
-    if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1) {
-      clearInterval(this.props.robotDrawConfig.drawRobotInterval);
-      this.props.setDrawRobotInterval(undefined);
-    }
+    if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1)
+      this.props.setDrawRobotInterval(this.props.robotDrawConfig.drawRobotInterval);
     else
       this.props.addToRangePosition();
   }
 
   setDrawRobotInterval() {
-    if(!this.props.path) return;
-    var drawRobotInterval = undefined;
-    if (this.props.robotDrawConfig.drawRobotInterval === undefined) {
-      if (this.props.rangePosition === this.props.path.sourceSetpoints.length - 1)
-        this.props.resetRangePosition();
-      drawRobotInterval = setInterval(this.drawRobotInterval,
-        1000 * this.props.pathConfig.robotLoopTime);
-    } else {
-      clearInterval(this.props.robotDrawConfig.drawRobotInterval);
-    }
-    this.props.setDrawRobotInterval(drawRobotInterval);
+    if (!this.props.path) return;
+    this.props.setDrawRobotInterval(
+      this.props.robotDrawConfig.drawRobotInterval,
+      this.drawRobotInterval,
+      this.props.pathConfig.robotLoopTime
+    );
   }
 
   render() {
@@ -137,12 +130,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    setDrawRobotInterval: (interval, drawRobotInterval, robotLoopTime) => {
+      dispatch(setDrawRobotInterval(interval, drawRobotInterval, robotLoopTime));
+    },
     showCreateNewPathPopup: () => dispatch(changePopupStatus("createNewPathPopup")),
     showSavePathCSVPopup: () => dispatch(changePopupStatus("savePathCSVPopup")),
     showRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
     showDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
     showSettingsPopup: () => dispatch(changePopupStatus("settingsPopup")),
-    setDrawRobotInterval: interval => dispatch(setDrawRobotInterval(interval)),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
     addToRangePosition: () => dispatch(addToRangePosition(1)),

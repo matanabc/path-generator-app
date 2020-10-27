@@ -1,12 +1,16 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
 import { deletePathFile, savePathToFile, renamePathFile } from '../../ProjectHandler'
 import { PopupsConfig } from "./popups-config";
+import { stopDrawRobotInterval } from "../tools/tools-reducer";
 import {
   CHANGE_POPUP_STATUS, CHANGE_PATH_NAME, DELETE_PATH, CREATE_NEW_PATH
 } from './popups-action-types';
 
 function changePopupStatus(state, payload) {
-  const newState = { ...state };
+  const newState = {
+    ...state,
+    robotDrawConfig: stopDrawRobotInterval(state),
+  };
   newState.popupsStatus = new PopupsConfig();
   newState.popupsStatus[payload.popupName] = !state.popupsStatus[payload.popupName];
   return newState;

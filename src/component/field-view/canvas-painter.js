@@ -63,7 +63,7 @@ function drawPathTime(ctx, props) {
     const robotLoopTime = props.pathConfig.robotLoopTime;
     var pathTotalTime = 0;
     if (props.rangePosition > 0)
-        pathTotalTime = (props.rangePosition * robotLoopTime).toFixed(2);
+        pathTotalTime = ((props.rangePosition + 1) * robotLoopTime).toFixed(2);
     else
         pathTotalTime = (pathSetpointLength * robotLoopTime).toFixed(2);
     ctx.font = "10px Arial";
