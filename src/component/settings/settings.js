@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Button, Form, Col } from 'react-bootstrap';
-import { closeSettings, setSettings } from './settings-action';
+import { setSettings } from './settings-action';
 import { PathConfig } from '../../path-generator/path-generator';
 import { FieldConfig } from "../field-view/field-view-config";
+import { changePopupStatus } from "../popups/popups-action";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -53,7 +54,7 @@ class Settings extends React.Component {
         const style = { fontSize: 20, fontWeight: "bold" };
         const fieldConfig = this.props.fieldConfig;
         return (
-            <Modal show={this.props.projectPath === undefined || this.props.showSettings}
+            <Modal show={this.props.projectPath === undefined || this.props.popupsStatus.settingsPopup}
                 onHide={this.props.closeSettings} backdrop="static">
                 <Modal.Header>
                     <Modal.Title>Settings</Modal.Title>
@@ -174,7 +175,7 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        showSettings: state.showSettings,
+        popupsStatus: state.popupsStatus,
         projectPath: state.projectPath,
         pathConfig: state.pathConfig,
         fieldConfig: state.fieldConfig,
@@ -185,8 +186,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        closeSettings: () => dispatch(changePopupStatus("settingsPopup")),
         setSettings: settings => dispatch(setSettings(settings)),
-        closeSettings: () => dispatch(closeSettings()),
     };
 }
 

@@ -1,13 +1,6 @@
-import { CLOSE_SETTINGS, SET_SETTINGS } from './settings-action-types';
+import { SET_SETTINGS } from './settings-action-types';
 import { saveProjectFolderPath, saveProjectFile } from "../../ProjectHandler";
 import { PathGenerator } from "../../path-generator/path-generator";
-
-function closeSettings(state, payload) {
-    return {
-        ...state,
-        showSettings: false,
-    }
-}
 
 function setSettings(state, payload) {
     saveProjectFolderPath(payload.settings.projectPath);
@@ -31,9 +24,7 @@ function setSettings(state, payload) {
 }
 
 export const settingsReducer = (state, action) => {
-    if (action.type === CLOSE_SETTINGS)
-        return closeSettings(state, action.payload);
-    else if (action.type === SET_SETTINGS)
+    if (action.type === SET_SETTINGS)
         return setSettings(state, action.payload);
     return state;
 };

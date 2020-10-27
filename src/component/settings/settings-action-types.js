@@ -1,2 +1,1 @@
-export const CLOSE_SETTINGS = "CLOSE_SETTINGS";
 export const SET_SETTINGS = "SET_SETTINGS";

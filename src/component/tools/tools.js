@@ -1,27 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Button, Row, Col, Dropdown, FormControl } from 'react-bootstrap';
+import { Button, Row, Col, Dropdown } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from "react-icons/md";
 import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
 import { savePathToCSV } from "../../ProjectHandler";
-import Settings from '../settings/settings'
-import Popup from "../popup/popup";
 import { addToRangePosition, setRangePosition } from "../playing-bar/playing-bar-action";
+import { changePopupStatus } from "../popups/popups-action";
 import {
-  openSettings, changeSelectedPath, changeListenToMouseStatus, changeShowRenamePathPopup,
-  changeShowDeletePathStatus, deletePath, changeShowCreateNewPathStatus, isPathInReverse,
-  createPath, changePathName, setDrawRobotInterval
+  changeSelectedPath, changeListenToMouseStatus, isPathInReverse, setDrawRobotInterval
 } from "./tools-action";
 
 class Tools extends React.Component {
   constructor(props) {
     super(props);
     this.saveToCSV = this.saveToCSV.bind(this);
-    this.createNewPath = this.createNewPath.bind(this);
-    this.renamePath = this.renamePath.bind(this);
-    this.newPathInput = React.createRef();
-    this.renamePathInput = React.createRef();
     this.setDrawRobotInterval = this.setDrawRobotInterval.bind(this);
     this.drawRobotInterval = this.drawRobotInterval.bind(this);
   }
@@ -30,16 +23,6 @@ class Tools extends React.Component {
     if (this.props.paths.length > 0 && this.props.paths[this.props.pathID].waypoints.length > 0)
       savePathToCSV(this.props.saveCSVTo, this.props.path, this.props.paths[this.props.pathID].name,
         this.props.paths[this.props.pathID].isInReverse);
-  }
-
-  createNewPath() {
-    if (this.newPathInput.current.value)
-      this.props.createPath(this.newPathInput.current.value);
-  }
-
-  renamePath() {
-    if (this.renamePathInput.current.value)
-      this.props.changePathName(this.renamePathInput.current.value);
   }
 
   drawRobotInterval() {
@@ -74,21 +57,6 @@ class Tools extends React.Component {
 
     return (
       <div className="Tools">
-        <Popup show={this.props.showDeletePath && this.props.paths.length > 0}
-          close={this.props.changeShowDeletePathStatus} confirm={this.props.deletePath}
-          title="Delete path" body="Are you sure you want to delete path?" />
-
-        <Popup body={<FormControl ref={this.renamePathInput}
-          defaultValue={this.props.paths.length > 0 ? this.props.paths[this.props.pathID].name : ""} />}
-          confirm={this.renamePath} close={this.props.changeShowRenamePathPopup}
-          show={this.props.showRenamePathPopup && this.props.paths.length > 0}
-          title="Rename path" />
-
-        <Popup show={this.props.createNewPath} confirm={this.createNewPath}
-          close={this.props.changeShowCreateNewPathStatus} title="Create a new path"
-          body={<FormControl ref={this.newPathInput} placeholder="Path name" />} />
-
-        <Settings />
         <Row>
           <Col>
             <Button className="mr-3" size="lg" title="Add waypoint with mouse"
@@ -101,7 +69,7 @@ class Tools extends React.Component {
               <FiDownload />
             </Button>
             <Button className="mr-3" size="lg" title="Settings"
-              onClick={this.props.openSettings}>
+              onClick={this.props.showSettingsPopup}>
               <MdBuild />
             </Button>
           </Col>
@@ -121,7 +89,7 @@ class Tools extends React.Component {
               })}
               <Dropdown.Divider />
               <Dropdown.Item as="button" className="AddPath"
-                onClick={this.props.changeShowCreateNewPathStatus}>
+                onClick={this.props.showCreateNewPathPopup}>
                 New path
               </Dropdown.Item>
             </Dropdown.Menu>
@@ -130,11 +98,11 @@ class Tools extends React.Component {
             {playButtonToShow}
           </Button>
           <Button className="mr-3" size="lg" title="Delete path" variant="danger"
-            onClick={this.props.changeShowDeletePathStatus}>
+            onClick={this.props.showDeletePathPopup}>
             <MdDelete />
           </Button>
           <Button className="mr-3" size="lg" title="Rename path"
-            onClick={this.props.changeShowRenamePathPopup}>
+            onClick={this.props.showRenamePathPopup}>
             <MdEdit />
           </Button>
           <Button className="mr-3" size="lg" title="Rename path" onClick={this.props.isPathInReverse}>
@@ -150,7 +118,6 @@ class Tools extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-    showRenamePathPopup: state.showRenamePathPopup,
     listenToMouseClicks: state.listenToMouseClicks,
     robotDrawConfig: state.robotDrawConfig,
     showDeletePath: state.showDeletePath,
@@ -167,19 +134,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeShowCreateNewPathStatus: () => dispatch(changeShowCreateNewPathStatus()),
+    showCreateNewPathPopup: () => dispatch(changePopupStatus("createNewPathPopup")),
+    showRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
+    showDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
+    showSettingsPopup: () => dispatch(changePopupStatus("settingsPopup")),
     setDrawRobotInterval: interval => dispatch(setDrawRobotInterval(interval)),
-    changeShowDeletePathStatus: () => dispatch(changeShowDeletePathStatus()),
     changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
-    changeShowRenamePathPopup: () => dispatch(changeShowRenamePathPopup()),
     changeSelectedPath: id => dispatch(changeSelectedPath(id)),
     addToRangePosition: () => dispatch(addToRangePosition(1)),
     resetRangePosition: () => dispatch(setRangePosition(0)),
-    changePathName: name => dispatch(changePathName(name)),
     isPathInReverse: () => dispatch(isPathInReverse()),
-    createPath: name => dispatch(createPath(name)),
-    openSettings: () => dispatch(openSettings()),
-    deletePath: () => dispatch(deletePath()),
   };
 }
 

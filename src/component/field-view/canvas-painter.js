@@ -71,6 +71,7 @@ function drawPathTotalTime(ctx, props) {
 
 function drawRobot(ctx, props) {
     const setpoint = props.path.sourceSetpoints[props.rangePosition];
+    if (setpoint === undefined) return;
     const robotInReverse = props.paths[props.pathID].isInReverse ? -1 : 1;
     const robotLength = Number(props.robotDrawConfig.length) / props.fieldConfig.widthPixelToMeter;
     const robotWidth = Number(props.robotDrawConfig.width) / props.fieldConfig.hightPixelToMeter;

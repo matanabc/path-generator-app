@@ -6,6 +6,7 @@ import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
 import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from './app-action'
 import { loadProjectFile } from "../../ProjectHandler";
+import Popups from "../popups/popups";
 
 class App extends React.Component {
   componentDidMount() {
@@ -16,6 +17,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <Popups />
         <Container fluid="md">
           <Row >
             <FieldView />

@@ -1,6 +1,6 @@
 import {
     TOOLS_REDUCER, SETTINGS_REDUCER, APP_REDUCER, WAYPOINT_INFO_REDUCER,
-    FIELD_VIEW_REDUCER, PLAYING_BAR_REDUCER
+    FIELD_VIEW_REDUCER, PLAYING_BAR_REDUCER, POPUPS_REDUCER
 } from './reducer-types'
 import { toolsReducer } from "../component/tools/tools-reducer";
 import { settingsReducer } from "../component/settings/settings-reducer";
@@ -8,19 +8,18 @@ import { appReducer } from "../component/app/app-reducer";
 import { waypointInfoReducer } from "../component/waypoint-info/waypoint-info-reducer";
 import { fieldViewReducer } from "../component/field-view/field-view-reducer";
 import { playingBarReducer } from "../component/playing-bar/playing-bar-reducer";
+import { popupsReducer } from "../component/popups/popups-reducer";
 import { PathConfig } from "../path-generator/path-generator";
 import { FieldConfig, RobotDrawConfig } from "../component/field-view/field-view-config";
+import { PopupsConfig } from "../component/popups/popups-config";
 
 const initialState = {
     pathConfig: new PathConfig(),
     robotDrawConfig: new RobotDrawConfig(),
     fieldConfig: new FieldConfig(),
-        
-    showRenamePathPopup: false,
+    popupsStatus: new PopupsConfig(),
+
     listenToMouseClicks: false,
-    showDeletePath: false,
-    createNewPath: false,
-    showSettings: false,
     rangePosition: 0,
     projectPath: "",
     path: undefined,
@@ -44,6 +43,8 @@ function reducer(state = initialState, action) {
         return fieldViewReducer(state, action);
     else if (action.reducer === PLAYING_BAR_REDUCER)
         return playingBarReducer(state, action);
+    else if (action.reducer === POPUPS_REDUCER)
+        return popupsReducer(state, action);
     return state;
 };
 
