@@ -1,5 +1,5 @@
-import Generator from '../../path-generator/generator';
-import { PathConfig } from '../../path-generator/path-generator';
+import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
+import { FieldConfig } from "../field-view/field-view-config";
 import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
 function setProjectFolderPath(state, payload) {
@@ -22,7 +22,7 @@ function addPath(state, payload) {
     paths.push(payload.path);
     const waypoints = paths[state.pathID].waypoints;
     const config = new PathConfig(state.pathConfig);
-    const path = new Generator(waypoints, config);
+    const path = new PathGenerator(waypoints, config);
     return {
         ...state,
         path: path,
@@ -34,8 +34,8 @@ function addPath(state, payload) {
 function setProjectSettings(state, payload) {
     return {
         ...state,
-        pathConfig: payload.settings.pathConfig,
-        fieldConfig: payload.settings.fieldConfig,
+        pathConfig: new PathConfig(payload.settings.pathConfig),
+        fieldConfig: new FieldConfig(payload.settings.fieldConfig),
         saveCSVTo: payload.settings.saveCSVTo,
         update: !state.update,
     }
