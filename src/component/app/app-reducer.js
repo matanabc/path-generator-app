@@ -1,5 +1,6 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
 import { FieldConfig, RobotDrawConfig } from "../field-view/field-view-config";
+import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
 
 function setProjectFolderPath(state, payload) {
@@ -28,6 +29,7 @@ function addPath(state, payload) {
         path: path,
         paths: paths,
         update: !state.update,
+        popupsStatus: updateIsIllegalPopupStatus(path),
     }
 }
 

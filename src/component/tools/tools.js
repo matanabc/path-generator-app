@@ -36,6 +36,7 @@ class Tools extends React.Component {
 
   setDrawRobotInterval() {
     if (!this.props.path) return;
+    if (!this.props.path.isLegal) return;
     this.props.setDrawRobotInterval(
       this.props.robotDrawConfig.drawRobotInterval,
       this.drawRobotInterval,
@@ -101,7 +102,7 @@ class Tools extends React.Component {
             onClick={this.props.showRenamePathPopup}>
             <MdEdit />
           </Button>
-          <Button className="mr-3" size="lg" title="Rename path" onClick={this.props.isPathInReverse}>
+          <Button className="mr-3" size="lg" onClick={this.props.isPathInReverse}>
             {this.props.paths.length > 0 && this.props.paths[this.props.pathID].isInReverse ?
               <FiCheckCircle className="mr-2" /> : <FiCircle className="mr-2" />}
             in reverse

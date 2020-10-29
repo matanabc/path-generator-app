@@ -3,27 +3,29 @@ import { tank } from "./modifier";
 
 class Generator {
     constructor(waypoints, pathConfig) {
-        this.isLegal = { legal: true };
         this.pathConfig = pathConfig;
         this.waypoints = waypoints;
         this.sourceSetpoints = [];
-        this.leftSetpoints = [];
         this.rightSetpoints = [];
+        this.leftSetpoints = [];
+        this.splineError = "";
+        this.isLegal = true;
+        this.error = "";
+
         this.generatePath();
     }
 
     generatePath() {
-        if (this.waypoints.length < 2) {
-            this.isLegal = {
-                legal: false,
-                error: "Path need to have 2 waypoints or more!",
-            }
-            return;
-        }
+        if (this.waypoints.length < 2) return;
         this.splines = [];
         for (let i = 0; i < this.waypoints.length - 1; i++) {
             this.splines[i] = new Spline(this.waypoints[i], this.waypoints[i + 1], this.pathConfig);
-            if (!this.splines[i].isLegal.legal) return;
+            if (!this.splines[i].isLegal) {
+                this.isLegal = false;
+                this.error = `Spline ${i + 1} (Waypoint ${i + 1} and ${i + 2}) is illegal!`;
+                this.splineError = this.splines[i].error;
+                break;
+            };
         }
         this.sourceSetpoints = this.getSetpoints(this.splines);
         const tankSetpoints = tank(this.sourceSetpoints, this.pathConfig);
@@ -36,7 +38,7 @@ class Generator {
         var totalSetpoints = [];
         for (let i = 0; i < splines.length; i++) {
             splines[i].calculateSegmets();
-            if (!splines[i].isLegal.legal) break;
+            if (!splines[i].isLegal) break;
             splines[i].calculateSetpoints(nextStartTime);
             splines[i].calculateSetpointsCoords(lastPosition);
             nextStartTime = splines[i].nextSplineStartTime;

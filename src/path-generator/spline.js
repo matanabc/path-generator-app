@@ -4,28 +4,41 @@ import { d2r } from "./util";
 
 class Spline {
     constructor(startPoint, endPoint, pathConfig) {
-        this.isLegal = { legal: true };
         this.pathConfig = pathConfig;
         this.nextSplineStartTime = 0;
         this.startPoint = startPoint;
         this.sampleCount = 100000;
         this.endPoint = endPoint;
         this.setpoints = [];
+        this.isLegal = true;
         this.segmets = [];
+        this.error = "";
 
-        this.setVellAndAcc();
         this.fit_hermite_cubic();
         this.calculateDistance();
+        this.setVellAndAcc();
+        this.checkIfLegal();
+    }
+
+    getVMax() {
+        return Math.min(
+            Math.sqrt(((2 * this.arc_length * this.acc * this.acc) +
+                (this.V0 * this.V0 * this.acc) + (this.vEnd * this.vEnd * this.acc)) /
+                (this.acc + this.acc)).toFixed(2),
+            Math.abs(this.pathConfig.vMax)
+        );
     }
 
     setVellAndAcc() {
-        this.V0 = Math.min(Math.abs(this.startPoint.v), Math.abs(this.pathConfig.vMax));
-        this.vMax = Math.min(Math.abs(this.startPoint.vMax), Math.abs(this.pathConfig.vMax));
-        this.vEnd = Math.min(Math.abs(this.endPoint.v), Math.abs(this.pathConfig.vMax));
         this.acc = Math.abs(this.pathConfig.acc);
+        this.V0 = Math.min(Math.abs(this.startPoint.v), Math.abs(this.pathConfig.vMax));
+        this.vEnd = Math.min(Math.abs(this.endPoint.v), Math.abs(this.pathConfig.vMax));
+        this.vMax = Math.min(Math.abs(this.startPoint.vMax), this.getVMax());
     }
 
     fit_hermite_cubic() {
+        this.checkIfLegal();
+        if (!this.isLegal) return;
         this.knot_distance = Math.sqrt((this.endPoint.x - this.startPoint.x) * (this.endPoint.x - this.startPoint.x) +
             (this.endPoint.y - this.startPoint.y) * (this.endPoint.y - this.startPoint.y));
         this.angle_offset = Math.atan2(this.endPoint.y - this.startPoint.y, this.endPoint.x - this.startPoint.x);
@@ -46,6 +59,8 @@ class Spline {
     }
 
     calculateDistance() {
+        this.checkIfLegal();
+        if (!this.isLegal) return;
         this.arc_length = 0;
         var t = 0, dydt = 0, deriv0 = this.deriv(t), integrand = 0;
         var last_integrand = Math.sqrt(1 + deriv0 * deriv0) / this.sampleCount;
@@ -67,22 +82,13 @@ class Spline {
 
     calculateSegmets() {
         this.checkIfLegal();
+        if (!this.isLegal) return;
         const speeding2vMax = new Segment(this.V0, this.vMax, this.acc);
         const slowing2vEnd = new Segment(this.vMax, this.vEnd, this.acc);
         const speedingAndSlowingDistance = speeding2vMax.distance + slowing2vEnd.distance;
-        if (speedingAndSlowingDistance > this.arc_length) {
-            const newvMax = Math.sqrt(((2 * this.arc_length * this.acc * this.acc) +
-                (this.V0 * this.V0 * this.acc) + (this.vEnd * this.vEnd * this.acc)) /
-                (this.acc + this.acc));
-            this.vMax = newvMax;
-            this.checkIfLegal();
-            this.segmets.push(new Segment(this.V0, this.vMax, this.acc));
-            this.segmets.push(new Segment(this.vMax, this.vEnd, this.acc));
-        } else {
-            this.segmets.push(speeding2vMax);
-            this.segmets.push(new Segment(this.vMax, this.arc_length - speedingAndSlowingDistance));
-            this.segmets.push(slowing2vEnd);
-        }
+        this.segmets.push(speeding2vMax);
+        this.segmets.push(new Segment(this.vMax, this.arc_length - speedingAndSlowingDistance));
+        this.segmets.push(slowing2vEnd);
     }
 
     calculateSetpoints(startTime) {
@@ -128,17 +134,27 @@ class Spline {
     }
 
     checkIfLegal() {
-        if (this.vMax < this.vEnd)
-            this.isLegal = {
-                legal: false,
-                error: "Can't make the spline! vMax is smaller then vEnd!",
-            };
+        if (this.startPoint.vMax === 0) {
+            this.isLegal = false;
+            this.error = `Can't create spline because vMax is equal to 0!\n` +
+                `You need to increase vMax!\n`;
+        }
 
-        if (new Segment(this.V0, this.vEnd, this.acc).distance > this.arc_length)
-            this.isLegal = {
-                legal: false,
-                error: "Can't make the spline! can't get from V0 to vEnd!",
-            };
+        if (this.vMax < this.vEnd) {
+            this.isLegal = false;
+            this.error = `Can't get from v0 (${this.V0}) to vEnd (${this.vEnd}) because vMax` +
+                `(${this.vMax}) is smaller then vEnd (${this.vEnd})!\n` +
+                `You need to decrease vEnd or increase vMax!\n` +
+                `Try using vEnd ${this.vMax} or vMax ${this.getVMax()}!`;
+        }
+
+        if (new Segment(this.V0, this.vEnd, this.acc).distance > this.arc_length) {
+            const v = Math.sqrt(Math.pow(this.V0, 2) + 2 * this.acc * this.arc_length).toFixed(3);
+            this.isLegal = false;
+            this.error = `Can't get from v0 (${this.V0}) to vEnd (${this.vEnd})!` +
+                `You need to decrease vEnd!\n` +
+                `Try using vEnd ${v}!`;
+        }
     }
 }
 

@@ -20,6 +20,10 @@ body {
   overflow-y: hidden;
 }
 
+div {
+  white-space: pre-wrap;
+}
+
 .FieldView {
   width: 100%;
   text-align:center;

@@ -2,6 +2,7 @@ import { SET_SETTINGS } from './settings-action-types';
 import { saveProjectFolderPath, saveProjectFile } from "../../ProjectHandler";
 import { PathGenerator } from "../../path-generator/path-generator";
 import { PopupsConfig } from "../popups/popups-config";
+import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 
 function setSettings(state, payload) {
     saveProjectFolderPath(payload.settings.projectPath);
@@ -21,6 +22,7 @@ function setSettings(state, payload) {
         fieldConfig: newState.fieldConfig,
         pathConfig: payload.settings.pathConfig,
         robotDrawConfig: payload.settings.robotDrawConfig,
+        popupsStatus: updateIsIllegalPopupStatus(newState.path),
     };
     saveProjectFile(newState.projectPath, projectFile);
     return newState;

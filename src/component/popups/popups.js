@@ -36,39 +36,45 @@ class Popups extends React.Component {
     return (
       <div>
         <Popup show={this.props.popupsStatus.deletePathPopup && this.props.paths.length > 0}
+          title="Delete path"
+          body="Are you sure you want to delete path?"
           close={this.props.closeDeletePathPopup}
           confirm={this.props.deletePath}
-          title="Delete path" body="Are you sure you want to delete path?"
         />
 
         <Popup show={this.props.popupsStatus.renamePathPopup && this.props.paths.length > 0}
+          title="Rename path"
           body={<FormControl ref={this.renamePathInput} />}
           close={this.props.closeRenamePathPopup}
           confirm={this.renamePath}
-          title="Rename path"
         />
 
         <Popup show={this.props.popupsStatus.createNewPathPopup}
+          title="Create a new path"
           body={<FormControl ref={this.newPathInput} placeholder="Path name" />}
           close={this.props.closeCreateNewPathPopup}
           confirm={this.createNewPath}
-          title="Create a new path"
         />
 
         <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo === ""}
+          title="Save path CSV"
           body="Can't save path CSV, you need to set CSV folder path in settings!"
           close={this.props.closeSavePathCSVPopup}
-          title="Save path CSV"
         />
 
         <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo !== ""}
+          title="Save path CSV"
           body="Path CSV saved!"
           close={this.props.closeSavePathCSVPopup}
-          title="Save path CSV"
         />
 
+        <Popup show={this.props.popupsStatus.pathIsIllegal}
+          title={this.props.path ? this.props.path.error : ""}
+          body={<div>{this.props.path ? this.props.path.splineError : ""}</div>}
+          close={this.props.closePathIsIllegal}
+        />
         <Settings />
-      </div>
+      </div >
     );
   }
 }
@@ -79,6 +85,7 @@ const mapStateToProps = (state) => {
     saveCSVTo: state.saveCSVTo,
     pathID: state.pathID,
     paths: state.paths,
+    path: state.path,
   };
 };
 
@@ -88,6 +95,7 @@ const mapDispatchToProps = (dispatch) => {
     closeSavePathCSVPopup: () => dispatch(changePopupStatus("savePathCSVPopup")),
     closeRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
     closeDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
+    closePathIsIllegal: () => dispatch(changePopupStatus("pathIsIllegal")),
     changePathName: pathName => dispatch(changePathName(pathName)),
     createNewPath: pathName => dispatch(createNewPath(pathName)),
     deletePath: () => dispatch(deletePath()),

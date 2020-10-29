@@ -5,6 +5,7 @@ import { stopDrawRobotInterval } from "../tools/tools-reducer";
 import {
   CHANGE_POPUP_STATUS, CHANGE_PATH_NAME, DELETE_PATH, CREATE_NEW_PATH
 } from './popups-action-types';
+import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 
 function changePopupStatus(state, payload) {
   const newState = {
@@ -54,7 +55,7 @@ function deletePath(state, payload) {
     path: path,
     paths: paths,
     rangePosition: 0,
-    popupsStatus: new PopupsConfig(),
+    popupsStatus: updateIsIllegalPopupStatus(path),
   }
 }
 

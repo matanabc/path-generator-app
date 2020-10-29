@@ -5,5 +5,6 @@ export class PopupsConfig {
         this.renamePathPopup = false;
         this.deletePathPopup = false;
         this.settingsPopup = false;
+        this.pathIsIllegal = false;
     }
 }

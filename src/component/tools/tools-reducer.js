@@ -1,6 +1,7 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
 import { savePathToFile } from '../../ProjectHandler'
 import { RobotDrawConfig } from "../field-view/field-view-config";
+import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 import {
   CHANGE_SELECTED_PATH, CHANGE_LISTEN_TO_MOUSE_STATUS, IS_PATH_IN_REVERSE, SET_DRAW_ROBOT
 } from './tools-action-types';
@@ -17,6 +18,7 @@ function changeSelectedPath(state, payload) {
   const path = new PathGenerator(waypoints, config);
   return {
     ...state,
+    popupsStatus: updateIsIllegalPopupStatus(path),
     robotDrawConfig: stopDrawRobotInterval(state),
     pathID: payload.id,
     rangePosition: 0,
