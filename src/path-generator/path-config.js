@@ -1,8 +1,6 @@
 class PathConfig {
     constructor(a, b, c, d) {
-        if (a === undefined)
-            this.constructorB();
-        else if (b === undefined)
+        if (typeof (a) === "object")
             this.constructorA(a);
         else
             this.constructorB(a, b, c, d);

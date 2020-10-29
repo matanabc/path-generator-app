@@ -36,5 +36,5 @@ function calculateTankSideSetpoint(sideSetpoint, lastSetpoint, config) {
     sideSetpoint.position = lastSetpoint.position + distance;
     sideSetpoint.velocity = distance / config.robotLoopTime;
     acc = (sideSetpoint.velocity - lastSetpoint.velocity) / config.robotLoopTime;
-    sideSetpoint.acceleration = Math.abs(acc) > 0 ? acc / Math.abs(acc) * 3 : 0; // TODO: acc!!
+    sideSetpoint.acceleration = Math.abs(acc) > 0 ? acc / Math.abs(acc) * config.acc : 0;
 }

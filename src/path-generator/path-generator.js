@@ -1,5 +1,5 @@
 import Generator from "./generator";
-import Config from "./robot-config";
+import Config from "./path-config";
 import Waypoint from "./waypoint";
 import { tank } from "./modifier";
 
