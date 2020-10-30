@@ -94,7 +94,7 @@ function getRobotCoord(setpoint, fieldConfig, robotLength, robotWidth) {
 
 function getRobotAngle(path, setpoint) {
     if (path.isTurnInPlace)
-        return d2r(path.waypoints[0].angle) + (setpoint.x - path.waypoints[0].x) / path.pathConfig.width * 2;
+        return d2r(path.turnStartAngle) + (setpoint.position) / path.pathConfig.width * 2;
     else
         return setpoint.heading;
 }

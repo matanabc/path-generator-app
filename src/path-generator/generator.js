@@ -22,14 +22,16 @@ class Generator {
     isTurnInPlace() {
         if (this.waypoints.length === 2 && this.waypoints[0].x === this.waypoints[1].x &&
             this.waypoints[0].y === this.waypoints[1].y) {
+            this.turnStartAngle = Number(this.waypoints[0].angle);
             this.turnAngle = Number(this.waypoints[1].angle - this.waypoints[0].angle);
             const x = this.waypoints[0].x + this.pathConfig.width / 2 * d2r(this.turnAngle);
             const y = this.waypoints[0].y;
-            const angle = this.waypoints[0].angle;
-            const v = this.waypoints[1].v;
-            const vMax = this.waypoints[1].vMax;
-            const endWaypoint = new Waypoint(x, y, angle, v, vMax);
-            this.splines.push(new Spline(this.waypoints[0], endWaypoint, this.pathConfig));
+            const v0 = this.waypoints[0].v;
+            const vEnd = this.waypoints[1].v;
+            const vMax = this.waypoints[0].vMax;
+            const startWaypoint = new Waypoint(this.waypoints[0].x, y, 0, v0, vMax);
+            const endWaypoint = new Waypoint(x, y, 0, vEnd, 0);
+            this.splines.push(new Spline(startWaypoint, endWaypoint, this.pathConfig));
             return true;
         }
         return false;

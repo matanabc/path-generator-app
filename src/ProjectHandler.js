@@ -69,11 +69,12 @@ function pathToCSV(path, isInReverse) {
         const left = isInReverse ? path.rightSetpoints[i] : path.leftSetpoints[i];
         const source = path.sourceSetpoints[i];
         const angleR = isInReverse ? right.position - left.position : left.position - right.position;
-        var angleD = Number(path.waypoints[0].angle);
+        var angleD = 0;
         if (path.isTurnInPlace)
-            angleD += Number(r2d((source.x - path.waypoints[0].x) / path.pathConfig.width * 2));
+            angleD += Number(r2d(source.position / path.pathConfig.width * 2)
+                + path.turnStartAngle);
         else
-            angleD += r2d(angleR) / path.pathConfig.width;
+            angleD += Number(path.waypoints[0].angle + r2d(angleR) / path.pathConfig.width);
         csv += `${left.position},${right.position},`;
         csv += `${left.velocity},${right.velocity},`;
         csv += `${left.acceleration},${right.acceleration},`;
