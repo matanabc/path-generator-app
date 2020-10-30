@@ -105,6 +105,7 @@ function drawRobot(ctx, props) {
     const robotInReverse = props.paths[props.pathID].isInReverse ? -1 : 1;
     const robotLength = Number(props.robotDrawConfig.length) / props.fieldConfig.widthPixelToMeter;
     const robotWidth = Number(props.robotDrawConfig.width) / props.fieldConfig.hightPixelToMeter;
+    const robotWayWidth = Number(props.robotDrawConfig.width * 0.6) / props.fieldConfig.hightPixelToMeter;
     const robotCenter = robotInReverse * Number(props.robotDrawConfig.center) / props.fieldConfig.widthPixelToMeter;
     var robotCoord = getRobotCoord(setpoint, props.fieldConfig, robotLength, robotWidth);
     if (props.path.isTurnInPlace)
@@ -122,14 +123,14 @@ function drawRobot(ctx, props) {
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo((robotInReverse * (robotLength / 2) - robotCenter), (-robotWidth / 2));
-    ctx.lineTo((robotInReverse * (robotLength / 2) - robotCenter), (robotWidth / 2));
+    ctx.moveTo((robotInReverse * (robotLength / 2) - robotCenter), (-robotWayWidth / 2));
+    ctx.lineTo((robotInReverse * (robotLength / 2) - robotCenter), (robotWayWidth / 2));
     ctx.strokeStyle = "blue";
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo((robotInReverse * (-robotLength / 2) - robotCenter), (-robotWidth / 2));
-    ctx.lineTo((robotInReverse * (-robotLength / 2) - robotCenter), (robotWidth / 2));
+    ctx.moveTo((robotInReverse * (-robotLength / 2) - robotCenter), (-robotWayWidth / 2));
+    ctx.lineTo((robotInReverse * (-robotLength / 2) - robotCenter), (robotWayWidth / 2));
     ctx.strokeStyle = "red";
     ctx.stroke();
 
