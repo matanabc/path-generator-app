@@ -1,4 +1,8 @@
 import { r2d } from "./path-generator/util";
+import cookies from 'js-cookie';
+
+const ipcRenderer = window.require('electron').ipcRenderer;
+const cookieName = "project_path";
 const fs = window.require('fs');
 const os = window.require('os');
 
@@ -25,7 +29,9 @@ function loadPaths(folderPath, callback) {
 }
 
 export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
-    const folderPath = `${os.homedir()}/PathGenerator`;
+    var folderPath = cookies.get(cookieName);
+    if (folderPath === undefined)
+        folderPath = `${os.homedir()}/PathGenerator`;
     projetcFolderCallback(folderPath);
     if (folderPath)
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
@@ -84,5 +90,5 @@ function pathToCSV(path, isInReverse) {
 }
 
 export const saveProjectFolderPath = folderPath => {
-    // coockies.set(PROJECT_FOLDER, folderPath, { expires: 999999 });
+    ipcRenderer.invoke('SetCookieProjctPath', folderPath);
 }

@@ -6,14 +6,16 @@ import { PathConfig } from '../../path-generator/path-generator';
 import { FieldConfig } from "../field-view/field-view-config";
 import { changePopupStatus } from "../popups/popups-action";
 import { RobotDrawConfig } from "../field-view/field-view-config";
-import { setFiledImage } from '../app/app-action'
 import { loadFieldImage } from "../../ProjectHandler";
+import { loadProjectFile } from "../../ProjectHandler";
+import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from '../app/app-action';
 
 class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.saveSettings = this.saveSettings.bind(this);
         this.robotCSVFolderInput = React.createRef();
+        this.projectFolderInput = React.createRef();
         this.pathWidthInput = React.createRef();
         this.robotMaxVInput = React.createRef();
         this.robotMaxAccInput = React.createRef();
@@ -55,14 +57,17 @@ class Settings extends React.Component {
         );
 
         const settings = {
+            projectPath: this.projectFolderInput.current.value,
             saveCSVTo: this.robotCSVFolderInput.current.value,
-            projectPath: this.props.projectPath,
             robotDrawConfig: robotDrawConfig,
             fieldConfig: fieldConfig,
             pathConfig: pathConfig,
         };
 
         this.props.setSettings(settings);
+        if (settings.projectPath !== this.props.projectPath)
+            loadProjectFile(this.props.setProjectSettings, this.props.setProjectFolderPath,
+                this.props.setFiledImage, this.props.addPath);
         if (fieldConfig.imageName !== this.props.fieldConfig.imageName)
             loadFieldImage(this.props.projectPath, fieldConfig.imageName, this.props.setFiledImage);
     }
@@ -78,6 +83,20 @@ class Settings extends React.Component {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="SettingsBody ml-1">
+                        <Form.Row>
+                            <Form.Group as={Col}>
+                                <Form.Label style={style}> Folders config: </Form.Label>
+                            </Form.Group>
+                        </Form.Row>
+
+                        <Form.Row>
+                            <Form.Group as={Col}>
+                                <Form.Label>Project folder</Form.Label>
+                                <Form.Control defaultValue={this.props.projectPath}
+                                    ref={this.projectFolderInput}
+                                />
+                            </Form.Group>
+                        </Form.Row>
                         <Form.Row>
                             <Form.Group as={Col}>
                                 <Form.Label>Paths CSV folder</Form.Label>
@@ -232,9 +251,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        setProjectFolderPath: projectFolderPath => dispatch(setProjectFolderPath(projectFolderPath)),
         setFiledImage: (filedImage, imageName) => dispatch(setFiledImage(filedImage, imageName)),
+        setProjectSettings: settings => dispatch(setProjectSettings(settings)),
         closeSettings: () => dispatch(changePopupStatus("settingsPopup")),
         setSettings: settings => dispatch(setSettings(settings)),
+        addPath: path => dispatch(addPath(path)),
     };
 }
 

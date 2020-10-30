@@ -10,9 +10,10 @@ function setSettings(state, payload) {
         ...state,
         ...payload.settings,
         popupsStatus: new PopupsConfig(),
+        update: !state.update,
         rangePosition: 0,
     };
-    if (state.paths.length > 0){
+    if (state.paths.length > 0) {
         const waypoints = state.paths[state.pathID].waypoints;
         const config = newState.pathConfig;
         newState.path = new PathGenerator(waypoints, config);
@@ -24,7 +25,12 @@ function setSettings(state, payload) {
         robotDrawConfig: payload.settings.robotDrawConfig,
         popupsStatus: updateIsIllegalPopupStatus(newState.path),
     };
-    saveProjectFile(newState.projectPath, projectFile);
+    if (payload.settings.projectPath === state.projectPath)
+        saveProjectFile(newState.projectPath, projectFile);
+    else {
+        newState.paths = [];
+        newState.pathID = 0;
+    }
     return newState;
 }
 
