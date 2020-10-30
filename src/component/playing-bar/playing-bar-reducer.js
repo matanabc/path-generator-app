@@ -1,3 +1,4 @@
+import { stopDrawRobotInterval } from "../tools/tools-reducer";
 import { SET_RANGE_POSITION, ADD_TO_RANGE_POSITION } from './playing-bar-types';
 
 function setRangePosition(state, payload) {
@@ -5,6 +6,7 @@ function setRangePosition(state, payload) {
         ...state,
         listenToMouseClicks: false,
         rangePosition: payload.rangePosition,
+        robotDrawConfig: stopDrawRobotInterval(state),
     }
 }
 

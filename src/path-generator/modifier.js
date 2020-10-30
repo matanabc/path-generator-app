@@ -1,12 +1,12 @@
 import Setpoint from "./setpoint";
 
-export const tank = (sourceSetpoints, config) => {
+export const tank = (path, config) => {
     const leftSetpoints = [], rightSetpoints = [];
     var source, left, right;
     const robotWidth = config.width / 2;
     var cos_angle = 0, sin_angle = 0;
-    for (let i = 0; i < sourceSetpoints.length; i++) {
-        source = sourceSetpoints[i];
+    for (let i = 0; i < path.sourceSetpoints.length; i++) {
+        source = path.sourceSetpoints[i];
         left = new Setpoint(source);
         right = new Setpoint(source);
         cos_angle = Math.cos(source.heading);
@@ -21,6 +21,16 @@ export const tank = (sourceSetpoints, config) => {
         }
         leftSetpoints.push(left);
         rightSetpoints.push(right);
+    }
+
+    if (path.isTurnInPlace){
+        const way = Math.sign(path.turnAngle);
+        for (let i = 0; i < path.sourceSetpoints.length; i++) {
+            leftSetpoints[i].velocity *= -way;
+            leftSetpoints[i].acceleration *= -way;
+            rightSetpoints[i].velocity *= way;
+            rightSetpoints[i].acceleration *= way;
+        }
     }
 
     return {

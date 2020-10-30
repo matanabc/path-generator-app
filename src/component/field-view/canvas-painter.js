@@ -1,4 +1,5 @@
 import { TankModifier, PathConfig } from "../../path-generator/path-generator";
+import { d2r } from "../../path-generator/util";
 
 export const drawOnCanvas = (canvas, props) => {
     const ctx = canvas.getContext('2d');
@@ -45,9 +46,10 @@ function drawWaypoints(ctx, props) {
 }
 
 function drawSetpoints(ctx, props) {
+    if (props.path.isTurnInPlace) return;
     ctx.beginPath();
     const config = new PathConfig(props.robotDrawConfig.width, 0, 0);
-    const tankModifier = TankModifier(props.path.sourceSetpoints, config);
+    const tankModifier = TankModifier(props.path, config);
     tankModifier.left.forEach((setpoint, index) => {
         const x = setpoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
         const y = setpoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
@@ -83,6 +85,20 @@ function drawPathTime(ctx, props) {
     ctx.fillText(`${pathTotalTime}`, 5, 12);
 }
 
+function getRobotCoord(setpoint, fieldConfig, robotLength, robotWidth) {
+    return {
+        x: (setpoint.x / fieldConfig.widthPixelToMeter) - (robotLength / 2) + fieldConfig.topLeftXPixel,
+        y: (setpoint.y / fieldConfig.hightPixelToMeter) - (robotWidth / 2) + fieldConfig.topLeftYPixel,
+    };
+}
+
+function getRobotAngle(path, setpoint) {
+    if (path.isTurnInPlace)
+        return d2r(path.waypoints[0].angle) + (setpoint.x - path.waypoints[0].x) / path.pathConfig.width * 2;
+    else
+        return setpoint.heading;
+}
+
 function drawRobot(ctx, props) {
     const setpoint = props.path.sourceSetpoints[props.rangePosition];
     if (setpoint === undefined) return;
@@ -90,15 +106,14 @@ function drawRobot(ctx, props) {
     const robotLength = Number(props.robotDrawConfig.length) / props.fieldConfig.widthPixelToMeter;
     const robotWidth = Number(props.robotDrawConfig.width) / props.fieldConfig.hightPixelToMeter;
     const robotCenter = robotInReverse * Number(props.robotDrawConfig.center) / props.fieldConfig.widthPixelToMeter;
-    const x = (setpoint.x / props.fieldConfig.widthPixelToMeter) - (robotLength / 2) +
-        props.fieldConfig.topLeftXPixel;
-    const y = (setpoint.y / props.fieldConfig.hightPixelToMeter) - (robotWidth / 2) +
-        props.fieldConfig.topLeftYPixel;
+    var robotCoord = getRobotCoord(setpoint, props.fieldConfig, robotLength, robotWidth);
+    if (props.path.isTurnInPlace)
+        robotCoord = getRobotCoord(props.path.sourceSetpoints[0], props.fieldConfig, robotLength, robotWidth);
 
     ctx.beginPath();
     ctx.save();
-    ctx.translate(x + (robotLength / 2), y + (robotWidth / 2));
-    ctx.rotate(setpoint.heading);
+    ctx.translate(robotCoord.x + (robotLength / 2), robotCoord.y + (robotWidth / 2));
+    ctx.rotate(getRobotAngle(props.path, setpoint));
     ctx.fillStyle = "white";
     ctx.fillRect((-robotLength / 2) - robotCenter, (-robotWidth / 2), robotLength, robotWidth);
 

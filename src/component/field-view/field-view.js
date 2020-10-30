@@ -35,7 +35,7 @@ class FieldView extends React.Component {
       * this.props.fieldConfig.widthPixelToMeter;
     const y = ((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel)
       * this.props.fieldConfig.hightPixelToMeter;
-    this.props.addWaypoint(new PathWaypoint(x, y));
+    this.props.addWaypoint(new PathWaypoint(Number(x.toFixed(3)), Number(y.toFixed(3))));
   }
 
   render() {
