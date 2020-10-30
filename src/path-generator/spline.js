@@ -89,6 +89,7 @@ class Spline {
         this.segmets.push(speeding2vMax);
         this.segmets.push(new Segment(this.vMax, this.arc_length - speedingAndSlowingDistance));
         this.segmets.push(slowing2vEnd);
+        this.checkIfLegal();
     }
 
     calculateSetpoints(startTime) {
@@ -154,6 +155,12 @@ class Spline {
             this.error = `Can't get from v0 (${this.V0}) to vEnd (${this.vEnd})!` +
                 `You need to decrease vEnd!\n` +
                 `Try using vEnd ${v}!`;
+        }
+
+        if (this.segmets.reduce((a, b) => a + b.totalTime, 0) > 15) {
+            this.isLegal = false;
+            this.error = `Can't create spline because total time is more then 15 sec!\n` +
+                `You need to cahnge path waypoints!\n`;
         }
     }
 }
