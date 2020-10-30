@@ -46,6 +46,9 @@ class WaypointInfo extends React.Component {
 
   render() {
     const info = this.props.paths[this.props.pathID].waypoints[this.props.id];
+    var variant = "primary";
+    if (this.props.waypointID !== undefined && this.props.waypointID === this.props.id)
+      variant = "success";
     return (
       <div className="WaypointInfo">
         <Alert variant="primary">
@@ -81,7 +84,7 @@ class WaypointInfo extends React.Component {
               <MdDelete />
             </Button>
 
-            <Button onClick={this.add}>
+            <Button onClick={this.add} variant={variant}>
               <MdAddCircle />
             </Button>
           </InputGroup>
@@ -92,9 +95,10 @@ class WaypointInfo extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    paths: state.paths,
+    waypointID: state.waypointID,
     pathID: state.pathID,
     update: state.update,
+    paths: state.paths,
   };
 };
 

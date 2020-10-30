@@ -2,6 +2,7 @@ import Generator from '../../path-generator/generator';
 import { PathConfig } from '../../path-generator/path-generator';
 import { savePathToFile } from '../../ProjectHandler'
 import { PopupsConfig } from '../popups/popups-config';
+import { stopDrawRobotInterval } from '../tools/tools-reducer';
 import { ADD_WAYPOINT, REMOVE_WAYPOINT, UPDATE_WAYPOINT } from './waypoint-info-action-type';
 
 function updateWaypoint(state, payload) {
@@ -15,22 +16,17 @@ function updateWaypoint(state, payload) {
 }
 
 function addWaypoint(state, payload) {
-    const waypoints = [];
-    state.paths[state.pathID].waypoints.forEach((waypoint, index) => {
-        waypoints.push(waypoint);
-        if (index === payload.index)
-            waypoints.push({
-                x: waypoint.x,
-                y: waypoint.y,
-                angle: waypoint.angle,
-                v: waypoint.v,
-                vMax: waypoint.vMax,
-            });
-    });
-    const newState = { ...state };
-    newState.paths[state.pathID].waypoints = waypoints;
+    var waypointID = undefined;
+    var listenToMouseClicks = false;
+    if (state.waypointID === undefined || state.waypointID !== payload.index){
+        waypointID = payload.index;
+        listenToMouseClicks = true;
+    }
     return {
-        ...newState,
+        ...state,
+        robotDrawConfig: stopDrawRobotInterval(state),
+        listenToMouseClicks: listenToMouseClicks,
+        waypointID: waypointID,
         update: !state.update,
     };
 }
@@ -46,6 +42,7 @@ function removeWaypoint(state, payload) {
     return {
         ...newState,
         update: !state.update,
+        robotDrawConfig: stopDrawRobotInterval(newState),
     };
 }
 

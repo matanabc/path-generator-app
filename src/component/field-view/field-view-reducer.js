@@ -4,20 +4,30 @@ import { savePathToFile } from '../../ProjectHandler'
 import { ADD_WAYPOINT, SET_PATH } from './field-view-action-types';
 
 function addWaypoint(state, payload) {
-    const newState = state;
-    var path = undefined;
-    if(state.paths.length > 0){
-        newState.paths[state.pathID].waypoints.push(payload.waypoint);
-        savePathToFile(state.projectPath, state.paths[state.pathID]);
-        const waypoints = newState.paths[state.pathID].waypoints;
-        const config = new PathConfig(state.pathConfig);
-        path = new Generator(waypoints, config);
+    const newState = { ...state, update: !state.update };
+    if (newState.paths.length > 0) {
+        const path = newState.paths[newState.pathID];
+        const waypoints = [];
+        path.waypoints.forEach((waypoint, index) => {
+            waypoints.push(waypoint);
+            if (newState.waypointID !== undefined && newState.waypointID === index)
+                waypoints.push(payload.waypoint);
+        });
+
+        if (newState.waypointID === undefined)
+            waypoints.push(payload.waypoint);
+        else {
+            newState.listenToMouseClicks = false;
+            newState.waypointID = undefined;
+        }
+
+        path.waypoints = waypoints;
+        newState.paths[newState.pathID] = path;
+        savePathToFile(newState.projectPath, path);
+        const config = new PathConfig(newState.pathConfig);
+        newState.path = new Generator(waypoints, config);
     }
-    return {
-        ...newState,
-        update: !state.update,
-        path: path,
-    }
+    return newState;
 }
 
 function setPath(state, payload) {

@@ -20,6 +20,7 @@ const initialState = {
     popupsStatus: new PopupsConfig(),
 
     listenToMouseClicks: false,
+    waypointID: undefined,
     rangePosition: 0,
     projectPath: "",
     path: undefined,
