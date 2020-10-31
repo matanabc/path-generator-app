@@ -93,7 +93,7 @@ class Settings extends React.Component {
                             <Form.Group as={Col}>
                                 <Form.Label>Project folder</Form.Label>
                                 <Form.Control defaultValue={this.props.projectPath}
-                                    ref={this.projectFolderInput}
+                                    ref={this.projectFolderInput} disabled
                                 />
                             </Form.Group>
                         </Form.Row>
@@ -160,7 +160,11 @@ class Settings extends React.Component {
                             </Form.Group>
                             <Form.Group as={Col} md="4">
                                 <OverlayTrigger overlay={
-                                    <Tooltip> {"back < center (0) < front"} </Tooltip>
+                                    <Tooltip>
+                                        <span style={{ color: "red" }}> back </span> {" < "}
+                                        <span style={{ color: "rgb(50, 100, 0)" }}> center </span>
+                                        {" < "} <span style={{ color: "blue" }}> front </span>
+                                    </Tooltip>
                                 }>
                                     <Form.Label>Center</Form.Label>
                                 </OverlayTrigger>

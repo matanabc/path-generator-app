@@ -70,21 +70,24 @@ export const savePathToCSV = (folderPath, path, pathName, isInReverse, callback)
 
 function pathToCSV(path, isInReverse) {
     var csv = "Left Position,Right Position,Left Velocity,Right Velocity,Left Acc,Right Acc,Angle,X,Y, \n";
+    isInReverse = path.isTurnInPlace ? false : isInReverse;
     for (let i = 0; i < path.sourceSetpoints.length; i++) {
         const right = isInReverse ? path.leftSetpoints[i] : path.rightSetpoints[i];
         const left = isInReverse ? path.rightSetpoints[i] : path.leftSetpoints[i];
         const source = path.sourceSetpoints[i];
+        const x = path.isTurnInPlace ? path.sourceSetpoints[0].x : source.x;
+        const y = path.isTurnInPlace ? path.sourceSetpoints[0].y : source.y;
         const angleR = isInReverse ? right.position - left.position : left.position - right.position;
         var angleD = 0;
         if (path.isTurnInPlace)
-            angleD += Number(r2d(source.position / path.pathConfig.width * 2)
-                + path.turnStartAngle);
+            angleD += Number(r2d(source.position / path.pathConfig.width * 2) + path.turnStartAngle);
         else
             angleD += Number(path.waypoints[0].angle + r2d(angleR) / path.pathConfig.width);
+
         csv += `${left.position},${right.position},`;
         csv += `${left.velocity},${right.velocity},`;
         csv += `${left.acceleration},${right.acceleration},`;
-        csv += `${angleD},${source.x},${source.y},\n`;
+        csv += `${angleD},${x},${y},\n`;
     }
     return csv;
 }
