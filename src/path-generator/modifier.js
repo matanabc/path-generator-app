@@ -23,16 +23,6 @@ export const tank = (path, config) => {
         rightSetpoints.push(right);
     }
 
-    if (path.isTurnInPlace){
-        const way = Math.sign(path.turnAngle);
-        for (let i = 0; i < path.sourceSetpoints.length; i++) {
-            leftSetpoints[i].velocity *= -way;
-            leftSetpoints[i].acceleration *= -way;
-            rightSetpoints[i].velocity *= way;
-            rightSetpoints[i].acceleration *= way;
-        }
-    }
-
     return {
         left: rightSetpoints,
         right: leftSetpoints,

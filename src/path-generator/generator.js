@@ -24,8 +24,8 @@ class Generator {
             this.waypoints[0].y === this.waypoints[1].y) {
             this.turnStartAngle = Number(this.waypoints[0].angle);
             this.turnEndAngle = Number(this.waypoints[1].angle);
-            this.turnWay = Math.sign(endAngle);
-            this.turnAngle = (this.turnEndAngle - this.turnStartAngle); 
+            this.turnWay = Math.sign(this.turnEndAngle);
+            this.turnAngle = (this.turnEndAngle - this.turnStartAngle);
             const x = this.waypoints[0].x + this.pathConfig.width / 2 * d2r(this.turnAngle);
             const y = this.waypoints[0].y;
             const v0 = this.waypoints[0].v;
