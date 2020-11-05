@@ -93,7 +93,7 @@ class Settings extends React.Component {
                             <Form.Group as={Col}>
                                 <Form.Label>Project folder</Form.Label>
                                 <Form.Control defaultValue={this.props.projectPath}
-                                    ref={this.projectFolderInput} disabled
+                                    ref={this.projectFolderInput}
                                 />
                             </Form.Group>
                         </Form.Row>

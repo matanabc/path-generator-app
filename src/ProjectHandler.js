@@ -1,10 +1,7 @@
 import { r2d } from "./path-generator/util";
-import cookies from 'js-cookie';
 
 const ipcRenderer = window.require('electron').ipcRenderer;
-const cookieName = "project_path";
 const fs = window.require('fs');
-const os = window.require('os');
 
 export function loadFieldImage(folderPath, imageName, callback) {
     fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
@@ -28,10 +25,8 @@ function loadPaths(folderPath, callback) {
     });
 }
 
-export const loadProjectFile = (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
-    var folderPath = cookies.get(cookieName);
-    if (folderPath === undefined)
-        folderPath = `${os.homedir()}/PathGenerator`;
+export const loadProjectFile = async (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
+    const folderPath = await ipcRenderer.invoke('GetProjctPath');
     projetcFolderCallback(folderPath);
     if (folderPath)
         fs.readFile(`${folderPath}/PathGenerator.json`, (err, data) => {
@@ -116,6 +111,6 @@ function tankPathCSV(path, isInReverse) {
     return csv;
 }
 
-export const saveProjectFolderPath = folderPath => {
-    ipcRenderer.invoke('SetCookieProjctPath', folderPath);
+export const saveProjectFolderPath = async folderPath => {
+    ipcRenderer.invoke('UpdateProjctPath', folderPath);
 }
