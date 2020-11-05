@@ -46,6 +46,7 @@ class Popups extends React.Component {
           title="Rename path"
           body={<FormControl ref={this.renamePathInput} />}
           close={this.props.closeRenamePathPopup}
+          refToUse={this.renamePathInput}
           confirm={this.renamePath}
         />
 
