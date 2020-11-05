@@ -1,23 +1,26 @@
 {
   "name": "path-generator",
-  "productName": "PathGenerator",
   "version": "0.1.0",
   "main": "public/electron.js",
   "homepage": "./",
   "private": true,
   "scripts": {
-    "react-start": "react-scripts start",
-    "react-build": "react-scripts build",
-    "react-test": "react-scripts test",
-    "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
-    "build": "npm run react-build && npm run electron-build",
-    "start": "concurrently \"cross-env BROWSER=none npm run react-start\" \"wait-on http://localhost:3000 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+    "build-all": "react-scripts build && electron-builder -wlm --dir",
+    "build": "react-scripts build && electron-builder"
   },
   "build": {
-    "appId": "com.example.app",
+    "appId": "com.example.PathGenerator",
+    "productName": "PathGenerator",
+    "artifactName": "PathGenerator_${os}_${version}.${ext}",
+    "win": {
+      "target": "nsis"
+    },
     "linux": {
       "target": "tar.gz"
+    },
+    "mac": {
+      "target": "zip"
     }
   },
   "devDependencies": {
