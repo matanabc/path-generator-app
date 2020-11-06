@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build-all": "react-scripts build && electron-builder -wlm --dir",
+    "build-all": "react-scripts build && electron-builder -wl",
     "build": "react-scripts build && electron-builder"
   },
   "build": {
