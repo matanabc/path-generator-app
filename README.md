@@ -1,6 +1,5 @@
 # PathGenerator
 
-## About
 ![App view](./app_view.png)
 **PathGenerator** is a motion profile generator painter with you can easly draw a path for your robot to follow. <br/>
 When you finish to setup the path for your robot to follow, just press on the export button on the left for exporting the path as CSV file to your *path csv directory* and use it on your robot to follow the path. 
