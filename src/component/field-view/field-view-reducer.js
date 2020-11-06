@@ -1,6 +1,6 @@
 import Generator from '../../path-generator/generator';
 import { PathConfig } from '../../path-generator/path-generator';
-import { savePathToFile } from '../../ProjectHandler'
+import { savePathToFile } from '../..//handlers/project-handler'
 import { ADD_WAYPOINT, SET_PATH } from './field-view-action-types';
 
 function addWaypoint(state, payload) {

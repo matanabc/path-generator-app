@@ -1,6 +1,6 @@
 import Generator from '../../path-generator/generator';
 import { PathConfig } from '../../path-generator/path-generator';
-import { savePathToFile } from '../../ProjectHandler'
+import { savePathToFile } from '../..//handlers/project-handler'
 import { PopupsConfig } from '../popups/popups-config';
 import { stopDrawRobotInterval } from '../tools/tools-reducer';
 import { ADD_WAYPOINT, REMOVE_WAYPOINT, UPDATE_WAYPOINT } from './waypoint-info-action-type';

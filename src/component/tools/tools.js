@@ -4,7 +4,7 @@ import { Button, Row, Col, Dropdown } from 'react-bootstrap';
 import { GiClick } from "react-icons/gi";
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from "react-icons/md";
 import { FiDownload, FiCircle, FiCheckCircle } from "react-icons/fi";
-import { savePathToCSV } from "../../ProjectHandler";
+import { savePathToCSV } from "../..//handlers/project-handler";
 import { addToRangePosition, setRangePosition } from "../playing-bar/playing-bar-action";
 import { changePopupStatus } from "../popups/popups-action";
 import {

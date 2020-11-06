@@ -6,8 +6,8 @@ import { PathConfig } from '../../path-generator/path-generator';
 import { FieldConfig } from "../field-view/field-view-config";
 import { changePopupStatus } from "../popups/popups-action";
 import { RobotDrawConfig } from "../field-view/field-view-config";
-import { loadFieldImage } from "../../ProjectHandler";
-import { loadProjectFile } from "../../ProjectHandler";
+import { loadFieldImage } from "../..//handlers/project-handler";
+import { loadProjectFile } from "../..//handlers/project-handler";
 import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from '../app/app-action';
 
 class Settings extends React.Component {
@@ -230,6 +230,8 @@ class Settings extends React.Component {
                                 />
                             </Form.Group>
                         </Form.Row>
+
+                        <div style={{fontSize:10}}>v{this.props.version}</div>
                     </div>
                 </Modal.Body >
                 <Modal.Footer >
@@ -249,6 +251,7 @@ const mapStateToProps = (state) => {
         pathConfig: state.pathConfig,
         fieldConfig: state.fieldConfig,
         saveCSVTo: state.saveCSVTo,
+        version: state.version,
         paths: state.paths,
     };
 };

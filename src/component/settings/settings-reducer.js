@@ -1,11 +1,11 @@
 import { SET_SETTINGS } from './settings-action-types';
-import { saveProjectFolderPath, saveProjectFile } from "../../ProjectHandler";
+import { updateProjectFolderPath, saveProjectFile } from "../..//handlers/project-handler";
 import { PathGenerator } from "../../path-generator/path-generator";
 import { PopupsConfig } from "../popups/popups-config";
 import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 
 function setSettings(state, payload) {
-    saveProjectFolderPath(payload.settings.projectPath);
+    updateProjectFolderPath(payload.settings.projectPath);
     const newState = {
         ...state,
         ...payload.settings,

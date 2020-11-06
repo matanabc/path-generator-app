@@ -22,6 +22,7 @@ const initialState = {
     listenToMouseClicks: false,
     waypointID: undefined,
     rangePosition: 0,
+    version: "0.0.0",
     projectPath: "",
     path: undefined,
     filedImage: "",

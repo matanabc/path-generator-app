@@ -1,5 +1,5 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
-import { deletePathFile, savePathToFile, renamePathFile } from '../../ProjectHandler'
+import { deletePathFile, savePathToFile, renamePathFile } from '../..//handlers/project-handler'
 import { PopupsConfig } from "./popups-config";
 import { stopDrawRobotInterval } from "../tools/tools-reducer";
 import {

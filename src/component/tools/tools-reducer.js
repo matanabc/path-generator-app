@@ -1,5 +1,5 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
-import { savePathToFile } from '../../ProjectHandler'
+import { savePathToFile } from '../..//handlers/project-handler'
 import { RobotDrawConfig } from "../field-view/field-view-config";
 import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
 import {

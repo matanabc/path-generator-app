@@ -1,3 +1,4 @@
+const { autoUpdater } = require('electron-updater');
 const isDev = require('electron-is-dev');
 const electron = require('electron');
 require('./electron-ipc-handles');
@@ -9,6 +10,8 @@ const app = electron.app;
 
 function createWindow() {
   if (mainWindow !== undefined) return;
+  autoUpdater.autoDownload = true;
+  autoUpdater.checkForUpdatesAndNotify();
   mainWindow = new BrowserWindow({ webPreferences: { nodeIntegration: true, webSecurity: false } });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.maximize();

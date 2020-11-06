@@ -40,6 +40,7 @@ function setProjectSettings(state, payload) {
         fieldConfig: new FieldConfig(payload.settings.fieldConfig),
         robotDrawConfig: new RobotDrawConfig(payload.settings.robotDrawConfig),
         saveCSVTo: payload.settings.saveCSVTo,
+        version: payload.settings.version,
         update: !state.update,
     }
 }
