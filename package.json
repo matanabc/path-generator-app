@@ -8,8 +8,8 @@
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "publish-all": "react-scripts build && electron-builder -wl -p always",
-    "build-all": "react-scripts build && electron-builder -wl",
+    "publish-all": "react-scripts build && electron-builder -wlm -p always",
+    "build-all": "react-scripts build && electron-builder -wlm",
     "build": "react-scripts build && electron-builder"
   },
   "build": {
