@@ -2,14 +2,13 @@
   "name": "path-generator",
   "version": "1.0.0",
   "main": "public/electron.js",
-  "description": "A easly motion profile generator painter",
+  "description": "A easy motion profile generator",
   "repository": "https://github.com/matanabc/path-generator.git",
   "author": "Matan Steinmetz <matanabc@gamil.com>",
   "homepage": "./",
   "scripts": {
     "start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "publish-all": "react-scripts build && electron-builder -wlm -p always",
-    "build-all": "react-scripts build && electron-builder -wlm",
+    "publish": "react-scripts build && electron-builder -wlm -p always",
     "build": "react-scripts build && electron-builder"
   },
   "build": {
