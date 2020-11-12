@@ -1,5 +1,17 @@
 import { APP_REDUCER } from '../../redux/reducer-types';
-import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
+import {
+    SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS, NEW_VERSION
+} from './app-action-types';
+
+export function newVersion(version) {
+    return {
+        reducer: APP_REDUCER,
+        type: NEW_VERSION,
+        payload: {
+            newVersion: version
+        },
+    };
+}
 
 export function setProjectFolderPath(projectPath) {
     return {

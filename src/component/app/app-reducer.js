@@ -1,7 +1,9 @@
 import { PathConfig, PathGenerator } from '../../path-generator/path-generator';
 import { FieldConfig, RobotDrawConfig } from "../field-view/field-view-config";
 import { updateIsIllegalPopupStatus } from '../waypoint-info/waypoint-info-reducer';
-import { SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS } from './app-action-types';
+import {
+    SET_PROJECT_FOLDER_PATH, SET_FIELD_IMAGE, ADD_PATH, SET_PROJECT_SETTINGS, NEW_VERSION
+} from './app-action-types';
 
 function setProjectFolderPath(state, payload) {
     return {
@@ -45,6 +47,14 @@ function setProjectSettings(state, payload) {
     }
 }
 
+function newVersion(state, payload) {
+    return {
+        ...state,
+        newVersion: payload.newVersion,
+        update: !state.update,
+    }
+}
+
 export const appReducer = (state, action) => {
     if (action.type === SET_PROJECT_FOLDER_PATH)
         return setProjectFolderPath(state, action.payload);
@@ -54,5 +64,7 @@ export const appReducer = (state, action) => {
         return addPath(state, action.payload);
     else if (action.type === SET_PROJECT_SETTINGS)
         return setProjectSettings(state, action.payload);
+    else if (action.type === NEW_VERSION)
+        return newVersion(state, action.payload);
     return state;
 };

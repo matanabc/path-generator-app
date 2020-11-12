@@ -11,3 +11,13 @@ export const getProjectFolderPath = async () => {
 export const getAppVersion = async () => {
     return await ipcRenderer.invoke('GetAppVersion');
 }
+
+export const updateApp = async () => {
+    return await ipcRenderer.invoke('UpdateApp');
+}
+
+export const onNewVersion = (callback) => {
+    ipcRenderer.on("update-downloaded", (event, info) => {
+        callback(info.version);
+    });
+}

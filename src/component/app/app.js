@@ -4,14 +4,16 @@ import { Container, Row } from 'react-bootstrap';
 import WaypointsView from '../waypoints-view/waypoints-view';
 import FieldView from '../field-view/field-view';
 import Tools from '../tools/tools';
-import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from './app-action'
+import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath, newVersion } from './app-action'
 import { loadProjectFile } from "../..//handlers/project-handler";
 import Popups from "../popups/popups";
+import { onNewVersion } from "../../handlers/electron-handler";
 
 class App extends React.Component {
   componentDidMount() {
     loadProjectFile(this.props.setProjectSettings, this.props.setProjectFolderPath,
       this.props.setFiledImage, this.props.addPath);
+    onNewVersion(this.props.newVersion);
   }
 
   render() {
@@ -43,6 +45,7 @@ const mapDispatchToProps = (dispatch) => {
     setProjectFolderPath: projectFolderPath => dispatch(setProjectFolderPath(projectFolderPath)),
     setFiledImage: (filedImage, imageName) => dispatch(setFiledImage(filedImage, imageName)),
     setProjectSettings: settings => dispatch(setProjectSettings(settings)),
+    newVersion: version => dispatch(newVersion(version)), 
     addPath: path => dispatch(addPath(path)),
   };
 }

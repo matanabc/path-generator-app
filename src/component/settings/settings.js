@@ -9,6 +9,7 @@ import { RobotDrawConfig } from "../field-view/field-view-config";
 import { loadFieldImage } from "../..//handlers/project-handler";
 import { loadProjectFile } from "../..//handlers/project-handler";
 import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from '../app/app-action';
+import { updateApp } from "../../handlers/electron-handler";
 
 class Settings extends React.Component {
     constructor(props) {
@@ -75,6 +76,13 @@ class Settings extends React.Component {
     render() {
         const style = { fontSize: 20, fontWeight: "bold" };
         const fieldConfig = this.props.fieldConfig;
+        var updateButton = <span />;
+        if (this.props.newVersion !== undefined) {
+            updateButton = <Button variant="outline-success" onClick={updateApp}>
+                {`Update to v${this.props.newVersion}`}
+            </Button>
+        }
+
         return (
             <Modal show={this.props.projectPath === undefined || this.props.popupsStatus.settingsPopup}
                 onHide={this.props.closeSettings} backdrop="static">
@@ -231,10 +239,11 @@ class Settings extends React.Component {
                             </Form.Group>
                         </Form.Row>
 
-                        <div style={{fontSize:10}}>v{this.props.version}</div>
+                        <div style={{ fontSize: 10 }}>v{this.props.version}</div>
                     </div>
                 </Modal.Body >
                 <Modal.Footer >
+                    {updateButton}
                     <Button variant="outline-primary" onClick={this.props.closeSettings}>cancel</Button>
                     <Button onClick={this.saveSettings}>save</Button>
                 </Modal.Footer>
@@ -248,8 +257,9 @@ const mapStateToProps = (state) => {
         robotDrawConfig: state.robotDrawConfig,
         popupsStatus: state.popupsStatus,
         projectPath: state.projectPath,
-        pathConfig: state.pathConfig,
         fieldConfig: state.fieldConfig,
+        pathConfig: state.pathConfig,
+        newVersion: state.newVersion,
         saveCSVTo: state.saveCSVTo,
         version: state.version,
         paths: state.paths,

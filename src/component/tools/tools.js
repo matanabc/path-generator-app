@@ -65,8 +65,8 @@ class Tools extends React.Component {
               onClick={this.saveToCSV}>
               <FiDownload />
             </Button>
-            <Button className="mr-3" size="lg" title="Settings"
-              onClick={this.props.showSettingsPopup}>
+            <Button variant={this.props.newVersion ? "success" : "primary"} className="mr-3" size="lg"
+              title="Settings" onClick={this.props.showSettingsPopup}>
               <MdBuild />
             </Button>
           </Col>
@@ -120,6 +120,7 @@ const mapStateToProps = (state) => {
     showDeletePath: state.showDeletePath,
     rangePosition: state.rangePosition,
     createNewPath: state.createNewPath,
+    newVersion: state.newVersion,
     pathConfig: state.pathConfig,
     saveCSVTo: state.saveCSVTo,
     update: state.update,
