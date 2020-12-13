@@ -1,5 +1,5 @@
+import { setWaypoint, removeWaypoint } from '../../redux/path/path-actions';
 import { Button, Alert, FormControl, InputGroup } from 'react-bootstrap';
-import { setWaypoint } from '../../redux/path/path-actions';
 import { MdDelete, MdAddCircle } from 'react-icons/md';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -12,7 +12,19 @@ class TankWaypointInfo extends React.Component {
 		this.v = React.createRef();
 		this.vMax = React.createRef();
 		this.angle = React.createRef();
+		this.remove = this.remove.bind(this);
 		this.onChange = this.onChange.bind(this);
+	}
+
+	componentDidUpdate() {
+		if (this.props.needUpdate) {
+			this.x.current.value = this.props.waypoint.x;
+			this.y.current.value = this.props.waypoint.y;
+			this.v.current.value = this.props.waypoint.v;
+			this.vMax.current.value = this.props.waypoint.vMax;
+			this.angle.current.value = this.props.waypoint.angle;
+			this.props.update();
+		}
 	}
 
 	onChange() {
@@ -24,6 +36,11 @@ class TankWaypointInfo extends React.Component {
 			angle: this.angle.current.value,
 		};
 		this.props.setWaypoint(object, this.props.id);
+	}
+
+	remove() {
+		this.props.removeWaypoint(this.props.id);
+		this.props.remove();
 	}
 
 	render() {
@@ -102,6 +119,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
+		removeWaypoint: (index) => dispatch(removeWaypoint(index)),
 	};
 };
 

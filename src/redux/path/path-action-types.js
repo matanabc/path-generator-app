@@ -1,1 +1,2 @@
+export const REMOVE_WAYPOINT = 'REMOVE_WAYPOINT';
 export const SET_WAYPOINT = 'SET_WAYPOINT';
