@@ -30,5 +30,4 @@ const mapDispatchToProps = (dispatch) => {
 	return {};
 };
 
-const fieldView = connect(mapStateToProps, mapDispatchToProps)(FieldView);
-export default fieldView;
+export default connect(mapStateToProps, mapDispatchToProps)(FieldView);

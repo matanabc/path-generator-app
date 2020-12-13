@@ -35,5 +35,4 @@ const mapDispatchToProps = (dispatch) => {
 	return {};
 };
 
-const playingBar = connect(mapStateToProps, mapDispatchToProps)(PlayingBar);
-export default playingBar;
+export default connect(mapStateToProps, mapDispatchToProps)(PlayingBar);

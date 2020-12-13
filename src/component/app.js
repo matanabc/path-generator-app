@@ -1,7 +1,8 @@
 import { Container, Row } from 'react-bootstrap';
-import FieldView from './field-view';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
+import FieldView from './field-view';
+import Tools from './ tools';
 import React from 'react';
 
 class App extends React.Component {
@@ -13,6 +14,7 @@ class App extends React.Component {
 						<FieldView />
 					</Row>
 					<PlayingBar />
+					<Tools />
 				</Container>
 			</div>
 		);
