@@ -10,8 +10,16 @@ class PlayingBar extends React.Component {
 	}
 
 	componentDidMount() {
-		this.range.current.disabled = true;
 		this.range.current.value = 0;
+		this.range.current.disabled = true;
+		document.querySelector('canvas').addEventListener('wheel', (event) => {
+			if (!this.props.path) return;
+			const lastPosition = this.props.rangePosition;
+			const maxPosition = this.props.path.sourceSetpoints.length - 1;
+			const newPosition = lastPosition - Math.sign(event.deltaY);
+			const position = newPosition >= 0 && newPosition <= maxPosition ? newPosition : lastPosition;
+			this.props.changeRangePosition(position);
+		});
 	}
 
 	componentDidUpdate() {
@@ -30,10 +38,16 @@ class PlayingBar extends React.Component {
 			<Container>
 				<Row>
 					<Col sm={1} style={{ fontSize: '12px', textAlign: 'end' }}>
-						{(this.props.robotLoopTime * this.props.rangePosition).toFixed(2)}
+						{this.props.path
+							? (this.props.robotLoopTime * this.props.rangePosition).toFixed(2)
+							: '0.00'}
 					</Col>
 					<Col>
-						<Form.Control ref={this.range} type="range" onChange={this.props.changeRangePosition} />
+						<Form.Control
+							ref={this.range}
+							type="range"
+							onChange={(event) => this.props.changeRangePosition(event.target.value)}
+						/>
 					</Col>
 					<Col sm={1} style={{ fontSize: '12px' }}>
 						{this.props.path
@@ -56,7 +70,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeRangePosition: (event) => dispatch(changeRangePosition(event.target.value)),
+		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
 	};
 };
 
