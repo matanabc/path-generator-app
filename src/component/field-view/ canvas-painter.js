@@ -64,7 +64,7 @@ function drawRobot(ctx, props) {
 }
 
 function drawRobotShape(ctx, props, robotLength, robotCenter) {
-	const index = 0;
+	const index = props.rangePosition;
 	const robotWidth = props.robotDrawConfig.width / props.fieldConfig.hightPixelToMeter;
 	const robotX =
 		props.path.coords[index].x / props.fieldConfig.widthPixelToMeter -
