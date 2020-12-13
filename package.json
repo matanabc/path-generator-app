@@ -1,0 +1,67 @@
+{
+	"name": "path-generator-app",
+	"version": "1.0.0",
+	"main": "public/electron.js",
+	"description": "A easy motion profile generator",
+	"repository": "https://github.com/matanabc/path-generator-app.git",
+	"author": "Matan Steinmetz <matanabc@gamil.com>",
+	"homepage": "./",
+	"scripts": {
+		"start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
+		"publish": "react-scripts build && electron-builder -wlm -p always",
+		"build": "react-scripts build && electron-builder"
+	},
+	"build": {
+		"appId": "com.example.PathGenerator",
+		"productName": "PathGenerator",
+		"artifactName": "PathGenerator_${os}_${version}.${ext}",
+		"win": {
+			"target": "nsis"
+		},
+		"linux": {
+			"target": "tar.gz"
+		},
+		"mac": {
+			"target": "zip"
+		}
+	},
+	"devDependencies": {
+		"concurrently": "^5.3.0",
+		"electron": "^10.1.3",
+		"electron-builder": "^22.8.1",
+		"wait-on": "^5.2.0"
+	},
+	"dependencies": {
+		"@testing-library/jest-dom": "^4.2.4",
+		"@testing-library/react": "^9.5.0",
+		"@testing-library/user-event": "^7.2.1",
+		"bootstrap": "^4.5.2",
+		"cross-env": "^7.0.2",
+		"electron-cookies": "^1.1.0",
+		"electron-is-dev": "^1.2.0",
+		"electron-store": "^5.2.0",
+		"electron-updater": "^4.3.5",
+		"js-cookie": "^2.2.1",
+		"os": "^0.1.1",
+		"path-generator": "^2.0.0",
+		"react": "^16.13.1",
+		"react-bootstrap": "^1.3.0",
+		"react-dom": "^16.13.1",
+		"react-icons": "^3.11.0",
+		"react-redux": "^7.2.1",
+		"react-scripts": "3.4.3",
+		"redux": "^4.0.5"
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
+}
