@@ -1,6 +1,6 @@
+import { changeSelectedPath, deletePath } from '../redux/path/path-actions';
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow } from 'react-icons/md';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
-import { changeSelectedPath } from '../redux/path/path-actions';
 import { FiDownload, FiCircle } from 'react-icons/fi';
 import { GiClick } from 'react-icons/gi';
 import { connect } from 'react-redux';
@@ -43,7 +43,13 @@ class Tools extends React.Component {
 					<Button className="mr-3 ml-4" size="lg">
 						<MdPlayArrow />
 					</Button>
-					<Button className="mr-3" size="lg" title="Delete path" variant="danger">
+					<Button
+						className="mr-3"
+						size="lg"
+						title="Delete path"
+						variant="danger"
+						onClick={this.props.deletePath}
+					>
 						<MdDelete />
 					</Button>
 					<Button className="mr-3" size="lg" title="Rename path">
@@ -69,6 +75,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
+		deletePath: () => dispatch(deletePath()),
 	};
 };
 
