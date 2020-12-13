@@ -37,6 +37,7 @@ class FieldView extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		filedImageUrl: state.field.imageUrl,
+		fieldConfig: state.field.fieldConfig,
 	};
 };
 

@@ -2,10 +2,10 @@ export class FieldConfig {
 	constructor(
 		widthInMeter = 16.5354,
 		heightInMeter = 8.001,
-		topLeftXPixel = 0,
-		topLeftYPixel = 0,
-		widthInPixel = 0,
-		heigthInPixel = 0
+		topLeftXPixel = 50,
+		topLeftYPixel = 50,
+		widthInPixel = 50,
+		heigthInPixel = 50
 	) {
 		this.widthInMeter = Number(widthInMeter);
 		this.heightInMeter = Number(heightInMeter);
