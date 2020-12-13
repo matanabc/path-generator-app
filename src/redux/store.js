@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 import field from './field-reducer';
-import path from './path/path-reducer';
+import path from './path/reducer';
 
 const reducers = combineReducers({ field, path });
 const store = createStore(reducers);

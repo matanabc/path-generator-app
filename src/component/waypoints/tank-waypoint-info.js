@@ -1,4 +1,4 @@
-import { setWaypoint, removeWaypoint } from '../../redux/path/path-actions';
+import { setWaypoint, removeWaypoint } from '../../redux/path/actions';
 import { Button, Alert, FormControl, InputGroup } from 'react-bootstrap';
 import { MdDelete, MdAddCircle } from 'react-icons/md';
 import { connect } from 'react-redux';

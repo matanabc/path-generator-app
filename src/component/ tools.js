@@ -1,4 +1,4 @@
-import { changeSelectedPath, deletePath } from '../redux/path/path-actions';
+import { changeSelectedPath, deletePath } from '../redux/path/actions';
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow } from 'react-icons/md';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
 import { FiDownload, FiCircle } from 'react-icons/fi';

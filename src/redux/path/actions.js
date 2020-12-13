@@ -1,9 +1,4 @@
-import {
-	SET_WAYPOINT,
-	REMOVE_WAYPOINT,
-	CHANGE_SELECTED_PATH,
-	DELETE_PATH,
-} from './path-action-types';
+import { SET_WAYPOINT, REMOVE_WAYPOINT, CHANGE_SELECTED_PATH, DELETE_PATH } from './action-types';
 
 export function setWaypoint(waypoint, index) {
 	return {

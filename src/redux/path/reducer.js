@@ -1,10 +1,5 @@
 import { Tank } from 'path-generator';
-import {
-	CHANGE_SELECTED_PATH,
-	REMOVE_WAYPOINT,
-	SET_WAYPOINT,
-	DELETE_PATH,
-} from './path-action-types';
+import { CHANGE_SELECTED_PATH, REMOVE_WAYPOINT, SET_WAYPOINT, DELETE_PATH } from './action-types';
 
 const { Path, PathConfig, Waypoint } = Tank;
 
