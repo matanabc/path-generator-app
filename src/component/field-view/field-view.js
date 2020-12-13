@@ -38,6 +38,7 @@ const mapStateToProps = (state) => {
 	return {
 		filedImageUrl: state.field.imageUrl,
 		fieldConfig: state.field.fieldConfig,
+		path: state.path.paths[state.path.selectedPath],
 	};
 };
 

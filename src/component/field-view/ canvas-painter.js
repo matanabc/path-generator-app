@@ -1,7 +1,11 @@
 export function drawOnCanvas(canvas, props) {
 	const ctx = canvas.getContext('2d');
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+	if (!props.path) return;
+
 	drawFieldBorders(ctx, props);
+	drawWaypoints(ctx, props);
 }
 
 function drawFieldBorders(ctx, props) {
@@ -14,4 +18,15 @@ function drawFieldBorders(ctx, props) {
 	);
 	ctx.strokeStyle = 'blue';
 	ctx.stroke();
+}
+
+function drawWaypoints(ctx, props) {
+	props.path.waypoints.forEach((waypoint) => {
+		const x = waypoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
+		const y = waypoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
+		ctx.beginPath();
+		ctx.arc(x, y, 2, 0, Math.PI * 2, false);
+		ctx.fillStyle = 'red';
+		ctx.fill();
+	});
 }
