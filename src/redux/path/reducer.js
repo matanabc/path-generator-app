@@ -11,7 +11,7 @@ const waypoints = [
 const pathConfig = new PathConfig(0.8, 3.5, 3);
 
 const initialState = {
-	pathConfig: new PathConfig(0.8, 3.5, 3),
+	pathConfig: pathConfig,
 	selectedPath: undefined,
 	pathType: Tank,
 	paths: {

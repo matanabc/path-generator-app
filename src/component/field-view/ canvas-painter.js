@@ -3,6 +3,8 @@ export function drawOnCanvas(canvas, props) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 	if (!props.path) return;
+	if (props.path.isIllegal()) return;
+	if (props.path.coords.length === 0) return;
 
 	drawFieldBorders(ctx, props);
 	drawCoords(ctx, props);
