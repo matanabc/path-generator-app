@@ -1,10 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { drawOnCanvas } from './ canvas-painter';
 
 class FieldView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.canvas = React.createRef();
+	}
+
+	componentDidMount() {
+		drawOnCanvas(this.canvas.current, this.props);
+	}
+
+	componentDidUpdate() {
+		drawOnCanvas(this.canvas.current, this.props);
 	}
 
 	render() {
