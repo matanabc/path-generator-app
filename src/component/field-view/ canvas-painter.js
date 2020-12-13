@@ -5,6 +5,7 @@ export function drawOnCanvas(canvas, props) {
 	if (!props.path) return;
 
 	drawFieldBorders(ctx, props);
+	drawCoords(ctx, props);
 	drawWaypoints(ctx, props);
 }
 
@@ -29,4 +30,16 @@ function drawWaypoints(ctx, props) {
 		ctx.fillStyle = 'red';
 		ctx.fill();
 	});
+}
+
+function drawCoords(ctx, props) {
+	ctx.beginPath();
+	props.path.coords.forEach((setpoint, index) => {
+		const x = setpoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
+		const y = setpoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
+		if (index === 0) ctx.moveTo(x, y);
+		else ctx.lineTo(x, y);
+	});
+	ctx.strokeStyle = 'Yellow';
+	ctx.stroke();
 }
