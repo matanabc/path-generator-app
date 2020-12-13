@@ -1,4 +1,5 @@
-import { Container, Row } from 'react-bootstrap';
+import WaypointsList from './waypoints/waypoints-list';
+import { Container } from 'react-bootstrap';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
 import FieldView from './field-view';
@@ -10,11 +11,10 @@ class App extends React.Component {
 		return (
 			<div className="App">
 				<Container fluid="md">
-					<Row>
-						<FieldView />
-					</Row>
+					<FieldView />
 					<PlayingBar />
 					<Tools />
+					<WaypointsList />
 				</Container>
 			</div>
 		);
