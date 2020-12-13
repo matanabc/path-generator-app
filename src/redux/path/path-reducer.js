@@ -1,5 +1,5 @@
 import { Tank } from 'path-generator';
-import { REMOVE_WAYPOINT, SET_WAYPOINT } from './path-action-types';
+import { CHANGE_SELECTED_PATH, REMOVE_WAYPOINT, SET_WAYPOINT } from './path-action-types';
 
 const { Path, PathConfig, Waypoint } = Tank;
 
@@ -12,7 +12,7 @@ const pathConfig = new PathConfig(0.8, 3.5, 3);
 
 const initialState = {
 	pathConfig: new PathConfig(0.8, 3.5, 3),
-	selectedPath: 'test',
+	selectedPath: undefined,
 	pathType: Tank,
 	paths: {
 		test: new Path(waypoints, pathConfig),
@@ -51,8 +51,13 @@ function removeWaypoint(state, payload) {
 	return newState;
 }
 
+function changeSelectedPath(state, payload) {
+	return { ...state, selectedPath: payload.pathName };
+}
+
 export default function path(state = initialState, action) {
 	if (action.type === SET_WAYPOINT) return setWaypoint(state, action.payload);
 	if (action.type === REMOVE_WAYPOINT) return removeWaypoint(state, action.payload);
+	if (action.type === CHANGE_SELECTED_PATH) return changeSelectedPath(state, action.payload);
 	return state;
 }

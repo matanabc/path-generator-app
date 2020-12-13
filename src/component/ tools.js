@@ -1,9 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { Button, Container, Row, Dropdown } from 'react-bootstrap';
-import { GiClick } from 'react-icons/gi';
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow } from 'react-icons/md';
+import { Button, Container, Row, Dropdown } from 'react-bootstrap';
+import { changeSelectedPath } from '../redux/path/path-actions';
 import { FiDownload, FiCircle } from 'react-icons/fi';
+import { GiClick } from 'react-icons/gi';
+import { connect } from 'react-redux';
+import React from 'react';
 
 class Tools extends React.Component {
 	render() {
@@ -20,12 +21,23 @@ class Tools extends React.Component {
 						<MdBuild />
 					</Button>
 					<Dropdown>
-						<Dropdown.Toggle size="lg">There is no path</Dropdown.Toggle>
+						<Dropdown.Toggle size="lg">
+							{this.props.pathName ? this.props.pathName : 'Select Path'}
+						</Dropdown.Toggle>
 						<Dropdown.Menu>
+							{this.props.pathsName.map((pathName, index) => {
+								return (
+									<Dropdown.Item
+										as="button"
+										key={index}
+										onClick={() => this.props.changeSelectedPath(pathName)}
+									>
+										{pathName}
+									</Dropdown.Item>
+								);
+							})}
 							<Dropdown.Divider />
-							<Dropdown.Item as="button" className="AddPath">
-								New path
-							</Dropdown.Item>
+							<Dropdown.Item as="button">New path</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
 					<Button className="mr-3 ml-4" size="lg">
@@ -48,11 +60,16 @@ class Tools extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		pathName: state.path.selectedPath,
+		pathsName: Object.keys(state.path.paths),
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tools);
