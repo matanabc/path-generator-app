@@ -1,4 +1,4 @@
-import { changeRangePosition } from '../redux/view/actions';
+import { changeRangePosition, setDrawRobotInterval } from '../redux/view/actions';
 import { Form, Container, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -7,19 +7,17 @@ class PlayingBar extends React.Component {
 	constructor(props) {
 		super(props);
 		this.range = React.createRef();
+		this.changeRangePosition = this.changeRangePosition.bind(this);
 	}
 
 	componentDidMount() {
 		this.range.current.value = 0;
 		this.range.current.disabled = true;
-		document.querySelector('canvas').addEventListener('wheel', (event) => {
-			if (!this.props.path) return;
-			const lastPosition = this.props.rangePosition;
-			const maxPosition = this.props.path.sourceSetpoints.length - 1;
-			const newPosition = lastPosition - Math.sign(event.deltaY);
-			const position = newPosition >= 0 && newPosition <= maxPosition ? newPosition : lastPosition;
-			this.props.changeRangePosition(position);
-		});
+		document
+			.querySelector('canvas')
+			.addEventListener('wheel', (event) =>
+				this.changeRangePosition(this.props.rangePosition - Math.sign(event.deltaY))
+			);
 	}
 
 	componentDidUpdate() {
@@ -31,6 +29,15 @@ class PlayingBar extends React.Component {
 			this.range.current.disabled = true;
 			this.range.current.value = 0;
 		}
+	}
+
+	changeRangePosition(newPosition) {
+		if (!this.props.path) return;
+		this.props.setDrawRobotInterval();
+		const lastPosition = this.props.rangePosition;
+		const maxPosition = this.props.path.sourceSetpoints.length - 1;
+		const position = newPosition >= 0 && newPosition <= maxPosition ? newPosition : lastPosition;
+		this.props.changeRangePosition(position);
 	}
 
 	render() {
@@ -46,7 +53,7 @@ class PlayingBar extends React.Component {
 						<Form.Control
 							ref={this.range}
 							type="range"
-							onChange={(event) => this.props.changeRangePosition(event.target.value)}
+							onChange={(event) => this.changeRangePosition(event.target.value)}
 						/>
 					</Col>
 					<Col sm={1} style={{ fontSize: '12px' }}>
@@ -71,6 +78,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
+		setDrawRobotInterval: () => dispatch(setDrawRobotInterval()),
 	};
 };
 
