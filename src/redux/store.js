@@ -1,8 +1,8 @@
 import { createStore, combineReducers } from 'redux';
-import field from './field-reducer';
+import view from './view/reducer';
 import path from './path/reducer';
 
-const reducers = combineReducers({ field, path });
+const reducers = combineReducers({ view, path });
 const store = createStore(reducers);
 
 store.subscribe(() => {
