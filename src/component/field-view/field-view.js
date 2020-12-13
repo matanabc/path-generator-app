@@ -2,12 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 class FieldView extends React.Component {
+	constructor(props) {
+		super(props);
+		this.canvas = React.createRef();
+	}
+
 	render() {
 		return (
 			<div className="FieldView">
 				<canvas
 					className="FieldImage"
-					ref={this.canvasRef}
+					ref={this.canvas}
 					style={{
 						backgroundPosition: 'center',
 						backgroundSize: 'cover',
