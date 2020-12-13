@@ -10,7 +10,7 @@ const pathConfig = new PathConfig(0.8, 3.5, 3);
 
 const initialState = {
 	pathConfig: new PathConfig(0.8, 3.5, 3),
-	selectedPath: undefined,
+	selectedPath: 'test',
 	pathType: Tank,
 	paths: {
 		test: new Path(waypoints, pathConfig),

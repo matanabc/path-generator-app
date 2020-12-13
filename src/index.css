@@ -30,8 +30,9 @@ div {
 	height: 65vh;
 }
 
-.WaypointsView {
+.WaypointsList {
 	height: 22vh;
+	margin-top: 5px;
 	overflow-y: auto;
 }
 
