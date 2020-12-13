@@ -1,7 +1,8 @@
-import React from 'react';
 import { Button, Alert, FormControl, InputGroup } from 'react-bootstrap';
+import { setWaypoint } from '../../redux/path/path-actions';
 import { MdDelete, MdAddCircle } from 'react-icons/md';
 import { connect } from 'react-redux';
+import React from 'react';
 
 class TankWaypointInfo extends React.Component {
 	constructor(props) {
@@ -15,7 +16,14 @@ class TankWaypointInfo extends React.Component {
 	}
 
 	onChange() {
-		console.log('.');
+		const object = {
+			x: this.x.current.value,
+			y: this.y.current.value,
+			v: this.v.current.value,
+			vMax: this.vMax.current.value,
+			angle: this.angle.current.value,
+		};
+		this.props.setWaypoint(object, this.props.id);
 	}
 
 	render() {
@@ -60,8 +68,8 @@ class TankWaypointInfo extends React.Component {
 					<FormControl
 						className="mr-2"
 						ref={this.v}
-						value={this.props.waypoint.v}
-						defaultValue={this.onChange}
+						defaultValue={this.props.waypoint.v}
+						onChange={this.onChange}
 					/>
 
 					<InputGroup.Prepend>
@@ -70,8 +78,8 @@ class TankWaypointInfo extends React.Component {
 					<FormControl
 						className="mr-2"
 						ref={this.vMax}
-						value={this.props.waypoint.vMax}
-						defaultValue={this.onChange}
+						defaultValue={this.props.waypoint.vMax}
+						onChange={this.onChange}
 					/>
 
 					<Button className="mr-2" variant="danger" onClick={this.remove}>
@@ -92,7 +100,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TankWaypointInfo);
