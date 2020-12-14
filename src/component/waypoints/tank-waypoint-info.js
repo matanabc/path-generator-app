@@ -8,6 +8,7 @@ import React from 'react';
 class TankWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = { id: -1 };
 		this.x = React.createRef();
 		this.y = React.createRef();
 		this.v = React.createRef();
@@ -16,33 +17,41 @@ class TankWaypointInfo extends React.Component {
 		this.add = this.add.bind(this);
 		this.remove = this.remove.bind(this);
 		this.onChange = this.onChange.bind(this);
+		this.getValue = this.getValue.bind(this);
+	}
+
+	getValue(currentValue, value) {
+		if (this.state.id !== this.props.id) return value;
+		return Number.isNaN(currentValue) ? value : currentValue;
 	}
 
 	componentDidUpdate() {
-		if (this.props.needUpdate) {
-			this.x.current.value = this.props.waypoint.x;
-			this.y.current.value = this.props.waypoint.y;
-			this.v.current.value = this.props.waypoint.v;
-			this.vMax.current.value = this.props.waypoint.vMax;
-			this.angle.current.value = this.props.waypoint.angle;
-			this.props.update();
+		this.angle.current.value = this.getValue(this.angle.current.value, this.props.waypoint.angle);
+		this.vMax.current.value = this.getValue(this.vMax.current.value, this.props.waypoint.vMax);
+		this.x.current.value = this.getValue(this.x.current.value, this.props.waypoint.x);
+		this.y.current.value = this.getValue(this.y.current.value, this.props.waypoint.y);
+		this.v.current.value = this.getValue(this.v.current.value, this.props.waypoint.v);
+
+		if (this.state.id !== this.props.id) {
+			this.setState(() => {
+				return { id: this.props.id };
+			});
 		}
 	}
 
 	onChange() {
 		const object = {
-			x: this.x.current.value,
-			y: this.y.current.value,
-			v: this.v.current.value,
-			vMax: this.vMax.current.value,
-			angle: this.angle.current.value,
+			x: Number(this.x.current.value),
+			y: Number(this.y.current.value),
+			v: Number(this.v.current.value),
+			vMax: Number(this.vMax.current.value),
+			angle: Number(this.angle.current.value),
 		};
 		this.props.setWaypoint(object, this.props.id);
 	}
 
 	remove() {
 		this.props.removeWaypoint(this.props.id);
-		this.props.remove();
 	}
 
 	add() {

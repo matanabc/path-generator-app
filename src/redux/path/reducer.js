@@ -11,11 +11,11 @@ import {
 
 function getNewWaypoint(state, waypoint, object) {
 	return new state.pathType.Waypoint(
-		Number.isNaN(Number(object.x)) ? waypoint.x : Number(object.x),
-		Number.isNaN(Number(object.y)) ? waypoint.y : Number(object.y),
-		Number.isNaN(Number(object.angle)) ? waypoint.angle : Number(object.angle),
-		Number.isNaN(Number(object.v)) ? waypoint.v : Number(object.v),
-		Number.isNaN(Number(object.vMax)) ? waypoint.vMax : Number(object.vMax)
+		Number.isNaN(object.x) ? waypoint.x : object.x,
+		Number.isNaN(object.y) ? waypoint.y : object.y,
+		Number.isNaN(object.angle) ? waypoint.angle : object.angle,
+		Number.isNaN(object.v) ? waypoint.v : object.v,
+		Number.isNaN(object.vMax) ? waypoint.vMax : object.vMax
 	);
 }
 

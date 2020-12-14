@@ -3,25 +3,6 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 class WaypointsList extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = { updateList: false };
-		this.updateList = this.updateList.bind(this);
-		this.finishUpdateList = this.finishUpdateList.bind(this);
-	}
-
-	updateList() {
-		this.setState(() => {
-			return { updateList: true };
-		});
-	}
-
-	finishUpdateList() {
-		this.setState(() => {
-			return { updateList: false };
-		});
-	}
-
 	render() {
 		return (
 			<div className="WaypointsList">
@@ -32,9 +13,6 @@ class WaypointsList extends React.Component {
 								id={index}
 								key={index}
 								waypoint={element}
-								remove={this.updateList}
-								update={this.finishUpdateList}
-								needUpdate={this.state.updateList}
 								color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
 							/>
 						);
