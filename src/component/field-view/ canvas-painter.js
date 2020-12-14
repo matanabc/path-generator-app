@@ -1,12 +1,14 @@
 export function drawOnCanvas(canvas, props) {
 	const ctx = canvas.getContext('2d');
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	drawFieldBorders(ctx, props);
 
 	if (!props.path) return;
-	if (props.path.isIllegal()) return;
-	if (props.path.coords.length === 0) return;
+	if (props.path.isIllegal() || props.path.coords.length === 0) {
+		drawWaypoints(ctx, props);
+		return;
+	}
 
-	drawFieldBorders(ctx, props);
 	drawCoords(ctx, props);
 	drawWaypoints(ctx, props);
 	drawRobot(ctx, props);
