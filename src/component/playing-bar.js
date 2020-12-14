@@ -58,7 +58,11 @@ class PlayingBar extends React.Component {
 					</Col>
 					<Col sm={1} style={{ fontSize: '12px' }}>
 						{this.props.path
-							? ((this.props.path.sourceSetpoints.length - 1) * this.props.robotLoopTime).toFixed(2)
+							? (
+									Math.sign(this.props.path.sourceSetpoints.length) *
+									(this.props.path.sourceSetpoints.length - 1) *
+									this.props.robotLoopTime
+							  ).toFixed(2)
 							: '0.00'}
 					</Col>
 				</Row>

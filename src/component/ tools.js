@@ -26,7 +26,11 @@ class Tools extends React.Component {
 
 	setDrawRobotInterval() {
 		var interval = undefined;
-		if (!this.props.drawRobotInterval && this.props.path) {
+		if (
+			this.props.path &&
+			!this.props.drawRobotInterval &&
+			this.props.path.sourceSetpoints.length > 0
+		) {
 			if (this.isRangePositionInTheEnd()) this.props.changeRangePosition(0);
 			interval = setInterval(() => {
 				if (this.isRangePositionInTheEnd()) {

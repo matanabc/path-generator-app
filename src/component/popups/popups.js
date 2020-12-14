@@ -1,5 +1,5 @@
 import { deletePath, renamePath, addPath } from '../../redux/path/actions';
-import { changePopupsStatus } from '../../redux/view/actions';
+import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Popup from './popup';
@@ -38,6 +38,7 @@ class Popups extends React.Component {
 			!this.props.pathsName.includes(this.newPathRef.current.value)
 		) {
 			this.props.addPath(this.newPathRef.current.value);
+			this.props.resetRangePosition();
 			this.props.closePopups();
 		}
 	}
@@ -85,6 +86,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		resetRangePosition: () => dispatch(changeRangePosition(0)),
 		closePopups: () => dispatch(changePopupsStatus()),
 		renamePath: (name) => dispatch(renamePath(name)),
 		addPath: (name) => dispatch(addPath(name)),
