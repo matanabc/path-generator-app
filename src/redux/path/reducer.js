@@ -8,24 +8,6 @@ import {
 	ADD_PATH,
 } from './action-types';
 
-const { Path, PathConfig, Waypoint } = Tank;
-
-const waypoints = [
-	new Waypoint(0, 0, 0, 0, 2),
-	new Waypoint(1.5, 1.5, 90, 2, 2),
-	new Waypoint(3, 3, 0, 0, 0),
-];
-const pathConfig = new PathConfig(0.8, 3.5, 3);
-
-const initialState = {
-	pathConfig: pathConfig,
-	selectedPath: undefined,
-	pathType: Tank,
-	paths: {
-		test: new Path(waypoints, pathConfig),
-	},
-};
-
 function getNewWaypoint(waypoint, object) {
 	return new Tank.Waypoint(
 		Number.isNaN(Number(object.x)) ? waypoint.x : Number(object.x),
@@ -78,11 +60,11 @@ function renamePath(state, payload) {
 
 function addPath(state, payload) {
 	const newState = { ...state, selectedPath: payload.name };
-	newState.paths[payload.name] = new Path([], state.pathConfig);
+	newState.paths[payload.name] = new Tank.Path([], state.pathConfig);
 	return newState;
 }
 
-export default function path(state = initialState, action) {
+export default function path(state, action) {
 	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
 	if (action.type === DELETE_PATH) return deletePath(state, action.payload);

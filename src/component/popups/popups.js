@@ -77,10 +77,10 @@ class Popups extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathName: state.path.selectedPath ? state.path.selectedPath : '',
-		path: state.path.paths[state.path.selectedPath],
-		pathsName: Object.keys(state.path.paths),
-		popupsStatus: state.view.popupsStatus,
+		pathName: state.selectedPath ? state.selectedPath : '',
+		path: state.paths[state.selectedPath],
+		pathsName: Object.keys(state.paths),
+		popupsStatus: state.popupsStatus,
 	};
 };
 

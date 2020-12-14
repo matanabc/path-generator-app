@@ -132,12 +132,12 @@ class Tools extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathName: state.path.selectedPath,
-		rangePosition: state.view.rangePosition,
-		pathsName: Object.keys(state.path.paths),
-		path: state.path.paths[state.path.selectedPath],
-		drawRobotInterval: state.view.drawRobotInterval,
-		robotLoopTime: state.path.pathConfig.robotLoopTime,
+		pathName: state.selectedPath,
+		rangePosition: state.rangePosition,
+		pathsName: Object.keys(state.paths),
+		path: state.paths[state.selectedPath],
+		drawRobotInterval: state.drawRobotInterval,
+		robotLoopTime: state.pathConfig.robotLoopTime,
 	};
 };
 
