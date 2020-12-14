@@ -10,11 +10,18 @@ import React from 'react';
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-
+		this.getUpdateButton = this.getUpdateButton.bind(this);
 		this.settingsFoldersConfig = new SettingsFoldersConfig();
 		this.settingsRobotConfig = new SettingsRobotConfig();
 		this.settingsFiledConfig = new SettingsFiledConfig();
 		this.settingsPathConfig = new SettingsPathConfig();
+	}
+
+	getUpdateButton() {
+		if (this.props.newVersion !== undefined) {
+			return <Button variant="outline-success">{`Update to v${this.props.newVersion}`}</Button>;
+		}
+		return <span />;
 	}
 
 	render() {
@@ -33,9 +40,11 @@ class Settings extends React.Component {
 						{this.settingsRobotConfig.render(this.props)}
 						{this.settingsFiledConfig.render(this.props)}
 						{this.settingsPathConfig.render(this.props)}
+						<div style={{ fontSize: 10 }}>v{this.props.version}</div>
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
+					{this.getUpdateButton()}
 					<Button variant="outline-primary" onClick={this.props.closePopups}>
 						cancel
 					</Button>
@@ -54,7 +63,9 @@ const mapStateToProps = (state) => {
 		fieldConfig: state.fieldConfig,
 		filedImageUrl: state.imageUrl,
 		pathConfig: state.pathConfig,
+		newVersion: state.newVersion,
 		saveCSVTo: state.saveCSVTo,
+		version: state.version,
 	};
 };
 
