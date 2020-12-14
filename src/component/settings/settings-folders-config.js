@@ -21,13 +21,13 @@ class SettingsFoldersConfig extends SettingsConfig {
 			<div>
 				<Form.Row>
 					<Form.Group as={Col}>
-						<Form.Label style={this.style}>Folders config:</Form.Label>
+						<Form.Label style={this.style}>Folders config</Form.Label>
 					</Form.Group>
 				</Form.Row>
 
 				<Form.Row>
 					<Form.Group as={Col}>
-						<Form.Label>Project folder:</Form.Label>
+						<Form.Label>Project folder</Form.Label>
 						<Form.Control defaultValue={props.projectPath} ref={this.projectFolderRef} />
 					</Form.Group>
 				</Form.Row>

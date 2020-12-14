@@ -2,6 +2,7 @@ import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import SettingsRobotConfig from './settings-robot-config';
 import SettingsFiledConfig from './settings-filed-config';
+import SettingsPathConfig from './settings-path-config';
 import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -13,6 +14,7 @@ class Settings extends React.Component {
 		this.settingsFoldersConfig = new SettingsFoldersConfig();
 		this.settingsRobotConfig = new SettingsRobotConfig();
 		this.settingsFiledConfig = new SettingsFiledConfig();
+		this.settingsPathConfig = new SettingsPathConfig();
 	}
 
 	render() {
@@ -30,6 +32,7 @@ class Settings extends React.Component {
 						{this.settingsFoldersConfig.render(this.props)}
 						{this.settingsRobotConfig.render(this.props)}
 						{this.settingsFiledConfig.render(this.props)}
+						{this.settingsPathConfig.render(this.props)}
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -50,6 +53,7 @@ const mapStateToProps = (state) => {
 		projectPath: state.projectPath,
 		fieldConfig: state.fieldConfig,
 		filedImageUrl: state.imageUrl,
+		pathConfig: state.pathConfig,
 		saveCSVTo: state.saveCSVTo,
 	};
 };
