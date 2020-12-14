@@ -1,4 +1,3 @@
-import { Tank } from 'path-generator';
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
@@ -8,8 +7,8 @@ import {
 	ADD_PATH,
 } from './action-types';
 
-function getNewWaypoint(waypoint, object) {
-	return new Tank.Waypoint(
+function getNewWaypoint(state, waypoint, object) {
+	return new state.pathType.Waypoint(
 		Number.isNaN(Number(object.x)) ? waypoint.x : Number(object.x),
 		Number.isNaN(Number(object.y)) ? waypoint.y : Number(object.y),
 		Number.isNaN(Number(object.angle)) ? waypoint.angle : Number(object.angle),
@@ -23,7 +22,7 @@ function setWaypoint(state, payload) {
 	const newState = { ...state };
 	state.paths[state.selectedPath].waypoints.forEach((element, index) => {
 		if (index !== payload.index) waypoints.push(element);
-		else waypoints.push(getNewWaypoint(element, payload.waypoint));
+		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
 	});
 	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, newState.pathConfig);
 	return newState;
@@ -60,7 +59,7 @@ function renamePath(state, payload) {
 
 function addPath(state, payload) {
 	const newState = { ...state, selectedPath: payload.name };
-	newState.paths[payload.name] = new Tank.Path([], state.pathConfig);
+	newState.paths[payload.name] = new state.pathType.Path([], state.pathConfig);
 	return newState;
 }
 
