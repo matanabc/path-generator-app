@@ -1,6 +1,10 @@
 import { FieldConfig, RobotDrawConfig } from '../../component/field-view/view-config';
-import { CHANGE_RANGE_POSITION, SET_DRAW_ROBOT_INTERVAL } from './action-types';
 import { PopupsConfig } from '../../component/popups/popups-config';
+import {
+	CHANGE_RANGE_POSITION,
+	SET_DRAW_ROBOT_INTERVAL,
+	CHANGE_POPUPS_STATUS,
+} from './action-types';
 
 const initialState = {
 	fieldConfig: new FieldConfig(16.5354, 8.001, 50, 25, 198, 103),
@@ -23,7 +27,15 @@ function setDrawRobotInterval(state, payload) {
 	return { ...state, drawRobotInterval: undefined };
 }
 
+function changePopupsStatus(state, payload) {
+	const newState = { ...state, popupsStatus: new PopupsConfig() };
+	if (payload.popup !== undefined)
+		newState.popupsStatus[payload.popup] = !state.popupsStatus[payload.popup];
+	return newState;
+}
+
 export default function view(state = initialState, action) {
+	if (action.type === CHANGE_POPUPS_STATUS) return changePopupsStatus(state, action.payload);
 	if (action.type === CHANGE_RANGE_POSITION) return changeRangePosition(state, action.payload);
 	if (action.type === SET_DRAW_ROBOT_INTERVAL) return setDrawRobotInterval(state, action.payload);
 	return state;

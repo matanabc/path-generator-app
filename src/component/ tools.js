@@ -1,11 +1,15 @@
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from 'react-icons/md';
-import { changeRangePosition, setDrawRobotInterval } from '../redux/view/actions';
-import { changeSelectedPath, deletePath } from '../redux/path/actions';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
+import { changeSelectedPath } from '../redux/path/actions';
 import { FiDownload, FiCircle } from 'react-icons/fi';
 import { GiClick } from 'react-icons/gi';
 import { connect } from 'react-redux';
 import React from 'react';
+import {
+	changeRangePosition,
+	setDrawRobotInterval,
+	changePopupsStatus,
+} from '../redux/view/actions';
 
 class Tools extends React.Component {
 	constructor(props) {
@@ -43,10 +47,21 @@ class Tools extends React.Component {
 		return (
 			<Container>
 				<Row>
-					<Button className="mr-3" size="lg" title="Add waypoint with mouse" variant={'primary'}>
+					<Button
+						size="lg"
+						className="mr-3"
+						variant={'primary'}
+						title="Add waypoint with mouse"
+						disabled={this.props.path === undefined}
+					>
 						<GiClick />
 					</Button>
-					<Button className="mr-3" size="lg" title="Save csv path to robot">
+					<Button
+						size="lg"
+						className="mr-3"
+						title="Save csv path to robot"
+						disabled={this.props.path === undefined}
+					>
 						<FiDownload />
 					</Button>
 					<Button className="mr-3" size="lg" title="Settings">
@@ -72,7 +87,12 @@ class Tools extends React.Component {
 							<Dropdown.Item as="button">New path</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
-					<Button className="mr-3 ml-4" size="lg" onClick={this.setDrawRobotInterval}>
+					<Button
+						className="mr-3 ml-4"
+						size="lg"
+						onClick={this.setDrawRobotInterval}
+						disabled={this.props.path === undefined}
+					>
 						{playButtonToShow}
 					</Button>
 					<Button
@@ -80,14 +100,20 @@ class Tools extends React.Component {
 						size="lg"
 						title="Delete path"
 						variant="danger"
-						onClick={this.props.deletePath}
+						onClick={this.props.showDeletePathPopup}
+						disabled={this.props.path === undefined}
 					>
 						<MdDelete />
 					</Button>
-					<Button className="mr-3" size="lg" title="Rename path">
+					<Button
+						className="mr-3"
+						size="lg"
+						title="Rename path"
+						disabled={this.props.path === undefined}
+					>
 						<MdEdit />
 					</Button>
-					<Button className="mr-3" size="lg">
+					<Button className="mr-3" size="lg" disabled={this.props.path === undefined}>
 						<FiCircle className="mr-2" />
 						in reverse
 					</Button>
@@ -112,8 +138,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
+		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
-		deletePath: () => dispatch(deletePath()),
 	};
 };
 
