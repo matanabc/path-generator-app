@@ -43,7 +43,7 @@ function removeWaypoint(state, payload) {
 
 function changeSelectedPath(state, payload) {
 	const oldPath = state.paths[payload.pathName];
-	const newState = { ...state, selectedPath: payload.pathName, listenToMouseClicks: false };
+	const newState = { ...state, selectedPath: payload.pathName };
 	newState.paths[payload.pathName] = new state.pathType.Path(oldPath.waypoints, state.pathConfig);
 	return newState;
 }
@@ -77,12 +77,16 @@ function checkIfPathIsIllegal(oldState, state) {
 }
 
 function addWaypoint(state, payload) {
-	const waypoints = state.paths[state.selectedPath].waypoints;
-	const waypoint = Object.assign(new state.pathType.Waypoint(), payload.waypoint);
-	if (waypoints[waypoints.length - 1].vMax === 0) waypoints[waypoints.length - 1].vMax = 0.1;
-	waypoints.push(waypoint);
-
-	const newState = { ...state };
+	const waypoints = [];
+	const object = { ...payload.waypoint, vMax: 0.1 };
+	const newWaypoint = Object.assign(new state.pathType.Waypoint(), object);
+	state.paths[state.selectedPath].waypoints.forEach((waypoint, index) => {
+		if (waypoints.vMax === 0) waypoints.vMax = 0.1;
+		waypoints.push(waypoint);
+		if (index === state.addWaypointInIndex) waypoints.push(newWaypoint);
+	});
+	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
+	const newState = { ...state, addWaypointInIndex: undefined };
 	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, state.pathConfig);
 	return newState;
 }

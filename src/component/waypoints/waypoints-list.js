@@ -35,6 +35,7 @@ class WaypointsList extends React.Component {
 								remove={this.updateList}
 								update={this.finishUpdateList}
 								needUpdate={this.state.updateList}
+								color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
 							/>
 						);
 					})
@@ -49,6 +50,7 @@ class WaypointsList extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		path: state.paths[state.selectedPath],
+		addWaypointInIndex: state.addWaypointInIndex,
 	};
 };
 

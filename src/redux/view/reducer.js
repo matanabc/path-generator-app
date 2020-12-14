@@ -25,7 +25,13 @@ function changePopupsStatus(state, payload) {
 }
 
 function changeListenToMouseStatus(state, payload) {
-	return { ...state, listenToMouseClicks: !state.listenToMouseClicks };
+	const index = state.addWaypointInIndex !== undefined ? undefined : payload.index;
+	const status = payload.index !== undefined ? true : !state.listenToMouseClicks;
+	return {
+		...state,
+		listenToMouseClicks: status,
+		addWaypointInIndex: index,
+	};
 }
 
 export default function view(state, action) {

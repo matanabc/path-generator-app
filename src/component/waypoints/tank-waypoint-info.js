@@ -1,5 +1,6 @@
-import { setWaypoint, removeWaypoint } from '../../redux/path/actions';
 import { Button, Alert, FormControl, InputGroup } from 'react-bootstrap';
+import { setWaypoint, removeWaypoint } from '../../redux/path/actions';
+import { changeListenToMouseStatus } from '../../redux/view/actions';
 import { MdDelete, MdAddCircle } from 'react-icons/md';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -12,6 +13,7 @@ class TankWaypointInfo extends React.Component {
 		this.v = React.createRef();
 		this.vMax = React.createRef();
 		this.angle = React.createRef();
+		this.add = this.add.bind(this);
 		this.remove = this.remove.bind(this);
 		this.onChange = this.onChange.bind(this);
 	}
@@ -41,6 +43,10 @@ class TankWaypointInfo extends React.Component {
 	remove() {
 		this.props.removeWaypoint(this.props.id);
 		this.props.remove();
+	}
+
+	add() {
+		this.props.changeListenToMouseStatus(this.props.id);
 	}
 
 	render() {
@@ -103,7 +109,7 @@ class TankWaypointInfo extends React.Component {
 						<MdDelete />
 					</Button>
 
-					<Button onClick={this.add}>
+					<Button onClick={this.add} variant={this.props.color}>
 						<MdAddCircle />
 					</Button>
 				</InputGroup>
@@ -118,6 +124,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		changeListenToMouseStatus: (index) => dispatch(changeListenToMouseStatus(index)),
 		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
 		removeWaypoint: (index) => dispatch(removeWaypoint(index)),
 	};

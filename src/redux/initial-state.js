@@ -14,6 +14,7 @@ const pathConfig = new PathConfig(0.8, 3.5, 3);
 export const initialState = {
 	//View
 	popupsStatus: new PopupsConfig(),
+	addWaypointInIndex: undefined,
 	drawRobotInterval: undefined,
 	listenToMouseClicks: false,
 	selectedPath: undefined,

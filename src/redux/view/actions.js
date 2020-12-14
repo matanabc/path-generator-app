@@ -32,9 +32,11 @@ export function changePopupsStatus(popup) {
 	};
 }
 
-export function changeListenToMouseStatus() {
+export function changeListenToMouseStatus(index) {
 	return {
 		type: CHANGE_LISTEN_TO_MOUSE_STATUS,
-		payload: {},
+		payload: {
+			index: index,
+		},
 	};
 }
