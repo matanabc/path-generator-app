@@ -1,6 +1,7 @@
 import WaypointsList from './waypoints/waypoints-list';
 import FieldView from './field-view/field-view';
 import { Container } from 'react-bootstrap';
+import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
 import Popups from './popups/popups';
@@ -13,6 +14,7 @@ class App extends React.Component {
 			<div className="App">
 				<Container fluid="md">
 					<Popups />
+					<Settings />
 					<FieldView />
 					<PlayingBar />
 					<Tools />
