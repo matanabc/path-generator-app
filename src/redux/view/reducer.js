@@ -1,9 +1,11 @@
 import { FieldConfig, RobotDrawConfig } from '../../component/field-view/view-config';
 import { CHANGE_RANGE_POSITION, SET_DRAW_ROBOT_INTERVAL } from './action-types';
+import { PopupsConfig } from '../../component/popups/popups-config';
 
 const initialState = {
 	fieldConfig: new FieldConfig(16.5354, 8.001, 50, 25, 198, 103),
 	robotDrawConfig: new RobotDrawConfig(),
+	popupsStatus: new PopupsConfig(),
 	drawRobotInterval: undefined,
 	rangePosition: 0,
 	imageUrl:
