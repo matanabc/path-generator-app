@@ -14,7 +14,7 @@ class SettingsPathConfig extends SettingsConfig {
 
 	getData() {
 		return {
-			v: Number(this.robotMaxVRef.current.value),
+			vMax: Number(this.robotMaxVRef.current.value),
 			width: Number(this.pathWidthRef.current.value),
 			acc: Number(this.robotMaxAccRef.current.value),
 			robotLoopTime: Number(this.robotLoopTimeRef.current.value),

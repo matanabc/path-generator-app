@@ -41,7 +41,10 @@ function removeWaypoint(state, payload) {
 }
 
 function changeSelectedPath(state, payload) {
-	return { ...state, selectedPath: payload.pathName };
+	const oldPath = state.paths[payload.pathName];
+	const newState = { ...state, selectedPath: payload.pathName };
+	newState.paths[payload.pathName] = new state.pathType.Path(oldPath.waypoints, state.pathConfig);
+	return newState;
 }
 
 function deletePath(state, payload) {
