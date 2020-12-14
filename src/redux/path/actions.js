@@ -1,11 +1,21 @@
 import {
-	SET_WAYPOINT,
-	REMOVE_WAYPOINT,
 	CHANGE_SELECTED_PATH,
+	REMOVE_WAYPOINT,
+	ADD_WAYPOINT,
+	SET_WAYPOINT,
 	DELETE_PATH,
 	RENAME_PATH,
 	ADD_PATH,
 } from './action-types';
+
+export function addWaypoint(waypoint) {
+	return {
+		type: ADD_WAYPOINT,
+		payload: {
+			waypoint: waypoint,
+		},
+	};
+}
 
 export function setWaypoint(waypoint, index) {
 	return {

@@ -1,6 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { addWaypoint } from '../../redux/path/actions';
 import { drawOnCanvas } from './ canvas-painter';
+import { connect } from 'react-redux';
+import React from 'react';
 
 class FieldView extends React.Component {
 	constructor(props) {
@@ -21,7 +22,17 @@ class FieldView extends React.Component {
 	}
 
 	onClick(event) {
-		alert();
+		const canvas = this.canvas.current;
+		const rect = canvas.getBoundingClientRect();
+		const scaleX = canvas.width / rect.width;
+		const scaleY = canvas.height / rect.height;
+		const x =
+			((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel) *
+			this.props.fieldConfig.widthPixelToMeter;
+		const y =
+			((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel) *
+			this.props.fieldConfig.hightPixelToMeter;
+		this.props.addWaypoint({ x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) });
 	}
 
 	render() {
@@ -54,7 +65,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(FieldView);

@@ -2,6 +2,7 @@ import { PopupsConfig } from '../../component/popups/popups-config';
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
+	ADD_WAYPOINT,
 	SET_WAYPOINT,
 	DELETE_PATH,
 	RENAME_PATH,
@@ -75,11 +76,23 @@ function checkIfPathIsIllegal(oldState, state) {
 	return state;
 }
 
+function addWaypoint(state, payload) {
+	const waypoints = state.paths[state.selectedPath].waypoints;
+	const waypoint = Object.assign(new state.pathType.Waypoint(), payload.waypoint);
+	if (waypoints[waypoints.length - 1].vMax === 0) waypoints[waypoints.length - 1].vMax = 0.1;
+	waypoints.push(waypoint);
+
+	const newState = { ...state };
+	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, state.pathConfig);
+	return newState;
+}
+
 export default function path(state, action) {
 	const oldState = state;
 	if (action.type === ADD_PATH) state = addPath(state, action.payload);
 	if (action.type === RENAME_PATH) state = renamePath(state, action.payload);
 	if (action.type === DELETE_PATH) state = deletePath(state, action.payload);
+	if (action.type === ADD_WAYPOINT) state = addWaypoint(state, action.payload);
 	if (action.type === SET_WAYPOINT) state = setWaypoint(state, action.payload);
 	if (action.type === REMOVE_WAYPOINT) state = removeWaypoint(state, action.payload);
 	if (action.type === CHANGE_SELECTED_PATH) state = changeSelectedPath(state, action.payload);
