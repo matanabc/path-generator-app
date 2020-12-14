@@ -70,6 +70,19 @@ class Popups extends React.Component {
 					confirm={this.createNewPath}
 					title="Create a new path"
 				/>
+
+				<Popup
+					show={this.props.popupsStatus.pathIsIllegalPopup}
+					title={this.props.path && this.props.path.isIllegal() ? this.props.path.error.info : ''}
+					body={
+						<div>
+							{this.props.path && this.props.path.isIllegal()
+								? `${this.props.path.error.problem}\n \n${this.props.path.error.solution}`
+								: ''}
+						</div>
+					}
+					close={this.props.closePopups}
+				/>
 			</div>
 		);
 	}

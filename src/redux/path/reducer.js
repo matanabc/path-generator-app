@@ -1,3 +1,4 @@
+import { PopupsConfig } from '../../component/popups/popups-config';
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
@@ -63,12 +64,21 @@ function addPath(state, payload) {
 	return newState;
 }
 
-export default function path(state, action) {
-	if (action.type === ADD_PATH) return addPath(state, action.payload);
-	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
-	if (action.type === DELETE_PATH) return deletePath(state, action.payload);
-	if (action.type === SET_WAYPOINT) return setWaypoint(state, action.payload);
-	if (action.type === REMOVE_WAYPOINT) return removeWaypoint(state, action.payload);
-	if (action.type === CHANGE_SELECTED_PATH) return changeSelectedPath(state, action.payload);
+function checkIfPathIsIllegal(oldState, state) {
+	const path = state.paths[state.selectedPath];
+	if (oldState === state || !path || !path.isIllegal()) return state;
+	state.popupsStatus = new PopupsConfig();
+	state.popupsStatus.pathIsIllegalPopup = true;
 	return state;
+}
+
+export default function path(state, action) {
+	const oldState = state;
+	if (action.type === ADD_PATH) state = addPath(state, action.payload);
+	if (action.type === RENAME_PATH) state = renamePath(state, action.payload);
+	if (action.type === DELETE_PATH) state = deletePath(state, action.payload);
+	if (action.type === SET_WAYPOINT) state = setWaypoint(state, action.payload);
+	if (action.type === REMOVE_WAYPOINT) state = removeWaypoint(state, action.payload);
+	if (action.type === CHANGE_SELECTED_PATH) state = changeSelectedPath(state, action.payload);
+	return checkIfPathIsIllegal(oldState, state);
 }
