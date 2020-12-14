@@ -4,6 +4,7 @@ import {
 	CHANGE_SELECTED_PATH,
 	DELETE_PATH,
 	RENAME_PATH,
+	ADD_PATH,
 } from './action-types';
 
 export function setWaypoint(waypoint, index) {
@@ -44,6 +45,15 @@ export function deletePath() {
 export function renamePath(name) {
 	return {
 		type: RENAME_PATH,
+		payload: {
+			name: name,
+		},
+	};
+}
+
+export function addPath(name) {
+	return {
+		type: ADD_PATH,
 		payload: {
 			name: name,
 		},

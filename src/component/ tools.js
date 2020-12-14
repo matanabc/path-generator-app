@@ -84,7 +84,9 @@ class Tools extends React.Component {
 								);
 							})}
 							<Dropdown.Divider />
-							<Dropdown.Item as="button">New path</Dropdown.Item>
+							<Dropdown.Item as="button" onClick={this.props.showCreateNewPathPopup}>
+								New path
+							</Dropdown.Item>
 						</Dropdown.Menu>
 					</Dropdown>
 					<Button
@@ -137,6 +139,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		showCreateNewPathPopup: () => dispatch(changePopupsStatus('createNewPathPopup')),
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),

@@ -5,6 +5,7 @@ import {
 	SET_WAYPOINT,
 	DELETE_PATH,
 	RENAME_PATH,
+	ADD_PATH,
 } from './action-types';
 
 const { Path, PathConfig, Waypoint } = Tank;
@@ -75,7 +76,14 @@ function renamePath(state, payload) {
 	return newState;
 }
 
+function addPath(state, payload) {
+	const newState = { ...state, selectedPath: payload.name };
+	newState.paths[payload.name] = new Path([], state.pathConfig);
+	return newState;
+}
+
 export default function path(state = initialState, action) {
+	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
 	if (action.type === DELETE_PATH) return deletePath(state, action.payload);
 	if (action.type === SET_WAYPOINT) return setWaypoint(state, action.payload);

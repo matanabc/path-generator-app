@@ -3,3 +3,4 @@ export const REMOVE_WAYPOINT = 'REMOVE_WAYPOINT';
 export const SET_WAYPOINT = 'SET_WAYPOINT';
 export const DELETE_PATH = 'DELETE_PATH';
 export const RENAME_PATH = 'RENAME_PATH';
+export const ADD_PATH = 'ADD_PATH';

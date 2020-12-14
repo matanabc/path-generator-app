@@ -1,4 +1,4 @@
-import { deletePath, renamePath } from '../../redux/path/actions';
+import { deletePath, renamePath, addPath } from '../../redux/path/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -8,9 +8,11 @@ import React from 'react';
 class Popups extends React.Component {
 	constructor(props) {
 		super(props);
+		this.newPathRef = React.createRef();
 		this.renamePathRef = React.createRef();
 		this.renamePath = this.renamePath.bind(this);
 		this.deletePath = this.deletePath.bind(this);
+		this.createNewPath = this.createNewPath.bind(this);
 	}
 
 	componentDidUpdate() {
@@ -26,6 +28,16 @@ class Popups extends React.Component {
 	renamePath() {
 		if (this.renamePathRef.current.value) {
 			this.props.renamePath(this.renamePathRef.current.value);
+			this.props.closePopups();
+		}
+	}
+
+	createNewPath() {
+		if (
+			this.newPathRef.current.value &&
+			!this.props.pathsName.includes(this.newPathRef.current.value)
+		) {
+			this.props.addPath(this.newPathRef.current.value);
 			this.props.closePopups();
 		}
 	}
@@ -49,6 +61,14 @@ class Popups extends React.Component {
 					confirm={this.renamePath}
 					title="Rename path"
 				/>
+
+				<Popup
+					body={<FormControl ref={this.newPathRef} placeholder="Path name" />}
+					show={this.props.popupsStatus.createNewPathPopup}
+					close={this.props.closePopups}
+					confirm={this.createNewPath}
+					title="Create a new path"
+				/>
 			</div>
 		);
 	}
@@ -58,6 +78,7 @@ const mapStateToProps = (state) => {
 	return {
 		pathName: state.path.selectedPath ? state.path.selectedPath : '',
 		path: state.path.paths[state.path.selectedPath],
+		pathsName: Object.keys(state.path.paths),
 		popupsStatus: state.view.popupsStatus,
 	};
 };
@@ -66,6 +87,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		closePopups: () => dispatch(changePopupsStatus()),
 		renamePath: (name) => dispatch(renamePath(name)),
+		addPath: (name) => dispatch(addPath(name)),
 		deletePath: () => dispatch(deletePath()),
 	};
 };
