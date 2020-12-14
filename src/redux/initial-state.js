@@ -15,6 +15,7 @@ export const initialState = {
 	//View
 	popupsStatus: new PopupsConfig(),
 	drawRobotInterval: undefined,
+	listenToMouseClicks: false,
 	selectedPath: undefined,
 	rangePosition: 0,
 

@@ -1,6 +1,7 @@
 import {
-	CHANGE_RANGE_POSITION,
+	CHANGE_LISTEN_TO_MOUSE_STATUS,
 	SET_DRAW_ROBOT_INTERVAL,
+	CHANGE_RANGE_POSITION,
 	CHANGE_POPUPS_STATUS,
 } from './action-types';
 
@@ -28,5 +29,12 @@ export function changePopupsStatus(popup) {
 		payload: {
 			popup: popup,
 		},
+	};
+}
+
+export function changeListenToMouseStatus() {
+	return {
+		type: CHANGE_LISTEN_TO_MOUSE_STATUS,
+		payload: {},
 	};
 }

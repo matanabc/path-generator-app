@@ -6,6 +6,7 @@ class FieldView extends React.Component {
 	constructor(props) {
 		super(props);
 		this.canvas = React.createRef();
+		this.onClick = this.onClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -13,7 +14,14 @@ class FieldView extends React.Component {
 	}
 
 	componentDidUpdate() {
-		drawOnCanvas(this.canvas.current, this.props);
+		const canvas = this.canvas.current;
+		if (this.props.listenToMouseClicks) canvas.addEventListener('mousedown', this.onClick);
+		else canvas.removeEventListener('mousedown', this.onClick);
+		drawOnCanvas(canvas, this.props);
+	}
+
+	onClick(event) {
+		alert();
 	}
 
 	render() {
@@ -39,8 +47,9 @@ const mapStateToProps = (state) => {
 		filedImageUrl: state.imageUrl,
 		fieldConfig: state.fieldConfig,
 		rangePosition: state.rangePosition,
-		robotDrawConfig: state.robotDrawConfig,
 		path: state.paths[state.selectedPath],
+		robotDrawConfig: state.robotDrawConfig,
+		listenToMouseClicks: state.listenToMouseClicks,
 	};
 };
 

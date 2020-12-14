@@ -1,5 +1,6 @@
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from 'react-icons/md';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
+import { changeListenToMouseStatus } from '../redux/view/actions';
 import { changeSelectedPath } from '../redux/path/actions';
 import { FiDownload, FiCircle } from 'react-icons/fi';
 import { GiClick } from 'react-icons/gi';
@@ -54,9 +55,10 @@ class Tools extends React.Component {
 					<Button
 						size="lg"
 						className="mr-3"
-						variant={'primary'}
 						title="Add waypoint with mouse"
 						disabled={this.props.path === undefined}
+						onClick={this.props.changeListenToMouseStatus}
+						variant={this.props.listenToMouseClicks ? 'success' : 'primary'}
 					>
 						<GiClick />
 					</Button>
@@ -138,6 +140,7 @@ const mapStateToProps = (state) => {
 		path: state.paths[state.selectedPath],
 		drawRobotInterval: state.drawRobotInterval,
 		robotLoopTime: state.pathConfig.robotLoopTime,
+		listenToMouseClicks: state.listenToMouseClicks,
 	};
 };
 
@@ -149,6 +152,7 @@ const mapDispatchToProps = (dispatch) => {
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
 		showRenamePathPopup: () => dispatch(changePopupsStatus('renamePathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
+		changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
 		showSettings: () => dispatch(changePopupsStatus('settingsPopup')),
 	};
 };

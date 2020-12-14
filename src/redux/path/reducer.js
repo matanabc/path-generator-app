@@ -42,13 +42,13 @@ function removeWaypoint(state, payload) {
 
 function changeSelectedPath(state, payload) {
 	const oldPath = state.paths[payload.pathName];
-	const newState = { ...state, selectedPath: payload.pathName };
+	const newState = { ...state, selectedPath: payload.pathName, listenToMouseClicks: false };
 	newState.paths[payload.pathName] = new state.pathType.Path(oldPath.waypoints, state.pathConfig);
 	return newState;
 }
 
 function deletePath(state, payload) {
-	const newState = { ...state };
+	const newState = { ...state, listenToMouseClicks: false };
 	delete newState.paths[state.selectedPath];
 	newState.selectedPath = undefined;
 	return newState;
