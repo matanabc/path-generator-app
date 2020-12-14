@@ -17,15 +17,17 @@ class SettingsFiledConfig extends SettingsConfig {
 	}
 
 	getData() {
-		return new FieldConfig(
-			this.filedImageNameRef.current.value,
-			this.fieldWidthInMeterRef.current.value,
-			this.fieldHeightInMeterRef.current.value,
-			this.fieldTopLeftXRef.current.value,
-			this.fieldTopLeftYRef.current.value,
-			this.fieldWidthInPixelRef.current.value,
-			this.fieldHeightInPixelRef.current.value
-		);
+		return {
+			imageUrl: this.filedImageNameRef.current.value,
+			fieldConfig: new FieldConfig(
+				this.fieldWidthInMeterRef.current.value,
+				this.fieldHeightInMeterRef.current.value,
+				this.fieldTopLeftXRef.current.value,
+				this.fieldTopLeftYRef.current.value,
+				this.fieldWidthInPixelRef.current.value,
+				this.fieldHeightInPixelRef.current.value
+			),
+		};
 	}
 
 	render(props) {

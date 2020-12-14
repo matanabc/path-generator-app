@@ -21,8 +21,8 @@ export class FieldConfig {
 
 export class RobotDrawConfig {
 	constructor(width = 0.8, length = 1.2, center = 0) {
-		this.center = center;
-		this.length = length;
-		this.width = width;
+		this.center = Number(center);
+		this.length = Number(length);
+		this.width = Number(width);
 	}
 }

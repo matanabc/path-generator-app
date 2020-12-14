@@ -68,7 +68,7 @@ class Tools extends React.Component {
 					>
 						<FiDownload />
 					</Button>
-					<Button className="mr-3" size="lg" title="Settings">
+					<Button className="mr-3" size="lg" title="Settings" onClick={this.props.showSettings}>
 						<MdBuild />
 					</Button>
 					<Dropdown>
@@ -149,6 +149,7 @@ const mapDispatchToProps = (dispatch) => {
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
 		showRenamePathPopup: () => dispatch(changePopupsStatus('renamePathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
+		showSettings: () => dispatch(changePopupsStatus('settingsPopup')),
 	};
 };
 

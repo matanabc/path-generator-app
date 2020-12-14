@@ -21,13 +21,14 @@ class Settings extends React.Component {
 
 	saveSettings() {
 		const settings = {
+			...this.settingsFiledConfig.getData(),
 			...this.settingsFoldersConfig.getData(),
 			pathConfig: this.settingsPathConfig.getData(),
-			fieldConfig: this.settingsFiledConfig.getData(),
 			robotDrawConfig: this.settingsRobotConfig.getData(),
 		};
 
 		this.props.setSettings(settings);
+		this.props.closePopups();
 	}
 
 	getUpdateButton() {
@@ -40,7 +41,7 @@ class Settings extends React.Component {
 	render() {
 		return (
 			<Modal
-				show={this.props.popupsStatus.settingsPopup || true}
+				show={this.props.popupsStatus.settingsPopup}
 				onHide={this.props.closePopups}
 				backdrop="static"
 			>
