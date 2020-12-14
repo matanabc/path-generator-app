@@ -45,7 +45,7 @@ class TankWaypointInfo extends React.Component {
 
 	render() {
 		return (
-			<Alert variant="primary">
+			<Alert className={this.props.id > 0 ? 'mb-0 mt-2' : 'mb-0 mt-0'} variant="primary">
 				<InputGroup>
 					<span className="mr-4"> {this.props.id + 1} </span>
 
