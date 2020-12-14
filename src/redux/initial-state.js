@@ -12,20 +12,24 @@ const waypoints = [
 const pathConfig = new PathConfig(0.8, 3.5, 3);
 
 export const initialState = {
-	//View state
-	fieldConfig: new FieldConfig(16.5354, 8.001, 50, 25, 198, 103),
-	robotDrawConfig: new RobotDrawConfig(),
+	//View
 	popupsStatus: new PopupsConfig(),
 	drawRobotInterval: undefined,
-	rangePosition: 0,
-	imageUrl:
-		'https://www.chiefdelphi.com/uploads/default/optimized/3X/4/4/44492d390e1f186bef450b307b132e820fd88263_2_690x388.png',
-
-	// Path state
 	selectedPath: undefined,
-	pathConfig: pathConfig,
+	rangePosition: 0,
+
+	// Path
 	pathType: Tank,
 	paths: {
 		test: new Path(waypoints, pathConfig),
 	},
+
+	//Project
+	fieldConfig: new FieldConfig(16.5354, 8.001, 50, 25, 198, 103),
+	robotDrawConfig: new RobotDrawConfig(),
+	pathConfig: pathConfig,
+	projectPath: '',
+	saveCSVTo: '',
+	imageUrl:
+		'https://www.chiefdelphi.com/uploads/default/optimized/3X/4/4/44492d390e1f186bef450b307b132e820fd88263_2_690x388.png',
 };
