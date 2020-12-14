@@ -1,5 +1,6 @@
 import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
+import { setSettings } from '../../redux/project/actions';
 import SettingsRobotConfig from './settings-robot-config';
 import SettingsFiledConfig from './settings-filed-config';
 import SettingsPathConfig from './settings-path-config';
@@ -10,11 +11,23 @@ import React from 'react';
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
+		this.saveSettings = this.saveSettings.bind(this);
 		this.getUpdateButton = this.getUpdateButton.bind(this);
 		this.settingsFoldersConfig = new SettingsFoldersConfig();
 		this.settingsRobotConfig = new SettingsRobotConfig();
 		this.settingsFiledConfig = new SettingsFiledConfig();
 		this.settingsPathConfig = new SettingsPathConfig();
+	}
+
+	saveSettings() {
+		const settings = {
+			...this.settingsFoldersConfig.getData(),
+			pathConfig: this.settingsPathConfig.getData(),
+			fieldConfig: this.settingsFiledConfig.getData(),
+			robotDrawConfig: this.settingsRobotConfig.getData(),
+		};
+
+		this.props.setSettings(settings);
 	}
 
 	getUpdateButton() {
@@ -48,7 +61,7 @@ class Settings extends React.Component {
 					<Button variant="outline-primary" onClick={this.props.closePopups}>
 						cancel
 					</Button>
-					<Button>save</Button>
+					<Button onClick={this.saveSettings}>save</Button>
 				</Modal.Footer>
 			</Modal>
 		);
@@ -71,6 +84,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		setSettings: (settings) => dispatch(setSettings(settings)),
 		closePopups: () => dispatch(changePopupsStatus()),
 	};
 };
