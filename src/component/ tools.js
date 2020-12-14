@@ -109,6 +109,7 @@ class Tools extends React.Component {
 						className="mr-3"
 						size="lg"
 						title="Rename path"
+						onClick={this.props.showRenamePathPopup}
 						disabled={this.props.path === undefined}
 					>
 						<MdEdit />
@@ -139,6 +140,7 @@ const mapDispatchToProps = (dispatch) => {
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
+		showRenamePathPopup: () => dispatch(changePopupsStatus('renamePathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 	};
 };

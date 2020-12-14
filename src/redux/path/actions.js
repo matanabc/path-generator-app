@@ -1,4 +1,10 @@
-import { SET_WAYPOINT, REMOVE_WAYPOINT, CHANGE_SELECTED_PATH, DELETE_PATH } from './action-types';
+import {
+	SET_WAYPOINT,
+	REMOVE_WAYPOINT,
+	CHANGE_SELECTED_PATH,
+	DELETE_PATH,
+	RENAME_PATH,
+} from './action-types';
 
 export function setWaypoint(waypoint, index) {
 	return {
@@ -32,5 +38,14 @@ export function deletePath() {
 	return {
 		type: DELETE_PATH,
 		payload: {},
+	};
+}
+
+export function renamePath(name) {
+	return {
+		type: RENAME_PATH,
+		payload: {
+			name: name,
+		},
 	};
 }

@@ -1,5 +1,6 @@
+import { deletePath, renamePath } from '../../redux/path/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
-import { deletePath } from '../../redux/path/actions';
+import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Popup from './popup';
 import React from 'react';
@@ -7,12 +8,26 @@ import React from 'react';
 class Popups extends React.Component {
 	constructor(props) {
 		super(props);
+		this.renamePathRef = React.createRef();
+		this.renamePath = this.renamePath.bind(this);
 		this.deletePath = this.deletePath.bind(this);
 	}
 
+	componentDidUpdate() {
+		if (this.props.popupsStatus.renamePathPopup)
+			this.renamePathRef.current.defaultValue = this.props.pathName;
+	}
+
 	deletePath() {
+		this.props.closePopups();
 		this.props.deletePath();
-		this.props.closeDeletePathPopup();
+	}
+
+	renamePath() {
+		if (this.renamePathRef.current.value) {
+			this.props.renamePath(this.renamePathRef.current.value);
+			this.props.closePopups();
+		}
 	}
 
 	render() {
@@ -21,9 +36,18 @@ class Popups extends React.Component {
 				<Popup
 					show={this.props.popupsStatus.deletePathPopup}
 					body="Are you sure you want to delete path?"
-					close={this.props.closeDeletePathPopup}
+					close={this.props.closePopups}
 					confirm={this.deletePath}
 					title="Delete path"
+				/>
+
+				<Popup
+					show={this.props.popupsStatus.renamePathPopup}
+					body={<FormControl ref={this.renamePathRef} />}
+					close={this.props.closePopups}
+					refToUse={this.renamePathRef}
+					confirm={this.renamePath}
+					title="Rename path"
 				/>
 			</div>
 		);
@@ -32,6 +56,7 @@ class Popups extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		pathName: state.path.selectedPath ? state.path.selectedPath : '',
 		path: state.path.paths[state.path.selectedPath],
 		popupsStatus: state.view.popupsStatus,
 	};
@@ -39,7 +64,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		closeDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
+		closePopups: () => dispatch(changePopupsStatus()),
+		renamePath: (name) => dispatch(renamePath(name)),
 		deletePath: () => dispatch(deletePath()),
 	};
 };
