@@ -1,4 +1,4 @@
-import { setProjectPath, setFieldConfig, setImage } from '../redux/project/actions';
+import { setProjectPath, setFieldConfig, setImage, setCSVPath } from '../redux/project/actions';
 import { FieldConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
 
@@ -14,6 +14,7 @@ export default class FileHandler {
 	async load() {
 		await this.setProjectFolderPath();
 		this.loadJsonProject();
+		this.setCSVFolderPath();
 		this.loadFieldConfig();
 		this.loadFieldImage();
 		this.loadPathConfig();
@@ -30,6 +31,11 @@ export default class FileHandler {
 		this.dispatch(setProjectPath(this.projectPath));
 	}
 
+	async setCSVFolderPath() {
+		if (this.jsonProject && this.jsonProject.saveCSVTo)
+			this.dispatch(setCSVPath(this.jsonProject.saveCSVTo));
+	}
+
 	loadJsonProject() {
 		try {
 			const data = this.fs.readFileSync(`${this.projectPath}/PathGenerator.json`);
@@ -41,7 +47,7 @@ export default class FileHandler {
 
 	async loadFieldConfig() {
 		var fieldConfig = new FieldConfig();
-		if (this.jsonProject)
+		if (this.jsonProject && this.jsonProject.fieldConfig)
 			fieldConfig = Object.assign(new FieldConfig(), this.jsonProject.fieldConfig);
 		this.dispatch(setFieldConfig(fieldConfig));
 	}
@@ -68,7 +74,8 @@ export default class FileHandler {
 	}
 
 	async loadPathConfig() {
-		if (this.jsonProject) this.dispatch(setPathConfig(this.jsonProject.pathConfig));
+		if (this.jsonProject && this.jsonProject.pathConfig)
+			this.dispatch(setPathConfig(this.jsonProject.pathConfig));
 	}
 
 	async loadPaths() {

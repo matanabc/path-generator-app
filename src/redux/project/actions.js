@@ -1,4 +1,10 @@
-import { SET_SETTINGS, SET_PROJECT_PATH, SET_FIELD_CONFIG, SET_IMAGE } from './action-types';
+import {
+	SET_PROJECT_PATH,
+	SET_FIELD_CONFIG,
+	SET_SETTINGS,
+	SET_CSV_PATH,
+	SET_IMAGE,
+} from './action-types';
 
 export function setSettings(settings) {
 	return {
@@ -33,6 +39,15 @@ export function setImage(imageUrl, image) {
 		payload: {
 			imageUrl: imageUrl,
 			image: image,
+		},
+	};
+}
+
+export function setCSVPath(path) {
+	return {
+		type: SET_CSV_PATH,
+		payload: {
+			path: path,
 		},
 	};
 }
