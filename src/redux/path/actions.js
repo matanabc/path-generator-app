@@ -1,6 +1,7 @@
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
+	SET_PATH_CONFIG,
 	ADD_WAYPOINT,
 	SET_WAYPOINT,
 	DELETE_PATH,
@@ -66,6 +67,15 @@ export function addPath(name) {
 		type: ADD_PATH,
 		payload: {
 			name: name,
+		},
+	};
+}
+
+export function setPathConfig(pathConfig) {
+	return {
+		type: SET_PATH_CONFIG,
+		payload: {
+			pathConfig: pathConfig,
 		},
 	};
 }

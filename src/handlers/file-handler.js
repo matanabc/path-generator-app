@@ -1,5 +1,6 @@
 import { setProjectPath, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig } from '../component/field-view/view-config';
+import { setPathConfig } from '../redux/path/actions';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -66,7 +67,9 @@ export default class FileHandler {
 		}
 	}
 
-	async loadPathConfig() {}
+	async loadPathConfig() {
+		if (this.jsonProject) this.dispatch(setPathConfig(this.jsonProject.pathConfig));
+	}
 
 	async loadPaths() {}
 
