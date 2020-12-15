@@ -1,1 +1,2 @@
+export const SET_PROJECT_PATH = 'SET_PROJECT_PATH';
 export const SET_SETTINGS = 'SET_SETTINGS';

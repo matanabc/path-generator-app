@@ -1,19 +1,16 @@
+import { setProjectPath } from '../redux/project/actions';
+
 export default class FileHandler {
-	constructor() {
+	constructor(callback) {
 		this.ipcRenderer = window.require('electron').ipcRenderer;
 		this.fs = window.require('fs');
-		this.setOnFinish();
+		this.dispatch = callback;
+		this.projectPath = '';
+		this.load();
 	}
 
-	setOnFinish(loadFieldConfig, loadFieldImage, loadPathConfig, loadPaths) {
-		const defaultFinish = () => {};
-		this.loadFieldConfigFinish = loadFieldConfig ? loadFieldConfig : defaultFinish;
-		this.loadFieldImageFinish = loadFieldImage ? loadFieldImage : defaultFinish;
-		this.loadPathConfigFinish = loadPathConfig ? loadPathConfig : defaultFinish;
-		this.loadPathsFinish = loadPaths ? loadPaths : defaultFinish;
-	}
-
-	load() {
+	async load() {
+		await this.setProjectFolderPath();
 		this.loadFieldConfig();
 		this.loadFieldImage();
 		this.loadPathConfig();
@@ -21,11 +18,13 @@ export default class FileHandler {
 	}
 
 	async changeProjectFolderPath(folderPath) {
-		this.ipcRenderer.invoke('UpdateProjctPath', folderPath);
+		await this.ipcRenderer.invoke('UpdateProjctPath', folderPath);
+		this.load();
 	}
 
-	async getProjectFolderPath() {
-		return await this.ipcRenderer.invoke('GetProjctPath');
+	async setProjectFolderPath() {
+		this.projectPath = await this.ipcRenderer.invoke('GetProjctPath');
+		this.dispatch(setProjectPath(this.projectPath));
 	}
 
 	async loadFieldConfig() {}

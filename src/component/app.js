@@ -1,7 +1,6 @@
 import WaypointsList from './waypoints/waypoints-list';
 import { init } from '../handlers/project-handler';
 import FieldView from './field-view/field-view';
-import { isWeb } from '../redux/view/actions';
 import { Container } from 'react-bootstrap';
 import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
@@ -12,7 +11,7 @@ import React from 'react';
 
 class App extends React.Component {
 	componentDidMount() {
-		init(this.props.isWeb);
+		init(this.props.dispatch);
 	}
 
 	render() {
@@ -37,7 +36,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		isWeb: (value) => dispatch(isWeb(value)),
+		dispatch: (value) => dispatch(value),
 	};
 };
 

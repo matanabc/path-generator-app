@@ -1,12 +1,15 @@
+import { isWeb } from '../redux/view/actions';
 import FileHandler from './file-handler';
 
 var handler = undefined;
+var dispatch = undefined;
 
-export function init(isWeb) {
+export async function init(callback) {
 	try {
-		handler = new FileHandler();
-		isWeb(false);
+		dispatch = callback;
+		handler = new FileHandler(dispatch);
+		dispatch(isWeb(false));
 	} catch (error) {
-		isWeb(true);
+		dispatch(isWeb(true));
 	}
 }
