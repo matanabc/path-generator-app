@@ -19,6 +19,7 @@ export const initialState = {
 	listenToMouseClicks: false,
 	selectedPath: undefined,
 	rangePosition: 0,
+	isWeb: true,
 
 	// Path
 	pathType: Tank,

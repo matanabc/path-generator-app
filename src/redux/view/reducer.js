@@ -4,6 +4,7 @@ import {
 	SET_DRAW_ROBOT_INTERVAL,
 	CHANGE_RANGE_POSITION,
 	CHANGE_POPUPS_STATUS,
+	SET_PLATFORM,
 } from './action-types';
 
 function changeRangePosition(state, payload) {
@@ -34,11 +35,16 @@ function changeListenToMouseStatus(state, payload) {
 	};
 }
 
+function setPlatform(state, payload) {
+	return { ...state, isWeb: payload.isWeb };
+}
+
 export default function view(state, action) {
 	if (action.type !== SET_DRAW_ROBOT_INTERVAL && action.type !== CHANGE_RANGE_POSITION) {
 		state = setDrawRobotInterval(state, {});
 		state = changeRangePosition(state, { position: 0 });
 	}
+	if (action.type === SET_PLATFORM) return setPlatform(state, action.payload);
 	if (action.type === CHANGE_POPUPS_STATUS) return changePopupsStatus(state, action.payload);
 	if (action.type === CHANGE_RANGE_POSITION) return changeRangePosition(state, action.payload);
 	if (action.type === SET_DRAW_ROBOT_INTERVAL) return setDrawRobotInterval(state, action.payload);
