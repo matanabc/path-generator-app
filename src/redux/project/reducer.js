@@ -13,7 +13,7 @@ function setSettings(state, payload) {
 }
 
 function setProjectPath(state, payload) {
-	return { ...state, projectPath: payload.projectPath, selectedPath: undefined };
+	return { ...state, projectPath: payload.projectPath, selectedPath: undefined, paths: {} };
 }
 
 function setFieldConfig(state, payload) {

@@ -43,3 +43,9 @@ export async function saveJsonProject(settings) {
 		handler.saveJsonProject(settings);
 	} catch (error) {}
 }
+
+export async function loadFieldImage(image) {
+	try {
+		handler.loadFieldImage(image);
+	} catch (error) {}
+}

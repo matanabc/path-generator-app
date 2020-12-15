@@ -23,7 +23,7 @@ export default class FileHandler {
 
 	async changeProjectFolderPath(folderPath) {
 		await this.ipcRenderer.invoke('UpdateProjctPath', folderPath);
-		await this.load();
+		this.load();
 	}
 
 	async setProjectFolderPath() {
@@ -52,22 +52,22 @@ export default class FileHandler {
 		this.dispatch(setFieldConfig(fieldConfig));
 	}
 
-	async loadFieldImage() {
+	async loadFieldImage(image) {
 		try {
-			if (!this.jsonProject) return;
-			if (this.jsonProject.image.startsWith('http')) {
-				this.dispatch(setImage(this.jsonProject.image, this.jsonProject.image));
+			if (!this.jsonProject && !image) return;
+			image = image ? image : this.jsonProject.image;
+			if (image.startsWith('http')) {
+				this.dispatch(setImage(image, image));
 				return;
 			}
 
 			var imagePath = '';
-			if (this.jsonProject.image.indexOf('/') === -1)
-				imagePath = `${this.projectPath}/${this.jsonProject.image}`;
-			else imagePath = this.jsonProject.image;
+			if (image.indexOf('/') === -1) imagePath = `${this.projectPath}/${image}`;
+			else imagePath = image;
 
 			const data = this.fs.readFileSync(imagePath);
 			const imageUrl = URL.createObjectURL(new Blob([data]));
-			this.dispatch(setImage(imageUrl, this.jsonProject.image));
+			this.dispatch(setImage(imageUrl, image));
 		} catch (error) {
 			this.dispatch(setImage('', ''));
 		}

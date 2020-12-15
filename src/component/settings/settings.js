@@ -1,4 +1,4 @@
-import { changeProjectFolderPath } from '../../handlers/project-handler';
+import { changeProjectFolderPath, loadFieldImage } from '../../handlers/project-handler';
 import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import { setSettings } from '../../redux/project/actions';
@@ -20,7 +20,7 @@ class Settings extends React.Component {
 		this.settingsPathConfig = new SettingsPathConfig();
 	}
 
-	async saveSettings() {
+	saveSettings() {
 		const settings = {
 			...this.settingsFiledConfig.getData(),
 			...this.settingsFoldersConfig.getData(),
@@ -28,10 +28,11 @@ class Settings extends React.Component {
 			robotDrawConfig: this.settingsRobotConfig.getData(),
 		};
 
-		if (settings.projectPath !== this.props.projectPath)
-			await changeProjectFolderPath(settings.projectPath);
 		this.props.setSettings(settings);
 		this.props.closePopups();
+		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
+		if (settings.projectPath !== this.props.projectPath)
+			changeProjectFolderPath(settings.projectPath);
 	}
 
 	getUpdateButton() {
