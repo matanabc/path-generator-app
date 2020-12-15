@@ -1,4 +1,5 @@
 import WaypointsList from './waypoints/waypoints-list';
+import { init } from '../handlers/project-handler';
 import FieldView from './field-view/field-view';
 import { Container } from 'react-bootstrap';
 import Settings from './settings/settings';
@@ -9,6 +10,10 @@ import Tools from './ tools';
 import React from 'react';
 
 class App extends React.Component {
+	componentDidMount() {
+		init();
+	}
+
 	render() {
 		return (
 			<div className="App">
