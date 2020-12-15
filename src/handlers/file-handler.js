@@ -1,6 +1,6 @@
 import { setProjectPath, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig } from '../component/field-view/view-config';
-import { setPathConfig } from '../redux/path/actions';
+import { setPathConfig, addPath } from '../redux/path/actions';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -71,7 +71,21 @@ export default class FileHandler {
 		if (this.jsonProject) this.dispatch(setPathConfig(this.jsonProject.pathConfig));
 	}
 
-	async loadPaths() {}
+	async loadPaths() {
+		try {
+			const files = this.fs.readdirSync(`${this.projectPath}/paths`);
+			files.forEach(async (fileName) => {
+				if (fileName.endsWith('.json')) this.loadPath(fileName);
+			});
+		} catch (error) {}
+	}
+
+	async loadPath(fileName) {
+		try {
+			const data = this.fs.readFileSync(`${this.projectPath}/paths/${fileName}`);
+			this.dispatch(addPath(fileName.replace('.json', ''), JSON.parse(data).waypoints));
+		} catch (error) {}
+	}
 
 	async saveJsonProject() {}
 

@@ -64,8 +64,9 @@ function renamePath(state, payload) {
 }
 
 function addPath(state, payload) {
-	const newState = { ...state, selectedPath: payload.name };
-	newState.paths[payload.name] = new state.driveType.Path([], state.pathConfig);
+	const newState = { ...state };
+	newState.paths[payload.name] = new state.driveType.Path(payload.waypoints, state.pathConfig);
+	newState.selectedPath = payload.waypoints.length > 0 ? undefined : payload.name;
 	return newState;
 }
 
