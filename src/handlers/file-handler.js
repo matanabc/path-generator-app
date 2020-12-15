@@ -106,5 +106,12 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
-	async renamePath() {}
+	async renameJsonPath(oldName, newName) {
+		try {
+			this.fs.renameSync(
+				`${this.projectPath}/paths/${oldName}.json`,
+				`${this.projectPath}/paths/${newName}.json`
+			);
+		} catch (error) {}
+	}
 }

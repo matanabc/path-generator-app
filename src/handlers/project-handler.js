@@ -31,3 +31,9 @@ export async function deleteJsonPath(pathName) {
 		handler.deleteJsonPath(pathName);
 	} catch (error) {}
 }
+
+export async function renameJsonPath(oldName, newName) {
+	try {
+		handler.renameJsonPath(oldName, newName);
+	} catch (error) {}
+}

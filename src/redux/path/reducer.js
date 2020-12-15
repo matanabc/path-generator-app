@@ -1,4 +1,4 @@
-import { saveJsonPath, deleteJsonPath } from '../../handlers/project-handler';
+import { saveJsonPath, deleteJsonPath, renameJsonPath } from '../../handlers/project-handler';
 import { PopupsConfig } from '../../component/popups/popups-config';
 import {
 	CHANGE_SELECTED_PATH,
@@ -63,6 +63,7 @@ function renamePath(state, payload) {
 	const newState = { ...state, selectedPath: payload.name };
 	newState.paths[payload.name] = newState.paths[state.selectedPath];
 	delete newState.paths[state.selectedPath];
+	renameJsonPath(state.selectedPath, payload.name);
 	return newState;
 }
 
