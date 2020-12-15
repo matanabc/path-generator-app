@@ -1,4 +1,5 @@
-import { setProjectPath } from '../redux/project/actions';
+import { setProjectPath, setFieldConfig } from '../redux/project/actions';
+import { FieldConfig } from '../component/field-view/view-config';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -33,11 +34,16 @@ export default class FileHandler {
 			const data = this.fs.readFileSync(`${this.projectPath}/PathGenerator.json`);
 			this.jsonProject = JSON.parse(data);
 		} catch (error) {
-			this.jsonProject = {};
+			this.jsonProject = undefined;
 		}
 	}
 
-	async loadFieldConfig() {}
+	async loadFieldConfig() {
+		var fieldConfig = new FieldConfig();
+		if (this.jsonProject)
+			fieldConfig = Object.assign(new FieldConfig(), this.jsonProject.fieldConfig);
+		this.dispatch(setFieldConfig(fieldConfig));
+	}
 
 	async loadFieldImage() {}
 

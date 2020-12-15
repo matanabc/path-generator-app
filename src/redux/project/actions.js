@@ -1,4 +1,4 @@
-import { SET_SETTINGS, SET_PROJECT_PATH } from './action-types';
+import { SET_SETTINGS, SET_PROJECT_PATH, SET_FIELD_CONFIG } from './action-types';
 
 export function setSettings(settings) {
 	return {
@@ -14,6 +14,15 @@ export function setProjectPath(path) {
 		type: SET_PROJECT_PATH,
 		payload: {
 			projectPath: path,
+		},
+	};
+}
+
+export function setFieldConfig(fieldConfig) {
+	return {
+		type: SET_FIELD_CONFIG,
+		payload: {
+			fieldConfig: fieldConfig,
 		},
 	};
 }
