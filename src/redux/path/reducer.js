@@ -1,4 +1,5 @@
 import { PopupsConfig } from '../../component/popups/popups-config';
+import { saveJsonPath } from '../../handlers/project-handler';
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
@@ -28,6 +29,7 @@ function setWaypoint(state, payload) {
 		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
+	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
 
@@ -37,8 +39,8 @@ function removeWaypoint(state, payload) {
 	state.paths[state.selectedPath].waypoints.forEach((element, index) => {
 		if (index !== payload.index) waypoints.push(element);
 	});
-
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
+	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
 
@@ -65,8 +67,14 @@ function renamePath(state, payload) {
 
 function addPath(state, payload) {
 	const newState = { ...state };
-	newState.paths[payload.name] = new state.driveType.Path(payload.waypoints, state.pathConfig);
-	newState.selectedPath = payload.waypoints.length > 0 ? undefined : payload.name;
+	const waypoints = [];
+	if (payload.waypoints)
+		payload.waypoints.forEach((waypoint) => {
+			waypoints.push(Object.assign(new state.driveType.Waypoint(), waypoint));
+		});
+	newState.paths[payload.name] = new state.driveType.Path(waypoints, state.pathConfig);
+	newState.selectedPath = payload.waypoints ? undefined : payload.name;
+	if (!payload.waypoints) saveJsonPath(payload.name, newState.paths[payload.name]);
 	return newState;
 }
 
@@ -90,6 +98,7 @@ function addWaypoint(state, payload) {
 	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
 	const newState = { ...state, addWaypointInIndex: undefined };
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
+	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
 

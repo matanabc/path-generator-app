@@ -89,7 +89,14 @@ export default class FileHandler {
 
 	async saveJsonProject() {}
 
-	async saveJsonPath() {}
+	async saveJsonPath(pathName, path) {
+		try {
+			if (!this.fs.existsSync(`${this.projectPath}/paths`))
+				this.fs.mkdirSync(`${this.projectPath}/paths`);
+			const data = JSON.stringify({ isInReverse: false, waypoints: path.waypoints });
+			this.fs.writeFileSync(`${this.projectPath}/paths/${pathName}.json`, data);
+		} catch (error) {}
+	}
 
 	async saveCSVPath() {}
 

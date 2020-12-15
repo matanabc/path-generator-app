@@ -62,7 +62,7 @@ export function renamePath(name) {
 	};
 }
 
-export function addPath(name, waypoints = []) {
+export function addPath(name, waypoints) {
 	return {
 		type: ADD_PATH,
 		payload: {

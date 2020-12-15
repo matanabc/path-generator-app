@@ -19,3 +19,9 @@ export async function changeProjectFolderPath(folderPath) {
 		handler.changeProjectFolderPath(folderPath);
 	} catch (error) {}
 }
+
+export async function saveJsonPath(pathName, path) {
+	try {
+		handler.saveJsonPath(pathName, path);
+	} catch (error) {}
+}
