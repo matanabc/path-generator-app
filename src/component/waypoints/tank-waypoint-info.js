@@ -8,7 +8,7 @@ import React from 'react';
 class TankWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { id: -1 };
+		this.state = { id: -1, pathName: undefined };
 		this.x = React.createRef();
 		this.y = React.createRef();
 		this.v = React.createRef();
@@ -21,7 +21,8 @@ class TankWaypointInfo extends React.Component {
 	}
 
 	getValue(currentValue, value) {
-		if (this.state.id !== this.props.id) return value;
+		if (this.state.id !== this.props.id || this.state.pathName !== this.props.pathName)
+			return value;
 		return Number.isNaN(currentValue) ? value : currentValue;
 	}
 
@@ -32,9 +33,9 @@ class TankWaypointInfo extends React.Component {
 		this.y.current.value = this.getValue(this.y.current.value, this.props.waypoint.y);
 		this.v.current.value = this.getValue(this.v.current.value, this.props.waypoint.v);
 
-		if (this.state.id !== this.props.id) {
+		if (this.state.id !== this.props.id || this.state.pathName !== this.props.pathName) {
 			this.setState(() => {
-				return { id: this.props.id };
+				return { id: this.props.id, pathName: this.props.pathName };
 			});
 		}
 	}
@@ -128,7 +129,9 @@ class TankWaypointInfo extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		pathName: state.selectedPath,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
