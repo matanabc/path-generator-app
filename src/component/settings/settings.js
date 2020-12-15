@@ -50,11 +50,15 @@ class Settings extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="SettingsBody ml-1">
-						{this.settingsFoldersConfig.render(this.props)}
+						{this.props.isWeb ? <span /> : this.settingsFoldersConfig.render(this.props)}
 						{this.settingsRobotConfig.render(this.props)}
 						{this.settingsFiledConfig.render(this.props)}
 						{this.settingsPathConfig.render(this.props)}
-						<div style={{ fontSize: 10 }}>v{this.props.version}</div>
+						{this.props.isWeb ? (
+							<span />
+						) : (
+							<div style={{ fontSize: 10 }}>v{this.props.version}</div>
+						)}
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -80,6 +84,7 @@ const mapStateToProps = (state) => {
 		newVersion: state.newVersion,
 		saveCSVTo: state.saveCSVTo,
 		version: state.version,
+		isWeb: state.isWeb,
 	};
 };
 

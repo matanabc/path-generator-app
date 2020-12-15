@@ -41,7 +41,7 @@ class SettingsFiledConfig extends SettingsConfig {
 
 				<Form.Row>
 					<Form.Group as={Col}>
-						<Form.Label>Image name / URL</Form.Label>
+						<Form.Label>Image</Form.Label>
 						<Form.Control defaultValue={props.filedImageUrl} ref={this.filedImageNameRef} />
 					</Form.Group>
 				</Form.Row>
