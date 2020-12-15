@@ -13,7 +13,7 @@ function setFieldConfig(state, payload) {
 }
 
 function setImage(state, payload) {
-	return { ...state, imageUrl: payload.imageUrl };
+	return { ...state, image: payload.imageUrl };
 }
 
 export default function project(state, action) {

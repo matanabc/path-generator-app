@@ -10,7 +10,7 @@ import {
 } from './action-types';
 
 function getNewWaypoint(state, waypoint, object) {
-	return new state.pathType.Waypoint(
+	return new state.driveType.Waypoint(
 		Number.isNaN(object.x) ? waypoint.x : object.x,
 		Number.isNaN(object.y) ? waypoint.y : object.y,
 		Number.isNaN(object.angle) ? waypoint.angle : object.angle,
@@ -26,7 +26,7 @@ function setWaypoint(state, payload) {
 		if (index !== payload.index) waypoints.push(element);
 		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
 	});
-	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, newState.pathConfig);
+	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
 	return newState;
 }
 
@@ -37,14 +37,14 @@ function removeWaypoint(state, payload) {
 		if (index !== payload.index) waypoints.push(element);
 	});
 
-	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, newState.pathConfig);
+	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
 	return newState;
 }
 
 function changeSelectedPath(state, payload) {
 	const oldPath = state.paths[payload.pathName];
 	const newState = { ...state, selectedPath: payload.pathName };
-	newState.paths[payload.pathName] = new state.pathType.Path(oldPath.waypoints, state.pathConfig);
+	newState.paths[payload.pathName] = new state.driveType.Path(oldPath.waypoints, state.pathConfig);
 	return newState;
 }
 
@@ -64,7 +64,7 @@ function renamePath(state, payload) {
 
 function addPath(state, payload) {
 	const newState = { ...state, selectedPath: payload.name };
-	newState.paths[payload.name] = new state.pathType.Path([], state.pathConfig);
+	newState.paths[payload.name] = new state.driveType.Path([], state.pathConfig);
 	return newState;
 }
 
@@ -79,7 +79,7 @@ function checkIfPathIsIllegal(oldState, state) {
 function addWaypoint(state, payload) {
 	const waypoints = [];
 	const object = { ...payload.waypoint, vMax: 0.1 };
-	const newWaypoint = Object.assign(new state.pathType.Waypoint(), object);
+	const newWaypoint = Object.assign(new state.driveType.Waypoint(), object);
 	state.paths[state.selectedPath].waypoints.forEach((waypoint, index) => {
 		if (waypoints.vMax === 0) waypoints.vMax = 0.1;
 		waypoints.push(waypoint);
@@ -87,7 +87,7 @@ function addWaypoint(state, payload) {
 	});
 	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
 	const newState = { ...state, addWaypointInIndex: undefined };
-	newState.paths[state.selectedPath] = new state.pathType.Path(waypoints, state.pathConfig);
+	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
 	return newState;
 }
 
