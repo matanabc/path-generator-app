@@ -100,7 +100,11 @@ export default class FileHandler {
 
 	async saveCSVPath() {}
 
-	async deletePath() {}
+	async deleteJsonPath(pathName) {
+		try {
+			this.fs.unlinkSync(`${this.projectPath}/paths/${pathName}.json`);
+		} catch (error) {}
+	}
 
 	async renamePath() {}
 }

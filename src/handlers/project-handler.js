@@ -25,3 +25,9 @@ export async function saveJsonPath(pathName, path) {
 		handler.saveJsonPath(pathName, path);
 	} catch (error) {}
 }
+
+export async function deleteJsonPath(pathName) {
+	try {
+		handler.deleteJsonPath(pathName);
+	} catch (error) {}
+}

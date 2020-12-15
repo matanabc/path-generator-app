@@ -1,5 +1,5 @@
+import { saveJsonPath, deleteJsonPath } from '../../handlers/project-handler';
 import { PopupsConfig } from '../../component/popups/popups-config';
-import { saveJsonPath } from '../../handlers/project-handler';
 import {
 	CHANGE_SELECTED_PATH,
 	REMOVE_WAYPOINT,
@@ -55,6 +55,7 @@ function deletePath(state, payload) {
 	const newState = { ...state, listenToMouseClicks: false };
 	delete newState.paths[state.selectedPath];
 	newState.selectedPath = undefined;
+	deleteJsonPath(state.selectedPath);
 	return newState;
 }
 
