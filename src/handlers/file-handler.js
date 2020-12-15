@@ -50,7 +50,7 @@ export default class FileHandler {
 		try {
 			if (!this.jsonProject) return;
 			if (this.jsonProject.image.startsWith('http')) {
-				this.dispatch(setImage(this.jsonProject.image));
+				this.dispatch(setImage(this.jsonProject.image, this.jsonProject.image));
 				return;
 			}
 
@@ -61,9 +61,9 @@ export default class FileHandler {
 
 			const data = this.fs.readFileSync(imagePath);
 			const imageUrl = URL.createObjectURL(new Blob([data]));
-			this.dispatch(setImage(imageUrl));
+			this.dispatch(setImage(imageUrl, this.jsonProject.image));
 		} catch (error) {
-			this.dispatch(setImage(''));
+			this.dispatch(setImage('', ''));
 		}
 	}
 

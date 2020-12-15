@@ -22,6 +22,7 @@ export const initialState = {
 	fieldConfig: new FieldConfig(),
 	projectPath: '',
 	saveCSVTo: '',
+	imageUrl: '',
 	image: '',
 
 	//App

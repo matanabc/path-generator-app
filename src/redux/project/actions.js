@@ -27,11 +27,12 @@ export function setFieldConfig(fieldConfig) {
 	};
 }
 
-export function setImage(imageUrl) {
+export function setImage(imageUrl, image) {
 	return {
 		type: SET_IMAGE,
 		payload: {
 			imageUrl: imageUrl,
+			image: image,
 		},
 	};
 }
