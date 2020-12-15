@@ -1,23 +1,48 @@
 export default class FileHandler {
 	constructor() {
+		this.ipcRenderer = window.require('electron').ipcRenderer;
 		this.fs = window.require('fs');
+		this.setOnFinish();
 	}
 
-	loadFieldConfig() {}
+	setOnFinish(loadFieldConfig, loadFieldImage, loadPathConfig, loadPaths) {
+		const defaultFinish = () => {};
+		this.loadFieldConfigFinish = loadFieldConfig ? loadFieldConfig : defaultFinish;
+		this.loadFieldImageFinish = loadFieldImage ? loadFieldImage : defaultFinish;
+		this.loadPathConfigFinish = loadPathConfig ? loadPathConfig : defaultFinish;
+		this.loadPathsFinish = loadPaths ? loadPaths : defaultFinish;
+	}
 
-	loadFieldImage() {}
+	load() {
+		this.loadFieldConfig();
+		this.loadFieldImage();
+		this.loadPathConfig();
+		this.loadPaths();
+	}
 
-	loadPathConfig() {}
+	async changeProjectFolderPath(folderPath) {
+		this.ipcRenderer.invoke('UpdateProjctPath', folderPath);
+	}
 
-	loadPaths() {}
+	async getProjectFolderPath() {
+		return await this.ipcRenderer.invoke('GetProjctPath');
+	}
 
-	saveJsonProject() {}
+	async loadFieldConfig() {}
 
-	saveJsonPath() {}
+	async loadFieldImage() {}
 
-	saveCSVPath() {}
+	async loadPathConfig() {}
 
-	deletePath() {}
+	async loadPaths() {}
 
-	renamePath() {}
+	async saveJsonProject() {}
+
+	async saveJsonPath() {}
+
+	async saveCSVPath() {}
+
+	async deletePath() {}
+
+	async renamePath() {}
 }
