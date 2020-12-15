@@ -13,3 +13,9 @@ export async function init(callback) {
 		dispatch(isWeb(true));
 	}
 }
+
+export async function changeProjectFolderPath(folderPath) {
+	try {
+		handler.changeProjectFolderPath(folderPath);
+	} catch (error) {}
+}

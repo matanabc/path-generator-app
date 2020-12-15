@@ -1,3 +1,4 @@
+import { changeProjectFolderPath } from '../../handlers/project-handler';
 import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import { setSettings } from '../../redux/project/actions';
@@ -29,6 +30,9 @@ class Settings extends React.Component {
 
 		this.props.setSettings(settings);
 		this.props.closePopups();
+
+		if (settings.projectPath !== this.props.projectPath)
+			changeProjectFolderPath(settings.projectPath);
 	}
 
 	getUpdateButton() {
