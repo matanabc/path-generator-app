@@ -1,4 +1,4 @@
-import { SET_SETTINGS, SET_PROJECT_PATH, SET_FIELD_CONFIG } from './action-types';
+import { SET_SETTINGS, SET_PROJECT_PATH, SET_FIELD_CONFIG, SET_IMAGE } from './action-types';
 
 export function setSettings(settings) {
 	return {
@@ -23,6 +23,15 @@ export function setFieldConfig(fieldConfig) {
 		type: SET_FIELD_CONFIG,
 		payload: {
 			fieldConfig: fieldConfig,
+		},
+	};
+}
+
+export function setImage(imageUrl) {
+	return {
+		type: SET_IMAGE,
+		payload: {
+			imageUrl: imageUrl,
 		},
 	};
 }

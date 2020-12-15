@@ -1,4 +1,4 @@
-import { setProjectPath, setFieldConfig } from '../redux/project/actions';
+import { setProjectPath, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig } from '../component/field-view/view-config';
 
 export default class FileHandler {
@@ -45,7 +45,26 @@ export default class FileHandler {
 		this.dispatch(setFieldConfig(fieldConfig));
 	}
 
-	async loadFieldImage() {}
+	async loadFieldImage() {
+		try {
+			if (!this.jsonProject) return;
+			if (this.jsonProject.image.startsWith('http')) {
+				this.dispatch(setImage(this.jsonProject.image));
+				return;
+			}
+
+			var imagePath = '';
+			if (this.jsonProject.image.indexOf('/') === -1)
+				imagePath = `${this.projectPath}/${this.jsonProject.image}`;
+			else imagePath = this.jsonProject.image;
+
+			const data = this.fs.readFileSync(imagePath);
+			const imageUrl = URL.createObjectURL(new Blob([data]));
+			this.dispatch(setImage(imageUrl));
+		} catch (error) {
+			this.dispatch(setImage(''));
+		}
+	}
 
 	async loadPathConfig() {}
 
