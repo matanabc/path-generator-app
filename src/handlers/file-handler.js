@@ -1,7 +1,13 @@
-import { setProjectPath, setFieldConfig, setImage, setCSVPath } from '../redux/project/actions';
-import { FieldConfig } from '../component/field-view/view-config';
+import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
 import { pathToCSV } from './csv-handler';
+import {
+	setRobotDrawConfig,
+	setProjectPath,
+	setFieldConfig,
+	setCSVPath,
+	setImage,
+} from '../redux/project/actions';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -16,6 +22,7 @@ export default class FileHandler {
 		await this.setProjectFolderPath();
 		this.loadJsonProject();
 		this.setCSVFolderPath();
+		this.loadRobotDrawConfig();
 		this.loadFieldConfig();
 		this.loadFieldImage();
 		this.loadPathConfig();
@@ -44,6 +51,13 @@ export default class FileHandler {
 		} catch (error) {
 			this.jsonProject = undefined;
 		}
+	}
+
+	async loadRobotDrawConfig() {
+		var robotDrawConfig = new RobotDrawConfig();
+		if (this.jsonProject && this.jsonProject.robotDrawConfig)
+			robotDrawConfig = Object.assign(new RobotDrawConfig(), this.jsonProject.robotDrawConfig);
+		this.dispatch(setRobotDrawConfig(robotDrawConfig));
 	}
 
 	async loadFieldConfig() {

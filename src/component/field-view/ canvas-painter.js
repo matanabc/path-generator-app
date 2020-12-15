@@ -59,7 +59,7 @@ function drawRobot(ctx, props) {
 	ctx.beginPath();
 	ctx.save();
 	drawRobotShape(ctx, props, robotLength, robotCenter);
-	drawRobotCenter(ctx, robotCenter);
+	drawRobotCenter(ctx);
 	drawRobotBorders(ctx, robotInReverse, robotLength, robotCenter, robotBorder, 'blue');
 	drawRobotBorders(ctx, robotInReverse, -robotLength, robotCenter, robotBorder, 'red');
 	ctx.restore();
@@ -83,8 +83,8 @@ function drawRobotShape(ctx, props, robotLength, robotCenter) {
 	ctx.fillRect(-robotLength / 2 - robotCenter, -robotWidth / 2, robotLength, robotWidth);
 }
 
-function drawRobotCenter(ctx, robotCenter) {
-	ctx.arc(robotCenter, 0, 1.5, 0, Math.PI * 2, false);
+function drawRobotCenter(ctx) {
+	ctx.arc(0, 0, 1.5, 0, Math.PI * 2, false);
 	ctx.fillStyle = 'rgb(50, 100, 0)';
 	ctx.fill();
 }

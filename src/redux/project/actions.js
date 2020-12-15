@@ -1,4 +1,5 @@
 import {
+	SET_ROBOT_DRAW_CONFIG,
 	SET_PROJECT_PATH,
 	SET_FIELD_CONFIG,
 	SET_SETTINGS,
@@ -48,6 +49,15 @@ export function setCSVPath(path) {
 		type: SET_CSV_PATH,
 		payload: {
 			path: path,
+		},
+	};
+}
+
+export function setRobotDrawConfig(robotDrawConfig) {
+	return {
+		type: SET_ROBOT_DRAW_CONFIG,
+		payload: {
+			robotDrawConfig: robotDrawConfig,
 		},
 	};
 }
