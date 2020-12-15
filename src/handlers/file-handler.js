@@ -1,6 +1,7 @@
 import { setProjectPath, setFieldConfig, setImage, setCSVPath } from '../redux/project/actions';
 import { FieldConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
+import { pathToCSV } from './csv-handler';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -112,7 +113,11 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
-	async saveCSVPath() {}
+	async saveCSVPath(path, pathName, folder) {
+		try {
+			this.fs.writeFileSync(`${folder}/${pathName}.csv`, pathToCSV(path));
+		} catch (error) {}
+	}
 
 	async deleteJsonPath(pathName) {
 		try {

@@ -2,6 +2,7 @@ import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from 'react
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
 import { changeListenToMouseStatus } from '../redux/view/actions';
 import { changeSelectedPath } from '../redux/path/actions';
+import { saveCSVPath } from '../handlers/project-handler';
 import { FiDownload, FiCircle } from 'react-icons/fi';
 import { GiClick } from 'react-icons/gi';
 import { connect } from 'react-redux';
@@ -15,8 +16,13 @@ import {
 class Tools extends React.Component {
 	constructor(props) {
 		super(props);
+		this.savePathToCSV = this.savePathToCSV.bind(this);
 		this.setDrawRobotInterval = this.setDrawRobotInterval.bind(this);
 		this.isRangePositionInTheEnd = this.isRangePositionInTheEnd.bind(this);
+	}
+
+	savePathToCSV() {
+		saveCSVPath(this.props.path, this.props.pathName, this.props.saveCSVTo);
 	}
 
 	isRangePositionInTheEnd() {
@@ -65,6 +71,7 @@ class Tools extends React.Component {
 					<Button
 						size="lg"
 						className="mr-3"
+						onClick={this.savePathToCSV}
 						title="Save csv path to robot"
 						disabled={this.props.path === undefined}
 					>
@@ -134,6 +141,7 @@ class Tools extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		saveCSVTo: state.saveCSVTo,
 		pathName: state.selectedPath,
 		rangePosition: state.rangePosition,
 		pathsName: Object.keys(state.paths),

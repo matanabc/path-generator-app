@@ -49,3 +49,9 @@ export async function loadFieldImage(image) {
 		handler.loadFieldImage(image);
 	} catch (error) {}
 }
+
+export async function saveCSVPath(path, pathName, folder) {
+	try {
+		handler.saveCSVPath(path, pathName, folder);
+	} catch (error) {}
+}
