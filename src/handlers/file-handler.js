@@ -11,6 +11,7 @@ export default class FileHandler {
 
 	async load() {
 		await this.setProjectFolderPath();
+		this.loadJsonProject();
 		this.loadFieldConfig();
 		this.loadFieldImage();
 		this.loadPathConfig();
@@ -25,6 +26,15 @@ export default class FileHandler {
 	async setProjectFolderPath() {
 		this.projectPath = await this.ipcRenderer.invoke('GetProjctPath');
 		this.dispatch(setProjectPath(this.projectPath));
+	}
+
+	loadJsonProject() {
+		try {
+			const data = this.fs.readFileSync(`${this.projectPath}/PathGenerator.json`);
+			this.jsonProject = JSON.parse(data);
+		} catch (error) {
+			this.jsonProject = {};
+		}
 	}
 
 	async loadFieldConfig() {}
