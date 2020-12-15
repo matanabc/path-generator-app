@@ -18,7 +18,7 @@ class SettingsFiledConfig extends SettingsConfig {
 
 	getData() {
 		return {
-			imageUrl: this.filedImageNameRef.current.value,
+			image: this.filedImageNameRef.current.value,
 			fieldConfig: new FieldConfig(
 				this.fieldWidthInMeterRef.current.value,
 				this.fieldHeightInMeterRef.current.value,

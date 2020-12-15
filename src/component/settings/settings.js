@@ -20,7 +20,7 @@ class Settings extends React.Component {
 		this.settingsPathConfig = new SettingsPathConfig();
 	}
 
-	saveSettings() {
+	async saveSettings() {
 		const settings = {
 			...this.settingsFiledConfig.getData(),
 			...this.settingsFoldersConfig.getData(),
@@ -28,11 +28,10 @@ class Settings extends React.Component {
 			robotDrawConfig: this.settingsRobotConfig.getData(),
 		};
 
+		if (settings.projectPath !== this.props.projectPath)
+			await changeProjectFolderPath(settings.projectPath);
 		this.props.setSettings(settings);
 		this.props.closePopups();
-
-		if (settings.projectPath !== this.props.projectPath)
-			changeProjectFolderPath(settings.projectPath);
 	}
 
 	getUpdateButton() {

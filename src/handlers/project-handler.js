@@ -37,3 +37,9 @@ export async function renameJsonPath(oldName, newName) {
 		handler.renameJsonPath(oldName, newName);
 	} catch (error) {}
 }
+
+export async function saveJsonProject(settings) {
+	try {
+		handler.saveJsonProject(settings);
+	} catch (error) {}
+}

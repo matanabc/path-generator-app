@@ -1,3 +1,4 @@
+import { saveJsonProject } from '../../handlers/project-handler';
 import {
 	SET_PROJECT_PATH,
 	SET_FIELD_CONFIG,
@@ -7,6 +8,7 @@ import {
 } from './action-types';
 
 function setSettings(state, payload) {
+	saveJsonProject(payload.settings);
 	return { ...state, ...payload.settings, selectedPath: undefined };
 }
 

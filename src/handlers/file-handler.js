@@ -23,7 +23,7 @@ export default class FileHandler {
 
 	async changeProjectFolderPath(folderPath) {
 		await this.ipcRenderer.invoke('UpdateProjctPath', folderPath);
-		this.load();
+		await this.load();
 	}
 
 	async setProjectFolderPath() {
@@ -94,7 +94,14 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
-	async saveJsonProject() {}
+	async saveJsonProject(settings) {
+		try {
+			const projectSettings = { ...settings };
+			delete projectSettings.projectPath;
+			const jsonProject = JSON.stringify(projectSettings);
+			this.fs.writeFileSync(`${this.projectPath}/PathGenerator.json`, jsonProject);
+		} catch (error) {}
+	}
 
 	async saveJsonPath(pathName, path) {
 		try {
