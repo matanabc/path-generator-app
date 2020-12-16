@@ -1,4 +1,4 @@
-import { isWeb } from '../redux/app/actions';
+import { setAppVersion, isWeb } from '../redux/app/actions';
 
 var dispatch = undefined;
 var ipcRenderer = undefined;
@@ -18,6 +18,7 @@ export async function appUpdaterInit(callback) {
 async function getAppVersion() {
 	try {
 		const appVersion = await ipcRenderer.invoke('GetAppVersion');
+		dispatch(setAppVersion(appVersion));
 	} catch (error) {}
 }
 
