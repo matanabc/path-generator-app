@@ -41,10 +41,11 @@ class PlayingBar extends React.Component {
 	}
 
 	render() {
+		const style = { fontSize: '12px' };
 		return (
 			<Container>
 				<Row>
-					<Col sm={1} style={{ fontSize: '12px', textAlign: 'end' }}>
+					<Col sm={0.5} style={style}>
 						{this.props.path
 							? (this.props.robotLoopTime * this.props.rangePosition).toFixed(2)
 							: '0.00'}
@@ -56,7 +57,7 @@ class PlayingBar extends React.Component {
 							onChange={(event) => this.changeRangePosition(event.target.value)}
 						/>
 					</Col>
-					<Col sm={1} style={{ fontSize: '12px' }}>
+					<Col sm={0.5} style={style}>
 						{this.props.path
 							? (
 									Math.sign(this.props.path.sourceSetpoints.length) *
