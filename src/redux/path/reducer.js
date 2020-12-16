@@ -1,5 +1,4 @@
 import { saveJsonPath, deleteJsonPath, renameJsonPath } from '../../handlers/project-handler';
-import { PopupsConfig } from '../../component/popups/popups-config';
 import {
 	CHANGE_SELECTED_PATH,
 	CHANGE_DIRECTION,
@@ -87,14 +86,6 @@ function addPath(state, payload) {
 	return newState;
 }
 
-function checkIfPathIsIllegal(oldState, state) {
-	const path = state.paths[state.selectedPath];
-	if (oldState === state || !path || !path.isIllegal()) return state;
-	state.popupsStatus = new PopupsConfig();
-	state.popupsStatus.pathIsIllegalPopup = true;
-	return state;
-}
-
 function addWaypoint(state, payload) {
 	const waypoints = [];
 	const object = { ...payload.waypoint, vMax: 0.1 };
@@ -126,15 +117,14 @@ function changeDirection(state, payload) {
 }
 
 export default function path(state, action) {
-	const oldState = state;
-	if (action.type === ADD_PATH) state = addPath(state, action.payload);
-	if (action.type === RENAME_PATH) state = renamePath(state, action.payload);
-	if (action.type === DELETE_PATH) state = deletePath(state, action.payload);
-	if (action.type === ADD_WAYPOINT) state = addWaypoint(state, action.payload);
-	if (action.type === SET_WAYPOINT) state = setWaypoint(state, action.payload);
-	if (action.type === SET_PATH_CONFIG) state = setPathConfig(state, action.payload);
-	if (action.type === REMOVE_WAYPOINT) state = removeWaypoint(state, action.payload);
-	if (action.type === CHANGE_DIRECTION) state = changeDirection(state, action.payload);
-	if (action.type === CHANGE_SELECTED_PATH) state = changeSelectedPath(state, action.payload);
-	return checkIfPathIsIllegal(oldState, state);
+	if (action.type === ADD_PATH) return addPath(state, action.payload);
+	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
+	if (action.type === DELETE_PATH) return deletePath(state, action.payload);
+	if (action.type === ADD_WAYPOINT) return addWaypoint(state, action.payload);
+	if (action.type === SET_WAYPOINT) return setWaypoint(state, action.payload);
+	if (action.type === SET_PATH_CONFIG) return setPathConfig(state, action.payload);
+	if (action.type === REMOVE_WAYPOINT) return removeWaypoint(state, action.payload);
+	if (action.type === CHANGE_DIRECTION) return changeDirection(state, action.payload);
+	if (action.type === CHANGE_SELECTED_PATH) return changeSelectedPath(state, action.payload);
+	return state;
 }

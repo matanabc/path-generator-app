@@ -1,4 +1,4 @@
-import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from 'react-icons/md';
+import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay, MdError } from 'react-icons/md';
 import { changeSelectedPath, changeDirection } from '../redux/path/actions';
 import { FiDownload, FiCircle, FiCheckCircle } from 'react-icons/fi';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
@@ -16,12 +16,18 @@ import {
 class Tools extends React.Component {
 	constructor(props) {
 		super(props);
+		this.getPlayButton = this.getPlayButton.bind(this);
 		this.savePathToCSV = this.savePathToCSV.bind(this);
+		this.getIllegalPathButton = this.getIllegalPathButton.bind(this);
 		this.setDrawRobotInterval = this.setDrawRobotInterval.bind(this);
 		this.isRangePositionInTheEnd = this.isRangePositionInTheEnd.bind(this);
 	}
 
 	savePathToCSV() {
+		if (this.props.path && this.props.path.isIllegal()) {
+			this.props.showIllegalPathPopup();
+			return;
+		}
 		saveCSVPath(this.props.path, this.props.pathName, this.props.saveCSVTo);
 	}
 
@@ -50,11 +56,30 @@ class Tools extends React.Component {
 		this.props.setDrawRobotInterval(interval);
 	}
 
-	render() {
-		var playButtonToShow = <MdPlayArrow />;
-		if (this.props.drawRobotInterval) playButtonToShow = <MdPause />;
-		else if (this.isRangePositionInTheEnd()) playButtonToShow = <MdReplay />;
+	getPlayButton() {
+		if (this.props.drawRobotInterval) return <MdPause />;
+		else if (this.isRangePositionInTheEnd()) return <MdReplay />;
+		else return <MdPlayArrow />;
+	}
 
+	getIllegalPathButton() {
+		if (this.props.path && this.props.path.isIllegal()) {
+			return (
+				<Button
+					size="lg"
+					variant="danger"
+					className="mr-3"
+					title="Illegal path"
+					onClick={this.props.showIllegalPathPopup}
+				>
+					<MdError />
+				</Button>
+			);
+		}
+		return <span />;
+	}
+
+	render() {
 		return (
 			<Container>
 				<Row>
@@ -108,7 +133,7 @@ class Tools extends React.Component {
 						onClick={this.setDrawRobotInterval}
 						disabled={this.props.path === undefined}
 					>
-						{playButtonToShow}
+						{this.getPlayButton()}
 					</Button>
 					<Button
 						className="mr-3"
@@ -142,6 +167,7 @@ class Tools extends React.Component {
 						)}
 						in reverse
 					</Button>
+					{this.getIllegalPathButton()}
 				</Row>
 			</Container>
 		);
@@ -164,6 +190,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		showCreateNewPathPopup: () => dispatch(changePopupsStatus('createNewPathPopup')),
+		showIllegalPathPopup: () => dispatch(changePopupsStatus('pathIsIllegalPopup')),
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
