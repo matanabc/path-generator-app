@@ -27,6 +27,8 @@ function setWaypoint(state, payload) {
 	state.paths[state.selectedPath].waypoints.forEach((element, index) => {
 		if (index !== payload.index) waypoints.push(element);
 		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
+		if (waypoints[index].vMax > state.pathConfig.vMax)
+			waypoints[index].vMax = state.pathConfig.vMax;
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
 	if (state.paths[state.selectedPath].isReverse())
@@ -88,10 +90,9 @@ function addPath(state, payload) {
 
 function addWaypoint(state, payload) {
 	const waypoints = [];
-	const object = { ...payload.waypoint, vMax: 0.1 };
+	const object = { ...payload.waypoint };
 	const newWaypoint = Object.assign(new state.driveType.Waypoint(), object);
 	state.paths[state.selectedPath].waypoints.forEach((waypoint, index) => {
-		if (waypoints.vMax === 0) waypoints.vMax = 0.1;
 		waypoints.push(waypoint);
 		if (index === state.addWaypointInIndex) waypoints.push(newWaypoint);
 	});

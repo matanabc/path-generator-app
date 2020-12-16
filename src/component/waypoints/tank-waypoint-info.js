@@ -32,6 +32,8 @@ class TankWaypointInfo extends React.Component {
 		this.x.current.value = this.getValue(this.x.current.value, this.props.waypoint.x);
 		this.y.current.value = this.getValue(this.y.current.value, this.props.waypoint.y);
 		this.v.current.value = this.getValue(this.v.current.value, this.props.waypoint.v);
+		if (this.vMax.current.value > this.props.waypoint.vMax)
+			this.vMax.current.value = this.props.waypoint.vMax;
 
 		if (this.state.id !== this.props.id || this.state.pathName !== this.props.pathName) {
 			this.setState(() => {
