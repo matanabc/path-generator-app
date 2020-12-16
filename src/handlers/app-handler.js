@@ -1,3 +1,5 @@
+import { isWeb } from '../redux/app/actions';
+
 var dispatch = undefined;
 var ipcRenderer = undefined;
 
@@ -5,9 +7,12 @@ export async function appUpdaterInit(callback) {
 	try {
 		dispatch = callback;
 		ipcRenderer = window.require('electron').ipcRenderer;
+		dispatch(isWeb(false));
 		getAppVersion();
 		onUpdateDownloaded();
-	} catch (error) {}
+	} catch (error) {
+		dispatch(isWeb(true));
+	}
 }
 
 async function getAppVersion() {

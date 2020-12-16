@@ -10,7 +10,6 @@ export const initialState = {
 	listenToMouseClicks: false,
 	selectedPath: undefined,
 	rangePosition: 0,
-	isWeb: true,
 
 	// Path
 	driveType: Tank,
@@ -28,4 +27,5 @@ export const initialState = {
 	//App
 	newVersion: undefined,
 	version: '0.0.0',
+	isWeb: true,
 };

@@ -3,7 +3,6 @@ import {
 	SET_DRAW_ROBOT_INTERVAL,
 	CHANGE_RANGE_POSITION,
 	CHANGE_POPUPS_STATUS,
-	SET_PLATFORM,
 } from './action-types';
 
 export function changeRangePosition(position) {
@@ -38,15 +37,6 @@ export function changeListenToMouseStatus(index) {
 		type: CHANGE_LISTEN_TO_MOUSE_STATUS,
 		payload: {
 			index: index,
-		},
-	};
-}
-
-export function isWeb(value) {
-	return {
-		type: SET_PLATFORM,
-		payload: {
-			isWeb: value,
 		},
 	};
 }

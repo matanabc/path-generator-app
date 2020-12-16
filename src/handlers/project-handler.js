@@ -1,4 +1,3 @@
-import { isWeb } from '../redux/view/actions';
 import FileHandler from './file-handler';
 
 var handler = undefined;
@@ -8,10 +7,7 @@ export async function projectInit(callback) {
 	try {
 		dispatch = callback;
 		handler = new FileHandler(dispatch);
-		dispatch(isWeb(false));
-	} catch (error) {
-		dispatch(isWeb(true));
-	}
+	} catch (error) {}
 }
 
 export async function changeProjectFolderPath(folderPath) {
