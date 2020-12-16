@@ -56,7 +56,7 @@ class SettingsFiledConfig extends SettingsConfig {
 						/>
 					</Form.Group>
 					<Form.Group as={Col}>
-						<Form.Label>Height in meter</Form.Label>
+						<Form.Label>Length in meter</Form.Label>
 						<Form.Control
 							defaultValue={props.fieldConfig.heightInMeter}
 							ref={this.fieldHeightInMeterRef}
@@ -91,7 +91,7 @@ class SettingsFiledConfig extends SettingsConfig {
 						/>
 					</Form.Group>
 					<Form.Group as={Col}>
-						<Form.Label>Heigth in pixel</Form.Label>
+						<Form.Label>Length in pixel</Form.Label>
 						<Form.Control
 							defaultValue={props.fieldConfig.heigthInPixel}
 							ref={this.fieldHeightInPixelRef}

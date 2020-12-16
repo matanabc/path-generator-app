@@ -59,7 +59,7 @@ class Settings extends React.Component {
 					<Modal.Title>Settings</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
-					<div className="SettingsBody ml-1">
+					<div className="SettingsBody">
 						{this.props.isWeb ? <span /> : this.settingsFoldersConfig.render(this.props)}
 						{this.settingsRobotConfig.render(this.props)}
 						{this.settingsFiledConfig.render(this.props)}
