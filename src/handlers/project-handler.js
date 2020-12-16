@@ -4,7 +4,7 @@ import FileHandler from './file-handler';
 var handler = undefined;
 var dispatch = undefined;
 
-export async function init(callback) {
+export async function projectInit(callback) {
 	try {
 		dispatch = callback;
 		handler = new FileHandler(dispatch);
