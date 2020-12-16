@@ -95,6 +95,24 @@ class Popups extends React.Component {
 						</div>
 					}
 				/>
+
+				<Popup
+					show={
+						this.props.popupsStatus.savePathToCSVPopup &&
+						this.props.saveCSVTo === '' &&
+						!this.props.isWeb
+					}
+					title="Save path CSV"
+					body="Can't save path CSV, you need to set CSV folder path in settings!"
+					close={this.props.closePopups}
+				/>
+
+				<Popup
+					show={this.props.popupsStatus.savePathToCSVPopup && this.props.saveCSVTo !== ''}
+					title="Save path CSV"
+					body="Path CSV saved!"
+					close={this.props.closePopups}
+				/>
 			</div>
 		);
 	}
@@ -107,6 +125,8 @@ const mapStateToProps = (state) => {
 		pathsName: Object.keys(state.paths),
 		popupsStatus: state.popupsStatus,
 		newVersion: state.newVersion,
+		saveCSVTo: state.saveCSVTo,
+		isWeb: state.isWeb,
 	};
 };
 

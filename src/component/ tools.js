@@ -28,6 +28,8 @@ class Tools extends React.Component {
 			this.props.showIllegalPathPopup();
 			return;
 		}
+		this.props.showSaveCSVPopup();
+		if (this.props.saveCSVTo === '' && !this.props.isWeb) return;
 		saveCSVPath(this.props.path, this.props.pathName, this.props.saveCSVTo);
 	}
 
@@ -176,6 +178,7 @@ class Tools extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		isWeb: state.isWeb,
 		saveCSVTo: state.saveCSVTo,
 		pathName: state.selectedPath,
 		rangePosition: state.rangePosition,
@@ -193,6 +196,7 @@ const mapDispatchToProps = (dispatch) => {
 		showIllegalPathPopup: () => dispatch(changePopupsStatus('pathIsIllegalPopup')),
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
+		showSaveCSVPopup: () => dispatch(changePopupsStatus('savePathToCSVPopup')),
 		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
 		showRenamePathPopup: () => dispatch(changePopupsStatus('renamePathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
