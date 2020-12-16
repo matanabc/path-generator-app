@@ -105,7 +105,8 @@ export default class FileHandler {
 	async loadPath(fileName) {
 		try {
 			const data = this.fs.readFileSync(`${this.projectPath}/paths/${fileName}`);
-			this.dispatch(addPath(fileName.replace('.json', ''), JSON.parse(data).waypoints));
+			const path = JSON.parse(data);
+			this.dispatch(addPath(fileName.replace('.json', ''), path.waypoints, path.isInReverse));
 		} catch (error) {}
 	}
 
@@ -122,7 +123,7 @@ export default class FileHandler {
 		try {
 			if (!this.fs.existsSync(`${this.projectPath}/paths`))
 				this.fs.mkdirSync(`${this.projectPath}/paths`);
-			const data = JSON.stringify({ isInReverse: false, waypoints: path.waypoints });
+			const data = JSON.stringify({ isInReverse: path.isReverse(), waypoints: path.waypoints });
 			this.fs.writeFileSync(`${this.projectPath}/paths/${pathName}.json`, data);
 		} catch (error) {}
 	}

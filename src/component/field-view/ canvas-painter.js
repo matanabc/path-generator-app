@@ -50,7 +50,7 @@ function drawCoords(ctx, props) {
 }
 
 function drawRobot(ctx, props) {
-	const robotInReverse = false ? -1 : 1;
+	const robotInReverse = props.isPathInReverse ? -1 : 1;
 	const robotLength = props.robotDrawConfig.length / props.fieldConfig.widthPixelToMeter;
 	const robotBorder = (props.robotDrawConfig.width * 0.6) / props.fieldConfig.hightPixelToMeter;
 	const robotCenter =

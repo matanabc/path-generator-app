@@ -2,6 +2,7 @@ import { saveJsonPath, deleteJsonPath, renameJsonPath } from '../../handlers/pro
 import { PopupsConfig } from '../../component/popups/popups-config';
 import {
 	CHANGE_SELECTED_PATH,
+	CHANGE_DIRECTION,
 	REMOVE_WAYPOINT,
 	SET_PATH_CONFIG,
 	ADD_WAYPOINT,
@@ -29,6 +30,8 @@ function setWaypoint(state, payload) {
 		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
+	if (state.paths[state.selectedPath].isReverse())
+		newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
@@ -40,6 +43,8 @@ function removeWaypoint(state, payload) {
 		if (index !== payload.index) waypoints.push(element);
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
+	if (state.paths[state.selectedPath].isReverse())
+		newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
@@ -48,6 +53,7 @@ function changeSelectedPath(state, payload) {
 	const oldPath = state.paths[payload.pathName];
 	const newState = { ...state, selectedPath: payload.pathName };
 	newState.paths[payload.pathName] = new state.driveType.Path(oldPath.waypoints, state.pathConfig);
+	if (oldPath.isReverse()) newState.paths[payload.pathName].changeDirection();
 	return newState;
 }
 
@@ -75,6 +81,7 @@ function addPath(state, payload) {
 			waypoints.push(Object.assign(new state.driveType.Waypoint(), waypoint));
 		});
 	newState.paths[payload.name] = new state.driveType.Path(waypoints, state.pathConfig);
+	if (payload.isInReverse) newState.paths[payload.name].changeDirection();
 	newState.selectedPath = payload.waypoints ? undefined : payload.name;
 	if (!payload.waypoints) saveJsonPath(payload.name, newState.paths[payload.name]);
 	return newState;
@@ -100,6 +107,8 @@ function addWaypoint(state, payload) {
 	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
 	const newState = { ...state, addWaypointInIndex: undefined };
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
+	if (state.paths[state.selectedPath].isReverse())
+		newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
@@ -107,6 +116,13 @@ function addWaypoint(state, payload) {
 function setPathConfig(state, payload) {
 	const pathConfig = Object.assign(new state.driveType.PathConfig(), payload.pathConfig);
 	return { ...state, pathConfig: pathConfig };
+}
+
+function changeDirection(state, payload) {
+	const newState = { ...state };
+	newState.paths[state.selectedPath].changeDirection();
+	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
+	return newState;
 }
 
 export default function path(state, action) {
@@ -118,6 +134,7 @@ export default function path(state, action) {
 	if (action.type === SET_WAYPOINT) state = setWaypoint(state, action.payload);
 	if (action.type === SET_PATH_CONFIG) state = setPathConfig(state, action.payload);
 	if (action.type === REMOVE_WAYPOINT) state = removeWaypoint(state, action.payload);
+	if (action.type === CHANGE_DIRECTION) state = changeDirection(state, action.payload);
 	if (action.type === CHANGE_SELECTED_PATH) state = changeSelectedPath(state, action.payload);
 	return checkIfPathIsIllegal(oldState, state);
 }

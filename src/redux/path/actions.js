@@ -1,5 +1,6 @@
 import {
 	CHANGE_SELECTED_PATH,
+	CHANGE_DIRECTION,
 	REMOVE_WAYPOINT,
 	SET_PATH_CONFIG,
 	ADD_WAYPOINT,
@@ -62,12 +63,13 @@ export function renamePath(name) {
 	};
 }
 
-export function addPath(name, waypoints) {
+export function addPath(name, waypoints, isInReverse) {
 	return {
 		type: ADD_PATH,
 		payload: {
 			name: name,
 			waypoints: waypoints,
+			isInReverse: isInReverse,
 		},
 	};
 }
@@ -78,5 +80,12 @@ export function setPathConfig(pathConfig) {
 		payload: {
 			pathConfig: pathConfig,
 		},
+	};
+}
+
+export function changeDirection() {
+	return {
+		type: CHANGE_DIRECTION,
+		payload: {},
 	};
 }

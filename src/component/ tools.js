@@ -1,15 +1,15 @@
 import { MdBuild, MdDelete, MdEdit, MdPlayArrow, MdPause, MdReplay } from 'react-icons/md';
+import { changeSelectedPath, changeDirection } from '../redux/path/actions';
+import { FiDownload, FiCircle, FiCheckCircle } from 'react-icons/fi';
 import { Button, Container, Row, Dropdown } from 'react-bootstrap';
-import { changeListenToMouseStatus } from '../redux/view/actions';
-import { changeSelectedPath } from '../redux/path/actions';
 import { saveCSVPath } from '../handlers/project-handler';
-import { FiDownload, FiCircle } from 'react-icons/fi';
 import { GiClick } from 'react-icons/gi';
 import { connect } from 'react-redux';
 import React from 'react';
 import {
-	changeRangePosition,
+	changeListenToMouseStatus,
 	setDrawRobotInterval,
+	changeRangePosition,
 	changePopupsStatus,
 } from '../redux/view/actions';
 
@@ -129,8 +129,17 @@ class Tools extends React.Component {
 					>
 						<MdEdit />
 					</Button>
-					<Button className="mr-3" size="lg" disabled={this.props.path === undefined}>
-						<FiCircle className="mr-2" />
+					<Button
+						size="lg"
+						className="mr-3"
+						onClick={this.props.changeDirection}
+						disabled={this.props.path === undefined}
+					>
+						{this.props.path && this.props.path.isReverse() ? (
+							<FiCheckCircle className="mr-2" />
+						) : (
+							<FiCircle className="mr-2" />
+						)}
 						in reverse
 					</Button>
 				</Row>
@@ -162,6 +171,7 @@ const mapDispatchToProps = (dispatch) => {
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 		changeListenToMouseStatus: () => dispatch(changeListenToMouseStatus()),
 		showSettings: () => dispatch(changePopupsStatus('settingsPopup')),
+		changeDirection: () => dispatch(changeDirection()),
 	};
 };
 
