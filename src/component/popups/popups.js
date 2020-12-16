@@ -83,6 +83,18 @@ class Popups extends React.Component {
 					}
 					close={this.props.closePopups}
 				/>
+
+				<Popup
+					title={`v${this.props.newVersion} is available`}
+					show={this.props.popupsStatus.newVersionPopup}
+					close={this.props.closePopups}
+					body={
+						<div>
+							{'There is a new version waiting for you to update to!\n' +
+								'To update jest go to settings and click on update...'}
+						</div>
+					}
+				/>
 			</div>
 		);
 	}
@@ -94,6 +106,7 @@ const mapStateToProps = (state) => {
 		path: state.paths[state.selectedPath],
 		pathsName: Object.keys(state.paths),
 		popupsStatus: state.popupsStatus,
+		newVersion: state.newVersion,
 	};
 };
 
