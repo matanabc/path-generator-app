@@ -58,7 +58,7 @@ class PlayingBar extends React.Component {
 						/>
 					</Col>
 					<Col sm={0.5} style={style}>
-						{this.props.path
+						{this.props.path && !this.props.path.isIllegal()
 							? (
 									Math.sign(this.props.path.sourceSetpoints.length) *
 									(this.props.path.sourceSetpoints.length - 1) *
