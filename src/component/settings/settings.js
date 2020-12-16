@@ -5,6 +5,7 @@ import { setSettings } from '../../redux/project/actions';
 import SettingsRobotConfig from './settings-robot-config';
 import SettingsFiledConfig from './settings-filed-config';
 import SettingsPathConfig from './settings-path-config';
+import { updateApp } from '../../handlers/app-handler';
 import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -37,7 +38,12 @@ class Settings extends React.Component {
 
 	getUpdateButton() {
 		if (this.props.newVersion !== undefined) {
-			return <Button variant="outline-success">{`Update to v${this.props.newVersion}`}</Button>;
+			return (
+				<Button
+					variant="outline-success"
+					onClick={updateApp}
+				>{`Update to v${this.props.newVersion}`}</Button>
+			);
 		}
 		return <span />;
 	}

@@ -1,4 +1,5 @@
 import { projectInit } from '../handlers/project-handler';
+import { appUpdaterInit } from '../handlers/app-handler';
 import WaypointsList from './waypoints/waypoints-list';
 import FieldView from './field-view/field-view';
 import { Container } from 'react-bootstrap';
@@ -11,6 +12,7 @@ import React from 'react';
 
 class App extends React.Component {
 	componentDidMount() {
+		appUpdaterInit(this.props.dispatch);
 		projectInit(this.props.dispatch);
 	}
 
