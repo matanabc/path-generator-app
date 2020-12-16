@@ -105,12 +105,7 @@ function addWaypoint(state, payload) {
 }
 
 function setPathConfig(state, payload) {
-	const pathConfig = new state.driveType.PathConfig(
-		payload.pathConfig.width,
-		payload.pathConfig.vMax,
-		payload.pathConfig.acc,
-		payload.pathConfig.robotLoopTime
-	);
+	const pathConfig = Object.assign(new state.driveType.PathConfig(), payload.pathConfig);
 	return { ...state, pathConfig: pathConfig };
 }
 
