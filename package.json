@@ -1,6 +1,6 @@
 {
 	"name": "path-generator-app",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"main": "public/electron.js",
 	"description": "A easy motion profile generator",
 	"repository": "https://github.com/matanabc/path-generator-app.git",
