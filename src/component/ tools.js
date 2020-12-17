@@ -160,7 +160,7 @@ class Tools extends React.Component {
 						size="lg"
 						className="mr-3"
 						onClick={this.props.changeDirection}
-						disabled={this.props.path === undefined}
+						disabled={this.props.path === undefined || this.props.path.isTurnInPlace()}
 					>
 						{this.props.path && this.props.path.isReverse() ? (
 							<FiCheckCircle className="mr-2" />
