@@ -1,5 +1,5 @@
 import { addWaypoint } from '../../redux/path/actions';
-import { drawOnCanvas } from './ canvas-painter';
+import { drawOnCanvas } from './canvas-painter';
 import { connect } from 'react-redux';
 import React from 'react';
 
