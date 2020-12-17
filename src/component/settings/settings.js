@@ -1,101 +1,108 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { changeProjectFolderPath, loadFieldImage } from '../../handlers/project-handler';
+import { changePopupsStatus } from '../../redux/view/actions';
+import SettingsFoldersConfig from './settings-folders-config';
+import { setSettings } from '../../redux/project/actions';
+import SettingsRobotConfig from './settings-robot-config';
+import SettingsFiledConfig from './settings-filed-config';
+import SettingsPathConfig from './settings-path-config';
+import { updateApp } from '../../handlers/app-handler';
 import { Modal, Button } from 'react-bootstrap';
-import { setSettings } from './settings-action';
-import { updateApp } from "../../handlers/electron-handler";
-import { changePopupStatus } from "../popups/popups-action";
-import SettingsPathConfig from "./components/settings-path-config";
-import SettingsFiledConfig from "./components/settings-filed-config";
-import SettingsRobotConfig from "./components/settings-robot-config";
-import SettingsFoldersConfig from "./components/settings-folders-config";
-import { loadFieldImage, loadProjectFile } from "../..//handlers/project-handler";
-import { setFiledImage, addPath, setProjectSettings, setProjectFolderPath } from '../app/app-action';
+import { connect } from 'react-redux';
+import React from 'react';
 
 class Settings extends React.Component {
-    constructor(props) {
-        super(props);
-        this.saveSettings = this.saveSettings.bind(this);
+	constructor(props) {
+		super(props);
+		this.saveSettings = this.saveSettings.bind(this);
+		this.getUpdateButton = this.getUpdateButton.bind(this);
+		this.settingsFoldersConfig = new SettingsFoldersConfig();
+		this.settingsRobotConfig = new SettingsRobotConfig();
+		this.settingsFiledConfig = new SettingsFiledConfig();
+		this.settingsPathConfig = new SettingsPathConfig();
+	}
 
-        this.settingsFoldersConfig = new SettingsFoldersConfig();
-        this.settingsRobotConfig = new SettingsRobotConfig();
-        this.settingsFiledConfig = new SettingsFiledConfig();
-        this.settingsPathConfig = new SettingsPathConfig();
-    }
+	saveSettings() {
+		const settings = {
+			...this.settingsFiledConfig.getData(),
+			...this.settingsFoldersConfig.getData(),
+			pathConfig: this.settingsPathConfig.getData(),
+			robotDrawConfig: this.settingsRobotConfig.getData(),
+		};
 
-    saveSettings() {
-        const settings = {
-            ...this.settingsFoldersConfig.getData(),
-            pathConfig: this.settingsPathConfig.getData(),
-            fieldConfig: this.settingsFiledConfig.getData(),
-            robotDrawConfig: this.settingsRobotConfig.getData(),
-        };
+		this.props.setSettings(settings);
+		this.props.closePopups();
+		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
+		if (settings.projectPath !== this.props.projectPath)
+			changeProjectFolderPath(settings.projectPath);
+	}
 
-        this.props.setSettings(settings);
-        if (settings.projectPath !== this.props.projectPath)
-            loadProjectFile(this.props.setProjectSettings, this.props.setProjectFolderPath,
-                this.props.setFiledImage, this.props.addPath);
-        if (settings.fieldConfig.imageName !== this.props.fieldConfig.imageName)
-            loadFieldImage(this.props.projectPath, settings.fieldConfig.imageName, this.props.setFiledImage);
-    }
+	getUpdateButton() {
+		if (this.props.newVersion !== undefined) {
+			return (
+				<Button
+					variant="outline-success"
+					onClick={updateApp}
+				>{`Update to v${this.props.newVersion}`}</Button>
+			);
+		}
+		return <span />;
+	}
 
-    render() {
-        var updateButton = <span />;
-        if (this.props.newVersion !== undefined) {
-            updateButton = <Button variant="outline-success" onClick={updateApp}>
-                {`Update to v${this.props.newVersion}`}
-            </Button>
-        }
-
-        return (
-            <Modal show={this.props.projectPath === undefined || this.props.popupsStatus.settingsPopup}
-                onHide={this.props.closeSettings} backdrop="static">
-                <Modal.Header>
-                    <Modal.Title>Settings</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <div className="SettingsBody ml-1">
-                        {this.settingsFoldersConfig.render(this.props)}
-                        {this.settingsRobotConfig.render(this.props)}
-                        {this.settingsFiledConfig.render(this.props)}
-                        {this.settingsPathConfig.render(this.props)}
-
-                        <div style={{ fontSize: 10 }}>v{this.props.version}</div>
-                    </div>
-                </Modal.Body >
-                <Modal.Footer >
-                    {updateButton}
-                    <Button variant="outline-primary" onClick={this.props.closeSettings}>cancel</Button>
-                    <Button onClick={this.saveSettings}>save</Button>
-                </Modal.Footer>
-            </Modal >
-        );
-    };
+	render() {
+		return (
+			<Modal
+				show={this.props.popupsStatus.settingsPopup}
+				onHide={this.props.closePopups}
+				backdrop="static"
+			>
+				<Modal.Header>
+					<Modal.Title>Settings</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<div className="SettingsBody">
+						{this.props.isWeb ? <span /> : this.settingsFoldersConfig.render(this.props)}
+						{this.settingsRobotConfig.render(this.props)}
+						{this.settingsFiledConfig.render(this.props)}
+						{this.settingsPathConfig.render(this.props)}
+						{this.props.isWeb ? (
+							<span />
+						) : (
+							<div style={{ fontSize: 10 }}>v{this.props.version}</div>
+						)}
+					</div>
+				</Modal.Body>
+				<Modal.Footer>
+					{this.getUpdateButton()}
+					<Button variant="outline-primary" onClick={this.props.closePopups}>
+						cancel
+					</Button>
+					<Button onClick={this.saveSettings}>save</Button>
+				</Modal.Footer>
+			</Modal>
+		);
+	}
 }
 
 const mapStateToProps = (state) => {
-    return {
-        robotDrawConfig: state.robotDrawConfig,
-        popupsStatus: state.popupsStatus,
-        projectPath: state.projectPath,
-        fieldConfig: state.fieldConfig,
-        pathConfig: state.pathConfig,
-        newVersion: state.newVersion,
-        saveCSVTo: state.saveCSVTo,
-        version: state.version,
-        paths: state.paths,
-    };
+	return {
+		robotDrawConfig: state.robotDrawConfig,
+		popupsStatus: state.popupsStatus,
+		projectPath: state.projectPath,
+		fieldConfig: state.fieldConfig,
+		pathConfig: state.pathConfig,
+		newVersion: state.newVersion,
+		filedImageUrl: state.image,
+		saveCSVTo: state.saveCSVTo,
+		version: state.version,
+		isWeb: state.isWeb,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-    return {
-        setProjectFolderPath: projectFolderPath => dispatch(setProjectFolderPath(projectFolderPath)),
-        setFiledImage: (filedImage, imageName) => dispatch(setFiledImage(filedImage, imageName)),
-        setProjectSettings: settings => dispatch(setProjectSettings(settings)),
-        closeSettings: () => dispatch(changePopupStatus("settingsPopup")),
-        setSettings: settings => dispatch(setSettings(settings)),
-        addPath: path => dispatch(addPath(path)),
-    };
-}
+	return {
+		setSettings: (settings) => dispatch(setSettings(settings)),
+		closePopups: () => dispatch(changePopupsStatus()),
+	};
+};
 
-const settings = connect(mapStateToProps, mapDispatchToProps)(Settings);
-export default settings;
+export default connect(mapStateToProps, mapDispatchToProps)(Settings);

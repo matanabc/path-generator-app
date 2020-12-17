@@ -1,10 +1,11 @@
 export class PopupsConfig {
-    constructor() {
-        this.createNewPathPopup = false;
-        this.savePathCSVPopup = false;
-        this.renamePathPopup = false;
-        this.deletePathPopup = false;
-        this.settingsPopup = false;
-        this.pathIsIllegal = false;
-    }
+	constructor() {
+		this.createNewPathPopup = false;
+		this.savePathToCSVPopup = false;
+		this.pathIsIllegalPopup = false;
+		this.renamePathPopup = false;
+		this.deletePathPopup = false;
+		this.newVersionPopup = false;
+		this.settingsPopup = false;
+	}
 }

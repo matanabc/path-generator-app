@@ -1,0 +1,3 @@
+export const SET_APP_VERSION = 'SET_APP_VERSION';
+export const SET_NEW_VERSION = 'SET_NEW_VERSION';
+export const SET_PLATFORM = 'SET_PLATFORM';

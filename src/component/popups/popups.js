@@ -1,107 +1,143 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { deletePath, renamePath, addPath } from '../../redux/path/actions';
+import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
 import { FormControl } from 'react-bootstrap';
-import Settings from '../settings/settings'
-import Popup from "./popup";
-import {
-  changePopupStatus, changePathName, deletePath, createNewPath
-} from "./popups-action";
+import { connect } from 'react-redux';
+import Popup from './popup';
+import React from 'react';
 
 class Popups extends React.Component {
-  constructor(props) {
-    super(props);
-    this.createNewPath = this.createNewPath.bind(this);
-    this.renamePath = this.renamePath.bind(this);
-    this.newPathInput = React.createRef();
-    this.renamePathInput = React.createRef();
-  }
+	constructor(props) {
+		super(props);
+		this.newPathRef = React.createRef();
+		this.renamePathRef = React.createRef();
+		this.renamePath = this.renamePath.bind(this);
+		this.deletePath = this.deletePath.bind(this);
+		this.createNewPath = this.createNewPath.bind(this);
+	}
 
-  componentDidUpdate() {
-    if (this.props.paths.length === 0) return;
-    if (this.props.popupsStatus.renamePathPopup)
-      this.renamePathInput.current.defaultValue = this.props.paths[this.props.pathID].name;
-  }
+	componentDidUpdate() {
+		if (this.props.popupsStatus.renamePathPopup)
+			this.renamePathRef.current.defaultValue = this.props.pathName;
+	}
 
-  createNewPath() {
-    if (this.newPathInput.current.value)
-      this.props.createNewPath(this.newPathInput.current.value);
-  }
+	deletePath() {
+		this.props.closePopups();
+		this.props.deletePath();
+	}
 
-  renamePath() {
-    if (this.renamePathInput.current.value)
-      this.props.changePathName(this.renamePathInput.current.value);
-  }
+	renamePath() {
+		if (this.renamePathRef.current.value) {
+			this.props.renamePath(this.renamePathRef.current.value);
+			this.props.closePopups();
+		}
+	}
 
-  render() {
-    return (
-      <div>
-        <Popup show={this.props.popupsStatus.deletePathPopup && this.props.paths.length > 0}
-          title="Delete path"
-          body="Are you sure you want to delete path?"
-          close={this.props.closeDeletePathPopup}
-          confirm={this.props.deletePath}
-        />
+	createNewPath() {
+		if (
+			this.newPathRef.current.value &&
+			!this.props.pathsName.includes(this.newPathRef.current.value)
+		) {
+			this.props.addPath(this.newPathRef.current.value);
+			this.props.resetRangePosition();
+			this.props.closePopups();
+		}
+	}
 
-        <Popup show={this.props.popupsStatus.renamePathPopup && this.props.paths.length > 0}
-          title="Rename path"
-          body={<FormControl ref={this.renamePathInput} />}
-          close={this.props.closeRenamePathPopup}
-          refToUse={this.renamePathInput}
-          confirm={this.renamePath}
-        />
+	render() {
+		return (
+			<div>
+				<Popup
+					show={this.props.popupsStatus.deletePathPopup}
+					body="Are you sure you want to delete path?"
+					close={this.props.closePopups}
+					confirm={this.deletePath}
+					title="Delete path"
+				/>
 
-        <Popup show={this.props.popupsStatus.createNewPathPopup}
-          title="Create a new path"
-          body={<FormControl ref={this.newPathInput} placeholder="Path name" />}
-          close={this.props.closeCreateNewPathPopup}
-          confirm={this.createNewPath}
-        />
+				<Popup
+					show={this.props.popupsStatus.renamePathPopup}
+					body={<FormControl ref={this.renamePathRef} />}
+					close={this.props.closePopups}
+					refToUse={this.renamePathRef}
+					confirm={this.renamePath}
+					title="Rename path"
+				/>
 
-        <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo === ""}
-          title="Save path CSV"
-          body="Can't save path CSV, you need to set CSV folder path in settings!"
-          close={this.props.closeSavePathCSVPopup}
-        />
+				<Popup
+					body={<FormControl ref={this.newPathRef} placeholder="Path name" />}
+					show={this.props.popupsStatus.createNewPathPopup}
+					close={this.props.closePopups}
+					confirm={this.createNewPath}
+					title="Create a new path"
+				/>
 
-        <Popup show={this.props.popupsStatus.savePathCSVPopup && this.props.saveCSVTo !== ""}
-          title="Save path CSV"
-          body="Path CSV saved!"
-          close={this.props.closeSavePathCSVPopup}
-        />
+				<Popup
+					show={this.props.popupsStatus.pathIsIllegalPopup}
+					title={this.props.path && this.props.path.isIllegal() ? this.props.path.error.info : ''}
+					body={
+						<div>
+							{this.props.path && this.props.path.isIllegal()
+								? `${this.props.path.error.problem}\n \n${this.props.path.error.solution}`
+								: ''}
+						</div>
+					}
+					close={this.props.closePopups}
+				/>
 
-        <Popup show={this.props.popupsStatus.pathIsIllegal}
-          title={this.props.path ? this.props.path.error : ""}
-          body={<div>{this.props.path ? this.props.path.splineError : ""}</div>}
-          close={this.props.closePathIsIllegal}
-        />
-        <Settings />
-      </div >
-    );
-  }
+				<Popup
+					title={`v${this.props.newVersion} is available`}
+					show={this.props.popupsStatus.newVersionPopup}
+					close={this.props.closePopups}
+					body={
+						<div>
+							{'There is a new version waiting for you to update to!\n' +
+								'To update jest go to settings and click on update...'}
+						</div>
+					}
+				/>
+
+				<Popup
+					show={
+						this.props.popupsStatus.savePathToCSVPopup &&
+						this.props.saveCSVTo === '' &&
+						!this.props.isWeb
+					}
+					title="Save path CSV"
+					body="Can't save path CSV, you need to set CSV folder path in settings!"
+					close={this.props.closePopups}
+				/>
+
+				<Popup
+					show={this.props.popupsStatus.savePathToCSVPopup && this.props.saveCSVTo !== ''}
+					title="Save path CSV"
+					body="Path CSV saved!"
+					close={this.props.closePopups}
+				/>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state) => {
-  return {
-    popupsStatus: state.popupsStatus,
-    saveCSVTo: state.saveCSVTo,
-    pathID: state.pathID,
-    paths: state.paths,
-    path: state.path,
-  };
+	return {
+		pathName: state.selectedPath ? state.selectedPath : '',
+		path: state.paths[state.selectedPath],
+		pathsName: Object.keys(state.paths),
+		popupsStatus: state.popupsStatus,
+		newVersion: state.newVersion,
+		saveCSVTo: state.saveCSVTo,
+		isWeb: state.isWeb,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    closeCreateNewPathPopup: () => dispatch(changePopupStatus("createNewPathPopup")),
-    closeSavePathCSVPopup: () => dispatch(changePopupStatus("savePathCSVPopup")),
-    closeRenamePathPopup: () => dispatch(changePopupStatus("renamePathPopup")),
-    closeDeletePathPopup: () => dispatch(changePopupStatus("deletePathPopup")),
-    closePathIsIllegal: () => dispatch(changePopupStatus("pathIsIllegal")),
-    changePathName: pathName => dispatch(changePathName(pathName)),
-    createNewPath: pathName => dispatch(createNewPath(pathName)),
-    deletePath: () => dispatch(deletePath()),
-  };
-}
+	return {
+		resetRangePosition: () => dispatch(changeRangePosition(0)),
+		closePopups: () => dispatch(changePopupsStatus()),
+		renamePath: (name) => dispatch(renamePath(name)),
+		addPath: (name) => dispatch(addPath(name)),
+		deletePath: () => dispatch(deletePath()),
+	};
+};
 
-const popups = connect(mapStateToProps, mapDispatchToProps)(Popups);
-export default popups;
+export default connect(mapStateToProps, mapDispatchToProps)(Popups);

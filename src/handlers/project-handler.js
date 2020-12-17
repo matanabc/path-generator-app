@@ -1,67 +1,53 @@
-import { getProjectFolderPath, saveProjectFolderPath, getAppVersion } from "./electron-handler";
-import { pathToCSV } from "./csv-handler";
+import FileHandler from './file-handler';
 
-const fs = window.require('fs');
+var handler = undefined;
+var dispatch = undefined;
 
-export function loadFieldImage(folderPath, imageName, callback) {
-    fs.readFile(`${folderPath}/${imageName}`, function (err, data) {
-        if (!err)
-            callback(URL.createObjectURL(new Blob([data])), imageName);
-        else
-            callback(undefined, imageName);
-    });
+export async function projectInit(callback) {
+	try {
+		dispatch = callback;
+		handler = new FileHandler(dispatch);
+	} catch (error) {}
 }
 
-function loadPaths(folderPath, callback) {
-    fs.readdir(`${folderPath}/paths`, (err, files) => {
-        if (err) return;
-        files.forEach(file => {
-            if (file.endsWith(".json"))
-                fs.readFile(`${folderPath}/paths/${file}`, (err, data) => {
-                    if (err) return;
-                    callback(JSON.parse(data));
-                });
-        });
-    });
+export async function changeProjectFolderPath(folderPath) {
+	try {
+		handler.changeProjectFolderPath(folderPath);
+	} catch (error) {}
 }
 
-export const loadProjectFile = async (callback, projetcFolderCallback, filedImageCallback, loadPathsCallback) => {
-    const folderPath = await getProjectFolderPath();
-    projetcFolderCallback(folderPath);
-    if (folderPath)
-        fs.readFile(`${folderPath}/PathGenerator.json`, async (err, data) => {
-            if (err) return;
-            const projectFile = JSON.parse(data);
-            projectFile.version = await getAppVersion();
-            if (projectFile.fieldConfig && projectFile.fieldConfig.imageName)
-                loadFieldImage(folderPath, projectFile.fieldConfig.imageName, filedImageCallback);
-            loadPaths(folderPath, loadPathsCallback);
-            callback(projectFile);
-        });
+export async function saveJsonPath(pathName, path) {
+	try {
+		handler.saveJsonPath(pathName, path);
+	} catch (error) {}
 }
 
-export const savePathToFile = (folderPath, path) => {
-    if (!fs.existsSync(`${folderPath}/paths`))
-        fs.mkdirSync(`${folderPath}/paths`);
-    fs.writeFile(`${folderPath}/paths/${path.name}.json`, JSON.stringify(path), () => { });
+export async function deleteJsonPath(pathName) {
+	try {
+		handler.deleteJsonPath(pathName);
+	} catch (error) {}
 }
 
-export const deletePathFile = (folderPath, pathName) => {
-    fs.unlink(`${folderPath}/paths/${pathName}.json`, () => { });
+export async function renameJsonPath(oldName, newName) {
+	try {
+		handler.renameJsonPath(oldName, newName);
+	} catch (error) {}
 }
 
-export const renamePathFile = (folderPath, oldName, pathName) => {
-    fs.rename(`${folderPath}/paths/${oldName}.json`, `${folderPath}/paths/${pathName}.json`, () => { });
+export async function saveJsonProject(settings) {
+	try {
+		handler.saveJsonProject(settings);
+	} catch (error) {}
 }
 
-export const saveProjectFile = (folderPath, projectFile) => {
-    fs.writeFile(`${folderPath}/PathGenerator.json`, JSON.stringify(projectFile), () => { });
+export async function loadFieldImage(image) {
+	try {
+		handler.loadFieldImage(image);
+	} catch (error) {}
 }
 
-export const savePathToCSV = (folderPath, path, pathName, isInReverse, callback) => {
-    fs.writeFile(`${folderPath}/${pathName}.csv`, pathToCSV(path, isInReverse), () => {
-        callback();
-    });
+export async function saveCSVPath(path, pathName, folder) {
+	try {
+		handler.saveCSVPath(path, pathName, folder);
+	} catch (error) {}
 }
-
-export const updateProjectFolderPath = saveProjectFolderPath;

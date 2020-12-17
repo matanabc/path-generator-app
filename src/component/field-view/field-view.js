@@ -1,79 +1,76 @@
-import React from 'react';
+import { addWaypoint } from '../../redux/path/actions';
+import { drawOnCanvas } from './ canvas-painter';
 import { connect } from 'react-redux';
-import { addWaypoint, setPath } from "./field-view-action";
-import { PathWaypoint } from "../../path-generator/path-generator";
-import PlayingBar from "../playing-bar/playing-bar";
-import { drawOnCanvas } from "./canvas-painter";
+import React from 'react';
 
 class FieldView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.canvasRef = React.createRef();
-    this.whenClick = this.whenClick.bind(this);
-  }
+	constructor(props) {
+		super(props);
+		this.canvas = React.createRef();
+		this.onClick = this.onClick.bind(this);
+	}
 
-  componentDidMount() {
-    drawOnCanvas(this.canvasRef.current, this.props);
-  }
+	componentDidMount() {
+		drawOnCanvas(this.canvas.current, this.props);
+	}
 
-  componentDidUpdate() {
-    const canvas = this.canvasRef.current;
-    if (this.props.listenToMouseClicks)
-      canvas.addEventListener('mousedown', this.whenClick);
-    else
-      canvas.removeEventListener('mousedown', this.whenClick);
+	componentDidUpdate() {
+		const canvas = this.canvas.current;
+		if (this.props.listenToMouseClicks) canvas.addEventListener('mousedown', this.onClick);
+		else canvas.removeEventListener('mousedown', this.onClick);
+		drawOnCanvas(canvas, this.props);
+	}
 
-    drawOnCanvas(this.canvasRef.current, this.props);
-  }
+	onClick(event) {
+		const canvas = this.canvas.current;
+		const rect = canvas.getBoundingClientRect();
+		const scaleX = canvas.width / rect.width;
+		const scaleY = canvas.height / rect.height;
+		const x =
+			((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel) *
+			this.props.fieldConfig.widthPixelToMeter;
+		const y =
+			((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel) *
+			this.props.fieldConfig.hightPixelToMeter;
+		this.props.addWaypoint({ x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) });
+	}
 
-  whenClick(event) {
-    const canvas = this.canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
-    const x = ((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel)
-      * this.props.fieldConfig.widthPixelToMeter;
-    const y = ((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel)
-      * this.props.fieldConfig.hightPixelToMeter;
-    this.props.addWaypoint(new PathWaypoint(Number(x.toFixed(3)), Number(y.toFixed(3))));
-  }
-
-  render() {
-    return (
-      <div className="FieldView">
-        <canvas className="FieldImage" ref={this.canvasRef} style={{
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage: "url(" + this.props.filedImage + ")"
-        }} />
-        <PlayingBar canvasRef={this.canvasRef} />
-      </div>
-    );
-  }
+	render() {
+		return (
+			<div className="FieldView">
+				<canvas
+					className="FieldImage"
+					ref={this.canvas}
+					style={{
+						backgroundPosition: 'center',
+						backgroundSize: 'cover',
+						backgroundRepeat: 'no-repeat',
+						backgroundImage: 'url(' + this.props.filedImageUrl + ')',
+					}}
+				/>
+			</div>
+		);
+	}
 }
 
 const mapStateToProps = (state) => {
-  return {
-    listenToMouseClicks: state.listenToMouseClicks,
-    robotDrawConfig: state.robotDrawConfig,
-    rangePosition: state.rangePosition,
-    fieldConfig: state.fieldConfig,
-    pathConfig: state.pathConfig,
-    filedImage: state.filedImage,
-    pathID: state.pathID,
-    update: state.update,
-    paths: state.paths,
-    path: state.path,
-  };
+	return {
+		filedImageUrl: state.imageUrl,
+		fieldConfig: state.fieldConfig,
+		rangePosition: state.rangePosition,
+		path: state.paths[state.selectedPath],
+		robotDrawConfig: state.robotDrawConfig,
+		listenToMouseClicks: state.listenToMouseClicks,
+		isPathInReverse: state.paths[state.selectedPath]
+			? state.paths[state.selectedPath].isReverse()
+			: false,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
-    setPath: path => dispatch(setPath(path)),
-  };
-}
+	return {
+		addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
+	};
+};
 
-const fieldView = connect(mapStateToProps, mapDispatchToProps)(FieldView);
-export default fieldView;
+export default connect(mapStateToProps, mapDispatchToProps)(FieldView);
