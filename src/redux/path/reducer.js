@@ -110,7 +110,9 @@ function addWaypoint(state, payload) {
 
 function setPathConfig(state, payload) {
 	const pathConfig = Object.assign(new state.driveType.PathConfig(), payload.pathConfig);
-	return { ...state, pathConfig: pathConfig };
+	const newState = { ...state, pathConfig: pathConfig };
+	if (payload.driveType) newState.driveType = payload.driveType;
+	return newState;
 }
 
 function changeDirection(state, payload) {

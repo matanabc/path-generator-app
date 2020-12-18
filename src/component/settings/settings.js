@@ -1,4 +1,5 @@
 import { changeProjectFolderPath, loadFieldImage } from '../../handlers/project-handler';
+import SettingsDriveTypeConfig from './settings-drive-type-config';
 import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import { setSettings } from '../../redux/project/actions';
@@ -13,6 +14,8 @@ import React from 'react';
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
+		this.driveType = undefined;
+		this.setDriveType = this.setDriveType.bind(this);
 		this.saveSettings = this.saveSettings.bind(this);
 		this.getUpdateButton = this.getUpdateButton.bind(this);
 		this.settingsFoldersConfig = new SettingsFoldersConfig();
@@ -21,8 +24,13 @@ class Settings extends React.Component {
 		this.settingsPathConfig = new SettingsPathConfig();
 	}
 
+	setDriveType(driveType) {
+		this.driveType = driveType;
+	}
+
 	saveSettings() {
 		const settings = {
+			driveType: this.driveType,
 			...this.settingsFiledConfig.getData(),
 			...this.settingsFoldersConfig.getData(),
 			pathConfig: this.settingsPathConfig.getData(),
@@ -64,6 +72,7 @@ class Settings extends React.Component {
 						{this.settingsRobotConfig.render(this.props)}
 						{this.settingsFiledConfig.render(this.props)}
 						{this.settingsPathConfig.render(this.props)}
+						<SettingsDriveTypeConfig setDriveType={this.setDriveType} />
 						{this.props.isWeb ? (
 							<span />
 						) : (

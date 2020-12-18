@@ -74,11 +74,12 @@ export function addPath(name, waypoints, isInReverse) {
 	};
 }
 
-export function setPathConfig(pathConfig) {
+export function setPathConfig(pathConfig, driveType) {
 	return {
 		type: SET_PATH_CONFIG,
 		payload: {
 			pathConfig: pathConfig,
+			driveType: driveType,
 		},
 	};
 }

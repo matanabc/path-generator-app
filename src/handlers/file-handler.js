@@ -1,5 +1,6 @@
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
+import { Swerve, Tank } from 'path-generator';
 import { pathToCSV } from './csv-handler';
 import {
 	setRobotDrawConfig,
@@ -89,8 +90,11 @@ export default class FileHandler {
 	}
 
 	async loadPathConfig() {
-		if (this.jsonProject && this.jsonProject.pathConfig)
-			this.dispatch(setPathConfig(this.jsonProject.pathConfig));
+		if (!this.jsonProject) return;
+		this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
+		const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
+		const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
+		this.dispatch(setPathConfig(pathConfig, driveType));
 	}
 
 	async loadPaths() {
@@ -113,6 +117,7 @@ export default class FileHandler {
 	async saveJsonProject(settings) {
 		try {
 			const projectSettings = { ...settings };
+			projectSettings.driveType = settings.driveType === Swerve ? 'swerve' : 'tank';
 			delete projectSettings.projectPath;
 			const jsonProject = JSON.stringify(projectSettings);
 			this.fs.writeFileSync(`${this.projectPath}/PathGenerator.json`, jsonProject);
