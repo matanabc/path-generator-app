@@ -1,22 +1,53 @@
+import SwerveWaypointInfo from './swerve-waypoint-info';
 import TankWaypointInfo from './tank-waypoint-info';
+import { Swerve, Tank } from 'path-generator';
 import { connect } from 'react-redux';
 import React from 'react';
 
 class WaypointsList extends React.Component {
+	constructor(props) {
+		super(props);
+		this.getSwerveWaypointInfo = this.getSwerveWaypointInfo.bind(this);
+		this.getTankWaypointInfo = this.getTankWaypointInfo.bind(this);
+		this.getWaypointInfo = this.getWaypointInfo.bind(this);
+	}
+
+	getTankWaypointInfo(element, index) {
+		return (
+			<TankWaypointInfo
+				id={index}
+				key={index}
+				waypoint={element}
+				waypointsLength={this.props.path.waypoints.length}
+				color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
+			/>
+		);
+	}
+
+	getSwerveWaypointInfo(element, index) {
+		return (
+			<SwerveWaypointInfo
+				id={index}
+				key={index}
+				waypoint={element}
+				waypointsLength={this.props.path.waypoints.length}
+				color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
+			/>
+		);
+	}
+
+	getWaypointInfo(element, index) {
+		if (this.props.driveType === Tank) return this.getTankWaypointInfo(element, index);
+		else if (this.props.driveType === Swerve) return this.getSwerveWaypointInfo(element, index);
+		return <span />;
+	}
+
 	render() {
 		return (
 			<div className="WaypointsList">
 				{this.props.path ? (
 					this.props.path.waypoints.map((element, index) => {
-						return (
-							<TankWaypointInfo
-								id={index}
-								key={index}
-								waypoint={element}
-								waypointsLength={this.props.path.waypoints.length}
-								color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
-							/>
-						);
+						return this.getWaypointInfo(element, index);
 					})
 				) : (
 					<span>There is no waypoints...</span>
@@ -28,6 +59,7 @@ class WaypointsList extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		driveType: state.driveType,
 		path: state.paths[state.selectedPath],
 		addWaypointInIndex: state.addWaypointInIndex,
 	};
