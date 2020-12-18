@@ -12,13 +12,16 @@ import {
 } from './action-types';
 
 function getNewWaypoint(state, waypoint, object) {
-	return new state.driveType.Waypoint(
-		Number.isNaN(object.x) ? waypoint.x : object.x,
-		Number.isNaN(object.y) ? waypoint.y : object.y,
-		Number.isNaN(object.angle) ? waypoint.angle : object.angle,
-		Number.isNaN(object.v) ? waypoint.v : object.v,
-		Number.isNaN(object.vMax) ? waypoint.vMax : object.vMax
-	);
+	const newWaypointObject = {
+		x: Number.isNaN(object.x) ? waypoint.x : object.x,
+		y: Number.isNaN(object.y) ? waypoint.y : object.y,
+		v: Number.isNaN(object.v) ? waypoint.v : object.v,
+		vMax: Number.isNaN(object.vMax) ? waypoint.vMax : object.vMax,
+		angle: Number.isNaN(object.angle) ? waypoint.angle : object.angle,
+		robotAngle: Number.isNaN(object.robotAngle) ? waypoint.robotAngle : object.robotAngle,
+	};
+	if (newWaypointObject.robotAngle === undefined) delete newWaypointObject.robotAngle;
+	return Object.assign(new state.driveType.Waypoint(), newWaypointObject);
 }
 
 function setWaypoint(state, payload) {
