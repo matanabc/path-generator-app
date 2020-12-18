@@ -125,7 +125,7 @@ class Tools extends React.Component {
 						className="mr-3 ml-4"
 						size="lg"
 						onClick={this.setDrawRobotInterval}
-						disabled={this.props.path === undefined}
+						disabled={this.props.path === undefined || this.props.path.isIllegal()}
 					>
 						{this.getPlayButton()}
 					</Button>
