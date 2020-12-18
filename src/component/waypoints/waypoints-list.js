@@ -13,6 +13,7 @@ class WaypointsList extends React.Component {
 								id={index}
 								key={index}
 								waypoint={element}
+								waypointsLength={this.props.path.waypoints.length}
 								color={index === this.props.addWaypointInIndex ? 'success' : 'primary'}
 							/>
 						);

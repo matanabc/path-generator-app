@@ -8,7 +8,7 @@ import React from 'react';
 class TankWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { id: -1, pathName: undefined };
+		this.state = { id: -1, pathName: undefined, waypointsLength: -1 };
 		this.x = React.createRef();
 		this.y = React.createRef();
 		this.v = React.createRef();
@@ -18,11 +18,19 @@ class TankWaypointInfo extends React.Component {
 		this.remove = this.remove.bind(this);
 		this.onChange = this.onChange.bind(this);
 		this.getValue = this.getValue.bind(this);
+		this.isNeedToUpdateState = this.isNeedToUpdateState.bind(this);
+	}
+
+	isNeedToUpdateState() {
+		return (
+			this.state.id !== this.props.id ||
+			this.state.pathName !== this.props.pathName ||
+			this.state.waypointsLength !== this.props.waypointsLength
+		);
 	}
 
 	getValue(currentValue, value) {
-		if (this.state.id !== this.props.id || this.state.pathName !== this.props.pathName)
-			return value;
+		if (this.isNeedToUpdateState()) return value;
 		return Number.isNaN(currentValue) ? value : currentValue;
 	}
 
@@ -35,9 +43,13 @@ class TankWaypointInfo extends React.Component {
 		if (this.vMax.current.value > this.props.waypoint.vMax)
 			this.vMax.current.value = this.props.waypoint.vMax;
 
-		if (this.state.id !== this.props.id || this.state.pathName !== this.props.pathName) {
+		if (this.isNeedToUpdateState()) {
 			this.setState(() => {
-				return { id: this.props.id, pathName: this.props.pathName };
+				return {
+					id: this.props.id,
+					pathName: this.props.pathName,
+					waypointsLength: this.props.waypointsLength,
+				};
 			});
 		}
 	}
