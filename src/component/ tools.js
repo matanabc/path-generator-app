@@ -18,7 +18,8 @@ class Tools extends React.Component {
 		super(props);
 		this.getPlayButton = this.getPlayButton.bind(this);
 		this.savePathToCSV = this.savePathToCSV.bind(this);
-		this.getIllegalPathButton = this.getIllegalPathButton.bind(this);
+
+		this.getCSVButton = this.getCSVButton.bind(this);
 		this.setDrawRobotInterval = this.setDrawRobotInterval.bind(this);
 		this.isRangePositionInTheEnd = this.isRangePositionInTheEnd.bind(this);
 	}
@@ -58,27 +59,26 @@ class Tools extends React.Component {
 		this.props.setDrawRobotInterval(interval);
 	}
 
+	getCSVButton() {
+		const isPathIllegal = this.props.path && this.props.path.isIllegal();
+		return (
+			<Button
+				size="lg"
+				className="mr-3"
+				onClick={this.savePathToCSV}
+				title="Save csv path to robot"
+				disabled={this.props.path === undefined}
+				variant={isPathIllegal ? 'danger' : 'primary'}
+			>
+				{isPathIllegal ? <MdError /> : <FiDownload />}
+			</Button>
+		);
+	}
+
 	getPlayButton() {
 		if (this.props.drawRobotInterval) return <MdPause />;
 		else if (this.isRangePositionInTheEnd()) return <MdReplay />;
 		else return <MdPlayArrow />;
-	}
-
-	getIllegalPathButton() {
-		if (this.props.path && this.props.path.isIllegal()) {
-			return (
-				<Button
-					size="lg"
-					variant="danger"
-					className="mr-3"
-					title="Illegal path"
-					onClick={this.props.showIllegalPathPopup}
-				>
-					<MdError />
-				</Button>
-			);
-		}
-		return <span />;
 	}
 
 	render() {
@@ -95,15 +95,7 @@ class Tools extends React.Component {
 					>
 						<GiClick />
 					</Button>
-					<Button
-						size="lg"
-						className="mr-3"
-						onClick={this.savePathToCSV}
-						title="Save csv path to robot"
-						disabled={this.props.path === undefined}
-					>
-						<FiDownload />
-					</Button>
+					{this.getCSVButton()}
 					<Button className="mr-3" size="lg" title="Settings" onClick={this.props.showSettings}>
 						<MdBuild />
 					</Button>
@@ -169,7 +161,6 @@ class Tools extends React.Component {
 						)}
 						in reverse
 					</Button>
-					{this.getIllegalPathButton()}
 				</Row>
 			</Container>
 		);
