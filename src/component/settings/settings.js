@@ -14,27 +14,24 @@ import React from 'react';
 class Settings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.driveType = undefined;
-		this.setDriveType = this.setDriveType.bind(this);
 		this.saveSettings = this.saveSettings.bind(this);
+		this.getAppVersion = this.getAppVersion.bind(this);
+		this.setElementData = this.setElementData.bind(this);
 		this.getUpdateButton = this.getUpdateButton.bind(this);
-		this.settingsFoldersConfig = new SettingsFoldersConfig();
-		this.settingsRobotConfig = new SettingsRobotConfig();
-		this.settingsFiledConfig = new SettingsFiledConfig();
-		this.settingsPathConfig = new SettingsPathConfig();
+		this.getFoldersConfig = this.getFoldersConfig.bind(this);
 	}
 
-	setDriveType(driveType) {
-		this.driveType = driveType;
+	setElementData(key, func) {
+		this[key] = func;
 	}
 
 	saveSettings() {
 		const settings = {
-			driveType: this.driveType,
-			...this.settingsFiledConfig.getData(),
-			...this.settingsFoldersConfig.getData(),
-			pathConfig: this.settingsPathConfig.getData(),
-			robotDrawConfig: this.settingsRobotConfig.getData(),
+			...this.driveType(),
+			...this.pathConfig(),
+			...this.filedConfig(),
+			...this.foldersConfig(),
+			...this.robotDrawConfig(),
 		};
 
 		this.props.setSettings(settings);
@@ -56,6 +53,16 @@ class Settings extends React.Component {
 		return <span />;
 	}
 
+	getAppVersion() {
+		if (this.props.isWeb) return <span />;
+		return <div style={{ fontSize: 10 }}>v{this.props.version}</div>;
+	}
+
+	getFoldersConfig() {
+		if (this.props.isWeb) return <span />;
+		return <SettingsFoldersConfig setElementData={this.setElementData} />;
+	}
+
 	render() {
 		return (
 			<Modal
@@ -68,16 +75,12 @@ class Settings extends React.Component {
 				</Modal.Header>
 				<Modal.Body>
 					<div className="SettingsBody">
-						{this.props.isWeb ? <span /> : this.settingsFoldersConfig.render(this.props)}
-						{this.settingsRobotConfig.render(this.props)}
-						{this.settingsFiledConfig.render(this.props)}
-						{this.settingsPathConfig.render(this.props)}
-						<SettingsDriveTypeConfig setDriveType={this.setDriveType} />
-						{this.props.isWeb ? (
-							<span />
-						) : (
-							<div style={{ fontSize: 10 }}>v{this.props.version}</div>
-						)}
+						{this.getFoldersConfig()}
+						<SettingsDriveTypeConfig setElementData={this.setElementData} />
+						<SettingsPathConfig setElementData={this.setElementData} />
+						<SettingsFiledConfig setElementData={this.setElementData} />
+						<SettingsRobotConfig setElementData={this.setElementData} />
+						{this.getAppVersion()}
 					</div>
 				</Modal.Body>
 				<Modal.Footer>
@@ -94,14 +97,10 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		robotDrawConfig: state.robotDrawConfig,
 		popupsStatus: state.popupsStatus,
 		projectPath: state.projectPath,
-		fieldConfig: state.fieldConfig,
-		pathConfig: state.pathConfig,
 		newVersion: state.newVersion,
 		filedImageUrl: state.image,
-		saveCSVTo: state.saveCSVTo,
 		version: state.version,
 		isWeb: state.isWeb,
 	};

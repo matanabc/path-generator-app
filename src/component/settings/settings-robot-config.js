@@ -1,77 +1,90 @@
 import { Form, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { RobotDrawConfig } from '../field-view/view-config';
 import SettingsConfig from './settings-config';
+import { connect } from 'react-redux';
 import React from 'react';
 
 class SettingsRobotConfig extends SettingsConfig {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.robotWidthRef = React.createRef();
 		this.robotLengthRef = React.createRef();
 		this.robotCenterRef = React.createRef();
 	}
 
-	getData() {
-		return new RobotDrawConfig(
-			this.robotWidthRef.current.value,
-			this.robotLengthRef.current.value,
-			this.robotCenterRef.current.value
-		);
+	componentDidMount() {
+		this.props.setElementData('robotDrawConfig', this.getData);
 	}
 
-	render(props) {
-		return (
-			<div>
-				<Form.Row>
-					<Form.Group as={Col}>
-						<Form.Label style={this.style}>Robot config:</Form.Label>
-					</Form.Group>
-				</Form.Row>
+	getData() {
+		return {
+			robotDrawConfig: new RobotDrawConfig(
+				this.robotWidthRef.current.value,
+				this.robotLengthRef.current.value,
+				this.robotCenterRef.current.value
+			),
+		};
+	}
 
-				<Form.Row>
-					<Form.Group as={Col} md="4">
-						<OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
-							<Form.Label>Width</Form.Label>
-						</OverlayTrigger>
-						<Form.Control
-							type="number"
-							ref={this.robotWidthRef}
-							defaultValue={props.robotDrawConfig.width}
-						/>
-					</Form.Group>
-					<Form.Group as={Col} md="4">
-						<OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
-							<Form.Label>Length</Form.Label>
-						</OverlayTrigger>
-						<Form.Control
-							type="number"
-							ref={this.robotLengthRef}
-							defaultValue={props.robotDrawConfig.length}
-						/>
-					</Form.Group>
-					<Form.Group as={Col} md="4">
-						<OverlayTrigger
-							overlay={
-								<Tooltip>
-									<span style={{ color: 'red' }}>back</span> {' (-) < '}
-									<span style={{ color: 'rgb(50, 100, 0)' }}> center </span>
-									{' < (+) '} <span style={{ color: 'blue' }}>front</span>
-								</Tooltip>
-							}
-						>
-							<Form.Label>Center</Form.Label>
-						</OverlayTrigger>
-						<Form.Control
-							type="number"
-							ref={this.robotCenterRef}
-							defaultValue={props.robotDrawConfig.center}
-						/>
-					</Form.Group>
-				</Form.Row>
-			</div>
+	getConfigInfo() {
+		return 'Robot draw config:';
+	}
+
+	getBody() {
+		return (
+			<Form.Row>
+				<Form.Group as={Col} md="4">
+					<OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
+						<Form.Label>Width</Form.Label>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotWidthRef}
+						defaultValue={this.props.robotDrawConfig.width}
+					/>
+				</Form.Group>
+				<Form.Group as={Col} md="4">
+					<OverlayTrigger overlay={<Tooltip> with bumper </Tooltip>}>
+						<Form.Label>Length</Form.Label>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotLengthRef}
+						defaultValue={this.props.robotDrawConfig.length}
+					/>
+				</Form.Group>
+				<Form.Group as={Col} md="4">
+					<OverlayTrigger
+						overlay={
+							<Tooltip>
+								<span style={{ color: 'red' }}>back</span> {' (-) < '}
+								<span style={{ color: 'rgb(50, 100, 0)' }}> center </span>
+								{' < (+) '} <span style={{ color: 'blue' }}>front</span>
+							</Tooltip>
+						}
+					>
+						<Form.Label>Center</Form.Label>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotCenterRef}
+						defaultValue={this.props.robotDrawConfig.center}
+					/>
+				</Form.Group>
+			</Form.Row>
 		);
 	}
 }
 
-export default SettingsRobotConfig;
+const mapStateToProps = (state) => {
+	return {
+		robotDrawConfig: state.robotDrawConfig,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsRobotConfig);

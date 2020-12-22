@@ -1,11 +1,12 @@
+import { Form, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FieldConfig } from '../field-view/view-config';
 import SettingsConfig from './settings-config';
-import { Form, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import React from 'react';
 
 class SettingsFiledConfig extends SettingsConfig {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.fieldHeightInPixelRef = React.createRef();
 		this.fieldHeightInMeterRef = React.createRef();
@@ -14,6 +15,10 @@ class SettingsFiledConfig extends SettingsConfig {
 		this.filedImageNameRef = React.createRef();
 		this.fieldTopLeftXRef = React.createRef();
 		this.fieldTopLeftYRef = React.createRef();
+	}
+
+	componentDidMount() {
+		this.props.setElementData('filedConfig', this.getData);
 	}
 
 	getData() {
@@ -30,35 +35,30 @@ class SettingsFiledConfig extends SettingsConfig {
 		};
 	}
 
-	render(props) {
+	getConfigInfo() {
+		return 'Filed config:';
+	}
+
+	getBody() {
 		return (
 			<div>
 				<Form.Row>
 					<Form.Group as={Col}>
-						<Form.Label style={this.style}>Filed config:</Form.Label>
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row>
-					<Form.Group as={Col}>
-						<Form.Label>Image</Form.Label>
-						<Form.Control defaultValue={props.filedImageUrl} ref={this.filedImageNameRef} />
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row>
-					<Form.Group as={Col}>
-						<Form.Label>Width in meter</Form.Label>
+						<OverlayTrigger overlay={<Tooltip> In meter </Tooltip>}>
+							<Form.Label>Width</Form.Label>
+						</OverlayTrigger>
 						<Form.Control
-							defaultValue={props.fieldConfig.widthInMeter}
+							defaultValue={this.props.fieldConfig.widthInMeter}
 							ref={this.fieldWidthInMeterRef}
 							type="number"
 						/>
 					</Form.Group>
 					<Form.Group as={Col}>
-						<Form.Label>Length in meter</Form.Label>
+						<OverlayTrigger overlay={<Tooltip> In meter </Tooltip>}>
+							<Form.Label>Height</Form.Label>
+						</OverlayTrigger>
 						<Form.Control
-							defaultValue={props.fieldConfig.heightInMeter}
+							defaultValue={this.props.fieldConfig.heightInMeter}
 							ref={this.fieldHeightInMeterRef}
 							type="number"
 						/>
@@ -67,9 +67,16 @@ class SettingsFiledConfig extends SettingsConfig {
 
 				<Form.Row>
 					<Form.Group as={Col}>
+						<Form.Label>Image</Form.Label>
+						<Form.Control defaultValue={this.props.filedImageUrl} ref={this.filedImageNameRef} />
+					</Form.Group>
+				</Form.Row>
+
+				<Form.Row>
+					<Form.Group as={Col}>
 						<Form.Label>Top left x</Form.Label>
 						<Form.Control
-							defaultValue={props.fieldConfig.topLeftXPixel}
+							defaultValue={this.props.fieldConfig.topLeftXPixel}
 							ref={this.fieldTopLeftXRef}
 							type="number"
 						/>
@@ -77,23 +84,27 @@ class SettingsFiledConfig extends SettingsConfig {
 					<Form.Group as={Col}>
 						<Form.Label>Top left y</Form.Label>
 						<Form.Control
-							defaultValue={props.fieldConfig.topLeftYPixel}
+							defaultValue={this.props.fieldConfig.topLeftYPixel}
 							ref={this.fieldTopLeftYRef}
 							type="number"
 						/>
 					</Form.Group>
 					<Form.Group as={Col}>
-						<Form.Label>Width in pixel</Form.Label>
+						<OverlayTrigger overlay={<Tooltip> In pixel </Tooltip>}>
+							<Form.Label>Width</Form.Label>
+						</OverlayTrigger>
 						<Form.Control
-							defaultValue={props.fieldConfig.widthInPixel}
+							defaultValue={this.props.fieldConfig.widthInPixel}
 							ref={this.fieldWidthInPixelRef}
 							type="number"
 						/>
 					</Form.Group>
 					<Form.Group as={Col}>
-						<Form.Label>Length in pixel</Form.Label>
+						<OverlayTrigger overlay={<Tooltip> In pixel </Tooltip>}>
+							<Form.Label>Height</Form.Label>
+						</OverlayTrigger>
 						<Form.Control
-							defaultValue={props.fieldConfig.heigthInPixel}
+							defaultValue={this.props.fieldConfig.heigthInPixel}
 							ref={this.fieldHeightInPixelRef}
 							type="number"
 						/>
@@ -104,4 +115,15 @@ class SettingsFiledConfig extends SettingsConfig {
 	}
 }
 
-export default SettingsFiledConfig;
+const mapStateToProps = (state) => {
+	return {
+		fieldConfig: state.fieldConfig,
+		filedImageUrl: state.image,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsFiledConfig);

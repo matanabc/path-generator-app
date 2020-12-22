@@ -1,10 +1,11 @@
 import SettingsConfig from './settings-config';
-import { Form, Col } from 'react-bootstrap';
+import { Form, Col, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import React from 'react';
 
 class SettingsPathConfig extends SettingsConfig {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.pathWidthRef = React.createRef();
 		this.robotMaxVRef = React.createRef();
@@ -12,61 +13,77 @@ class SettingsPathConfig extends SettingsConfig {
 		this.robotLoopTimeRef = React.createRef();
 	}
 
+	componentDidMount() {
+		this.props.setElementData('pathConfig', this.getData);
+	}
+
 	getData() {
 		return {
-			vMax: Number(this.robotMaxVRef.current.value),
-			width: Number(this.pathWidthRef.current.value),
-			acc: Number(this.robotMaxAccRef.current.value),
-			robotLoopTime: Number(this.robotLoopTimeRef.current.value),
+			pathConfig: {
+				vMax: Number(this.robotMaxVRef.current.value),
+				width: Number(this.pathWidthRef.current.value),
+				acc: Number(this.robotMaxAccRef.current.value),
+				robotLoopTime: Number(this.robotLoopTimeRef.current.value),
+			},
 		};
 	}
 
-	render(props) {
+	getBody() {
 		return (
-			<div>
-				<Form.Row>
-					<Form.Group as={Col}>
-						<Form.Label style={this.style}>Path config:</Form.Label>
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row>
-					<Form.Group as={Col}>
+			<Form.Row>
+				<Form.Group as={Col}>
+					<OverlayTrigger overlay={<Tooltip> m </Tooltip>}>
 						<Form.Label>Width</Form.Label>
-						<Form.Control
-							type="number"
-							ref={this.pathWidthRef}
-							defaultValue={props.pathConfig.width}
-						/>
-					</Form.Group>
-					<Form.Group as={Col}>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.pathWidthRef}
+						defaultValue={this.props.pathConfig.width}
+					/>
+				</Form.Group>
+				<Form.Group as={Col}>
+					<OverlayTrigger overlay={<Tooltip> m / s </Tooltip>}>
 						<Form.Label>Max V</Form.Label>
-						<Form.Control
-							type="number"
-							ref={this.robotMaxVRef}
-							defaultValue={props.pathConfig.vMax}
-						/>
-					</Form.Group>
-					<Form.Group as={Col}>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotMaxVRef}
+						defaultValue={this.props.pathConfig.vMax}
+					/>
+				</Form.Group>
+				<Form.Group as={Col}>
+					<OverlayTrigger overlay={<Tooltip> m / s ^ 2 </Tooltip>}>
 						<Form.Label>Max Acc</Form.Label>
-						<Form.Control
-							type="number"
-							ref={this.robotMaxAccRef}
-							defaultValue={props.pathConfig.acc}
-						/>
-					</Form.Group>
-					<Form.Group as={Col}>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotMaxAccRef}
+						defaultValue={this.props.pathConfig.acc}
+					/>
+				</Form.Group>
+				<Form.Group as={Col}>
+					<OverlayTrigger overlay={<Tooltip> s </Tooltip>}>
 						<Form.Label>Loop time</Form.Label>
-						<Form.Control
-							type="number"
-							ref={this.robotLoopTimeRef}
-							defaultValue={props.pathConfig.robotLoopTime}
-						/>
-					</Form.Group>
-				</Form.Row>
-			</div>
+					</OverlayTrigger>
+					<Form.Control
+						type="number"
+						ref={this.robotLoopTimeRef}
+						defaultValue={this.props.pathConfig.robotLoopTime}
+					/>
+				</Form.Group>
+			</Form.Row>
 		);
 	}
 }
 
-export default SettingsPathConfig;
+const mapStateToProps = (state) => {
+	return {
+		pathConfig: state.pathConfig,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsPathConfig);

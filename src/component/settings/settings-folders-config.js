@@ -1,12 +1,17 @@
 import SettingsConfig from './settings-config';
 import { Form, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import React from 'react';
 
 class SettingsFoldersConfig extends SettingsConfig {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.CSVFolderRef = React.createRef();
 		this.projectFolderRef = React.createRef();
+	}
+
+	componentDidMount() {
+		this.props.setElementData('foldersConfig', this.getData);
 	}
 
 	getData() {
@@ -16,25 +21,23 @@ class SettingsFoldersConfig extends SettingsConfig {
 		};
 	}
 
-	render(props) {
+	getConfigInfo() {
+		return 'Folders config:';
+	}
+
+	getBody() {
 		return (
 			<div>
 				<Form.Row>
 					<Form.Group as={Col}>
-						<Form.Label style={this.style}>Folders config</Form.Label>
-					</Form.Group>
-				</Form.Row>
-
-				<Form.Row>
-					<Form.Group as={Col}>
 						<Form.Label>Project folder</Form.Label>
-						<Form.Control defaultValue={props.projectPath} ref={this.projectFolderRef} />
+						<Form.Control defaultValue={this.props.projectPath} ref={this.projectFolderRef} />
 					</Form.Group>
 				</Form.Row>
 				<Form.Row>
 					<Form.Group as={Col}>
 						<Form.Label>Paths CSV folder:</Form.Label>
-						<Form.Control defaultValue={props.saveCSVTo} ref={this.CSVFolderRef} />
+						<Form.Control defaultValue={this.props.saveCSVTo} ref={this.CSVFolderRef} />
 					</Form.Group>
 				</Form.Row>
 			</div>
@@ -42,4 +45,15 @@ class SettingsFoldersConfig extends SettingsConfig {
 	}
 }
 
-export default SettingsFoldersConfig;
+const mapStateToProps = (state) => {
+	return {
+		projectPath: state.projectPath,
+		saveCSVTo: state.saveCSVTo,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SettingsFoldersConfig);

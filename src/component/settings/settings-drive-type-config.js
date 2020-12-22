@@ -1,9 +1,10 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
+import SettingsConfig from './settings-config';
 import { Swerve, Tank } from 'path-generator';
 import { connect } from 'react-redux';
 import React from 'react';
 
-class SettingsDriveTypeConfig extends React.Component {
+class SettingsDriveTypeConfig extends SettingsConfig {
 	constructor(props) {
 		super(props);
 		this.state = { driveType: Tank };
@@ -12,8 +13,12 @@ class SettingsDriveTypeConfig extends React.Component {
 		this.setDriveTypeSwerve = this.setDriveTypeSwerve.bind(this);
 	}
 
+	getData() {
+		return { driveType: this.state.driveType };
+	}
+
 	componentDidMount() {
-		this.props.setDriveType(this.props.driveType);
+		this.props.setElementData('driveType', this.getData);
 		this.setState(() => {
 			return {
 				driveType: this.props.driveType,
@@ -22,39 +27,35 @@ class SettingsDriveTypeConfig extends React.Component {
 	}
 
 	setDriveTypeTank() {
-		this.props.setDriveType(Tank);
 		this.setState(() => {
 			return { driveType: Tank };
 		});
 	}
 
 	setDriveTypeSwerve() {
-		this.props.setDriveType(Swerve);
 		this.setState(() => {
 			return { driveType: Swerve };
 		});
 	}
 
-	render() {
+	getConfigInfo() {
+		return 'Path config:';
+	}
+
+	getBody() {
 		return (
-			<Container className="mb-3">
-				<Row>
-					<Col>
-						<Button block onClick={this.setDriveTypeTank} active={this.state.driveType === Tank}>
-							Tank
-						</Button>
-					</Col>
-					<Col>
-						<Button
-							block
-							onClick={this.setDriveTypeSwerve}
-							active={this.state.driveType === Swerve}
-						>
-							Swerve
-						</Button>
-					</Col>
-				</Row>
-			</Container>
+			<Row className="mb-3">
+				<Col>
+					<Button block onClick={this.setDriveTypeTank} active={this.state.driveType === Tank}>
+						Tank
+					</Button>
+				</Col>
+				<Col>
+					<Button block onClick={this.setDriveTypeSwerve} active={this.state.driveType === Swerve}>
+						Swerve
+					</Button>
+				</Col>
+			</Row>
 		);
 	}
 }
