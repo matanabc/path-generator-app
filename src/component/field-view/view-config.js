@@ -2,10 +2,10 @@ export class FieldConfig {
 	constructor(
 		widthInMeter = 16.5354,
 		heightInMeter = 8.001,
-		topLeftXPixel = 50,
-		topLeftYPixel = 50,
-		widthInPixel = 50,
-		heigthInPixel = 50
+		topLeftXPixel = 0,
+		topLeftYPixel = 0,
+		widthInPixel = 0,
+		heigthInPixel = 0
 	) {
 		this.widthInMeter = Number(widthInMeter);
 		this.heightInMeter = Number(heightInMeter);
@@ -20,7 +20,7 @@ export class FieldConfig {
 }
 
 export class RobotDrawConfig {
-	constructor(width = 0.8, length = 1.2, center = 0) {
+	constructor(width = 0, length = 0, center = 0) {
 		this.center = Number(center);
 		this.length = Number(length);
 		this.width = Number(width);
