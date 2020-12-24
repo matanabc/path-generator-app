@@ -21,6 +21,16 @@ class SettingsFiledConfig extends SettingsConfig {
 		this.props.setElementData('filedConfig', this.getData);
 	}
 
+	componentDidUpdate() {
+		this.fieldHeightInMeterRef.current.value = this.props.fieldConfig.heightInMeter;
+		this.fieldWidthInMeterRef.current.value = this.props.fieldConfig.widthInMeter;
+		this.fieldTopLeftXRef.current.value = this.props.fieldConfig.topLeftXPixel;
+		this.fieldTopLeftYRef.current.value = this.props.fieldConfig.topLeftYPixel;
+		this.fieldWidthInPixelRef.current.value = this.props.fieldConfig.widthInPixel;
+		this.fieldHeightInPixelRef.current.value = this.props.fieldConfig.heigthInPixel;
+		this.filedImageNameRef.current.value = this.props.filedImageUrl;
+	}
+
 	getData() {
 		return {
 			image: this.filedImageNameRef.current.value,

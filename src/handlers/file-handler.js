@@ -37,7 +37,6 @@ export default class FileHandler {
 
 	async setProjectFolderPath() {
 		this.projectPath = await this.ipcRenderer.invoke('GetProjctPath');
-		if (!this.fs.existsSync(this.projectPath)) this.fs.mkdirSync(this.projectPath);
 		this.dispatch(setProjectPath(this.projectPath));
 	}
 
@@ -71,7 +70,6 @@ export default class FileHandler {
 
 	async loadFieldImage(image) {
 		try {
-			if (!this.jsonProject && !image) return;
 			image = image ? image : this.jsonProject.image;
 			if (image.startsWith('http')) {
 				this.dispatch(setImage(image, image));
@@ -91,11 +89,14 @@ export default class FileHandler {
 	}
 
 	async loadPathConfig() {
-		if (!this.jsonProject) return;
-		this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
-		const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
-		const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
-		this.dispatch(setPathConfig(pathConfig, driveType));
+		try {
+			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
+			const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
+			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
+			this.dispatch(setPathConfig(pathConfig, driveType));
+		} catch (error) {
+			this.dispatch(setPathConfig(new Tank.PathConfig(), Tank));
+		}
 	}
 
 	async loadPaths() {
@@ -121,6 +122,7 @@ export default class FileHandler {
 			projectSettings.driveType = settings.driveType === Swerve ? 'swerve' : 'tank';
 			delete projectSettings.projectPath;
 			const jsonProject = JSON.stringify(projectSettings);
+			if (!this.fs.existsSync(this.projectPath)) this.fs.mkdirSync(this.projectPath);
 			this.fs.writeFileSync(`${this.projectPath}/PathGenerator.json`, jsonProject);
 		} catch (error) {}
 	}

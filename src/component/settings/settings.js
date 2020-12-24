@@ -1,5 +1,5 @@
-import { changeProjectFolderPath, loadFieldImage } from '../../handlers/project-handler';
 import SettingsDriveTypeConfig from './settings-drive-type-config';
+import { loadFieldImage } from '../../handlers/project-handler';
 import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import { setSettings } from '../../redux/project/actions';
@@ -15,6 +15,7 @@ class Settings extends React.Component {
 	constructor(props) {
 		super(props);
 		this.saveSettings = this.saveSettings.bind(this);
+		this.closeSettings = this.closeSettings.bind(this);
 		this.getAppVersion = this.getAppVersion.bind(this);
 		this.setElementData = this.setElementData.bind(this);
 		this.getUpdateButton = this.getUpdateButton.bind(this);
@@ -37,8 +38,6 @@ class Settings extends React.Component {
 		this.props.setSettings(settings);
 		this.props.closePopups();
 		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
-		if (settings.projectPath !== this.props.projectPath)
-			changeProjectFolderPath(settings.projectPath);
 	}
 
 	getUpdateButton() {
@@ -63,11 +62,16 @@ class Settings extends React.Component {
 		return <SettingsFoldersConfig setElementData={this.setElementData} />;
 	}
 
+	closeSettings() {
+		this.resetProjectPath();
+		this.props.closePopups();
+	}
+
 	render() {
 		return (
 			<Modal
 				show={this.props.popupsStatus.settingsPopup}
-				onHide={this.props.closePopups}
+				onHide={this.closeSettings}
 				backdrop="static"
 			>
 				<Modal.Header>
@@ -85,7 +89,7 @@ class Settings extends React.Component {
 				</Modal.Body>
 				<Modal.Footer>
 					{this.getUpdateButton()}
-					<Button variant="outline-primary" onClick={this.props.closePopups}>
+					<Button variant="outline-primary" onClick={this.closeSettings}>
 						cancel
 					</Button>
 					<Button onClick={this.saveSettings}>save</Button>

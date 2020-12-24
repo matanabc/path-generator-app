@@ -17,6 +17,13 @@ class SettingsPathConfig extends SettingsConfig {
 		this.props.setElementData('pathConfig', this.getData);
 	}
 
+	componentDidUpdate() {
+		this.robotMaxVRef.current.value = this.props.pathConfig.vMax;
+		this.pathWidthRef.current.value = this.props.pathConfig.width;
+		this.robotMaxAccRef.current.value = this.props.pathConfig.acc;
+		this.robotLoopTimeRef.current.value = this.props.pathConfig.robotLoopTime;
+	}
+
 	getData() {
 		return {
 			pathConfig: {

@@ -17,6 +17,12 @@ class SettingsRobotConfig extends SettingsConfig {
 		this.props.setElementData('robotDrawConfig', this.getData);
 	}
 
+	componentDidUpdate() {
+		this.robotWidthRef.current.value = this.props.robotDrawConfig.width;
+		this.robotLengthRef.current.value = this.props.robotDrawConfig.length;
+		this.robotCenterRef.current.value = this.props.robotDrawConfig.center;
+	}
+
 	getData() {
 		return {
 			robotDrawConfig: new RobotDrawConfig(
