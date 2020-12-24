@@ -37,6 +37,7 @@ export default class FileHandler {
 
 	async setProjectFolderPath() {
 		this.projectPath = await this.ipcRenderer.invoke('GetProjctPath');
+		if (!this.fs.existsSync(this.projectPath)) this.fs.mkdirSync(this.projectPath);
 		this.dispatch(setProjectPath(this.projectPath));
 	}
 
@@ -135,13 +136,15 @@ export default class FileHandler {
 
 	async saveCSVPath(path, pathName, folder) {
 		try {
+			if (!this.fs.existsSync(folder)) this.fs.mkdirSync(folder);
 			this.fs.writeFileSync(`${folder}/${pathName}.csv`, pathToCSV(path));
 		} catch (error) {}
 	}
 
-	async deleteJsonPath(pathName) {
+	async deletePath(pathName, csvFolder) {
 		try {
 			this.fs.unlinkSync(`${this.projectPath}/paths/${pathName}.json`);
+			this.fs.unlinkSync(`${csvFolder}/${pathName}.csv`);
 		} catch (error) {}
 	}
 

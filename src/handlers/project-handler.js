@@ -22,9 +22,9 @@ export async function saveJsonPath(pathName, path) {
 	} catch (error) {}
 }
 
-export async function deleteJsonPath(pathName) {
+export async function deletePath(pathName, csvFolder) {
 	try {
-		handler.deleteJsonPath(pathName);
+		handler.deletePath(pathName, csvFolder);
 	} catch (error) {}
 }
 

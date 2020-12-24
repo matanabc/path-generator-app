@@ -1,4 +1,4 @@
-import { saveJsonPath, deleteJsonPath, renameJsonPath } from '../../handlers/project-handler';
+import { saveJsonPath, deletePath, renameJsonPath } from '../../handlers/project-handler';
 import {
 	CHANGE_SELECTED_PATH,
 	CHANGE_DIRECTION,
@@ -61,11 +61,11 @@ function changeSelectedPath(state, payload) {
 	return newState;
 }
 
-function deletePath(state, payload) {
+function removePath(state, payload) {
 	const newState = { ...state, listenToMouseClicks: false };
 	delete newState.paths[state.selectedPath];
 	newState.selectedPath = undefined;
-	deleteJsonPath(state.selectedPath);
+	deletePath(state.selectedPath, state.saveCSVTo);
 	return newState;
 }
 
@@ -125,7 +125,7 @@ function changeDirection(state, payload) {
 export default function path(state, action) {
 	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
-	if (action.type === DELETE_PATH) return deletePath(state, action.payload);
+	if (action.type === DELETE_PATH) return removePath(state, action.payload);
 	if (action.type === ADD_WAYPOINT) return addWaypoint(state, action.payload);
 	if (action.type === SET_WAYPOINT) return setWaypoint(state, action.payload);
 	if (action.type === SET_PATH_CONFIG) return setPathConfig(state, action.payload);
