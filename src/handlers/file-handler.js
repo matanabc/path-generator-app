@@ -1,7 +1,8 @@
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
+import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
+import { changePopupsStatus } from '../redux/view/actions';
 import { Swerve, Tank } from 'path-generator';
-import { pathToCSV } from './csv-handler';
 import {
 	setRobotDrawConfig,
 	setProjectPath,
@@ -136,17 +137,30 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
-	async saveCSVPath(path, pathName, folder) {
+	async saveCSVPath(path, pathName, csvFolder) {
 		try {
-			if (!this.fs.existsSync(folder)) this.fs.mkdirSync(folder);
-			this.fs.writeFileSync(`${folder}/${pathName}.csv`, pathToCSV(path));
+			if (!this.fs.existsSync(csvFolder)) this.fs.mkdirSync(csvFolder);
+			if (this.fs.existsSync(`${csvFolder}/${pathName}`))
+				this.fs.rmdirSync(`${csvFolder}/${pathName}`, { recursive: true });
+			this.fs.mkdirSync(`${csvFolder}/${pathName}`);
+
+			const keys = Object.keys(path).filter((key) => key.endsWith('Setpoints'));
+			keys.forEach((key) => {
+				const fileName = `${pathName}.${key.replace('_', '').replace('Setpoints', '')}.csv`;
+				this.fs.writeFileSync(`${csvFolder}/${pathName}/${fileName}`, getSetpointsCSV(path[key]));
+			});
+			this.fs.writeFileSync(
+				`${csvFolder}/${pathName}/${pathName}.coords.csv`,
+				getCoordsCSV(path, keys.sort())
+			);
+			this.dispatch(changePopupsStatus('savePathToCSVPopup'));
 		} catch (error) {}
 	}
 
 	async deletePath(pathName, csvFolder) {
 		try {
 			this.fs.unlinkSync(`${this.projectPath}/paths/${pathName}.json`);
-			this.fs.unlinkSync(`${csvFolder}/${pathName}.csv`);
+			this.fs.rmdirSync(`${csvFolder}/${pathName}`, { recursive: true });
 		} catch (error) {}
 	}
 
