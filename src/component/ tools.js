@@ -96,7 +96,13 @@ class Tools extends React.Component {
 						<GiClick />
 					</Button>
 					{this.getCSVButton()}
-					<Button className="mr-3" size="lg" title="Settings" onClick={this.props.showSettings}>
+					<Button
+						className="mr-3"
+						size="lg"
+						title="Settings"
+						onClick={this.props.showSettings}
+						variant={this.props.newVersion ? 'success' : 'primary'}
+					>
 						<MdBuild />
 					</Button>
 					<Dropdown>
@@ -172,6 +178,7 @@ const mapStateToProps = (state) => {
 		isWeb: state.isWeb,
 		saveCSVTo: state.saveCSVTo,
 		pathName: state.selectedPath,
+		newVersion: state.newVersion,
 		rangePosition: state.rangePosition,
 		pathsName: Object.keys(state.paths),
 		path: state.paths[state.selectedPath],
