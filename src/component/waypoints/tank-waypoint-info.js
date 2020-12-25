@@ -31,17 +31,15 @@ class TankWaypointInfo extends React.Component {
 
 	getValue(currentValue, value) {
 		if (this.isNeedToUpdateState()) return value;
-		return Number.isNaN(currentValue) ? value : currentValue;
+		if (currentValue.endsWith('.')) return currentValue;
+		return value;
 	}
 
 	componentDidUpdate() {
-		this.angle.current.value = this.getValue(this.angle.current.value, this.props.waypoint.angle);
 		this.vMax.current.value = this.getValue(this.vMax.current.value, this.props.waypoint.vMax);
 		this.x.current.value = this.getValue(this.x.current.value, this.props.waypoint.x);
 		this.y.current.value = this.getValue(this.y.current.value, this.props.waypoint.y);
 		this.v.current.value = this.getValue(this.v.current.value, this.props.waypoint.v);
-		if (this.vMax.current.value > this.props.waypoint.vMax)
-			this.vMax.current.value = this.props.waypoint.vMax;
 
 		if (this.isNeedToUpdateState()) {
 			this.setState(() => {

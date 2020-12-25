@@ -11,7 +11,7 @@ import {
 	ADD_PATH,
 } from './action-types';
 
-function getNewWaypoint(state, waypoint, object) {
+function getNewWaypoint(state, waypoint, object, pathConfig, fieldConfig) {
 	const newWaypointObject = {
 		x: Number.isNaN(object.x) ? waypoint.x : object.x,
 		y: Number.isNaN(object.y) ? waypoint.y : object.y,
@@ -20,18 +20,28 @@ function getNewWaypoint(state, waypoint, object) {
 		angle: Number.isNaN(object.angle) ? waypoint.angle : object.angle,
 		robotAngle: Number.isNaN(object.robotAngle) ? waypoint.robotAngle : object.robotAngle,
 	};
+
+	if (newWaypointObject.x < 0) newWaypointObject.x = 0;
+	if (newWaypointObject.x > fieldConfig.widthInMeter)
+		newWaypointObject.x = fieldConfig.widthInMeter;
+	if (newWaypointObject.y < 0) newWaypointObject.y = 0;
+	if (newWaypointObject.y > fieldConfig.heightInMeter)
+		newWaypointObject.y = fieldConfig.heightInMeter;
+	if (newWaypointObject.v < 0) newWaypointObject.v = 0;
+	if (newWaypointObject.v > pathConfig.vMax) newWaypointObject.v = pathConfig.vMax;
+	if (newWaypointObject.vMax < 0) newWaypointObject.vMax = 0;
+	if (newWaypointObject.vMax > pathConfig.vMax) newWaypointObject.vMax = pathConfig.vMax;
+
 	if (newWaypointObject.robotAngle === undefined) delete newWaypointObject.robotAngle;
 	return Object.assign(new state.driveType.Waypoint(), newWaypointObject);
 }
 
 function setWaypoint(state, payload) {
-	const waypoints = [];
 	const newState = { ...state };
-	state.paths[state.selectedPath].waypoints.forEach((element, index) => {
-		if (index !== payload.index) waypoints.push(element);
-		else waypoints.push(getNewWaypoint(state, element, payload.waypoint));
-		if (waypoints[index].vMax > state.pathConfig.vMax)
-			waypoints[index].vMax = state.pathConfig.vMax;
+	const waypoints = state.paths[state.selectedPath].waypoints.map((element, index) => {
+		if (index !== payload.index) return element;
+		else
+			return getNewWaypoint(state, element, payload.waypoint, state.pathConfig, state.fieldConfig);
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
 	if (state.paths[state.selectedPath].isReverse())
