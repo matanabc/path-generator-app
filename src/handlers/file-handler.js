@@ -149,10 +149,7 @@ export default class FileHandler {
 				const fileName = `${pathName}.${key.replace('_', '').replace('Setpoints', '')}.csv`;
 				this.fs.writeFileSync(`${csvFolder}/${pathName}/${fileName}`, getSetpointsCSV(path[key]));
 			});
-			this.fs.writeFileSync(
-				`${csvFolder}/${pathName}/${pathName}.coords.csv`,
-				getCoordsCSV(path, keys.sort())
-			);
+			this.fs.writeFileSync(`${csvFolder}/${pathName}/${pathName}.coords.csv`, getCoordsCSV(path));
 			this.dispatch(changePopupsStatus('savePathToCSVPopup'));
 		} catch (error) {}
 	}

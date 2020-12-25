@@ -20,22 +20,14 @@ function getSetpointCSV(setpoint, keys) {
 	return csvLine.join(',') + ',';
 }
 
-export function getCoordsCSV(path, keys) {
-	const leftSetpoints = path[keys[0]];
-	const rightSetpoints = path[keys[1]];
-	const robotWidth = path.pathConfig.width;
-	const csvLines = path.coords.map((coord, i) => {
-		var angle =
-			Number(path.waypoints[0].angle) +
-			Number(Util.r2d((leftSetpoints[i].position - rightSetpoints[i].position) / robotWidth));
-		if (keys.length > 2) angle = Util.r2d(path.coords[i].angle);
-		if (Number.isNaN(angle)) angle = 0;
-		return getCoordCSV(coord, angle);
+export function getCoordsCSV(path) {
+	const csvLines = path.coords.map((coord) => {
+		return getCoordCSV(coord);
 	});
 	return getCoordCSV() + csvLines.join('\n');
 }
 
-function getCoordCSV(coord, angle) {
+function getCoordCSV(coord) {
 	if (!coord) return 'Angle,X,Y,\n';
-	return `${angle},${coord.x},${coord.y},`;
+	return `${Util.r2d(coord.angle)},${coord.x},${coord.y},`;
 }
