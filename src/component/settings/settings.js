@@ -27,14 +27,13 @@ class Settings extends React.Component {
 	}
 
 	saveSettings() {
-		const settings = {
+		var settings = {
 			...this.driveType(),
 			...this.pathConfig(),
 			...this.filedConfig(),
-			...this.foldersConfig(),
 			...this.robotDrawConfig(),
 		};
-
+		if (this.foldersConfig) settings = Object.assign(settings, this.foldersConfig());
 		this.props.setSettings(settings);
 		this.props.closePopups();
 		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
@@ -63,7 +62,7 @@ class Settings extends React.Component {
 	}
 
 	closeSettings() {
-		this.resetProjectPath();
+		if (this.resetProjectPath) this.resetProjectPath();
 		this.props.closePopups();
 	}
 
