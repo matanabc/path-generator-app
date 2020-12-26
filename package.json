@@ -7,9 +7,13 @@
 	"author": "Matan Steinmetz <matanabc@gamil.com>",
 	"homepage": "./",
 	"scripts": {
-		"start": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-		"publish": "react-scripts build && electron-builder -wlm -p always",
-		"build": "react-scripts build && electron-builder"
+		"start-app": "concurrently \"cross-env BROWSER=none npm run start-web\" \"wait-on http://localhost:3000 && electron .\"",
+		"start-web": "react-scripts start",
+		"build-app": "npm run build-web && electron-builder",
+		"build-web": "react-scripts build",
+		"publish-app": "electron-builder -wlm -p always",
+		"publish-web": "gh-pages -d build",
+		"publish": "npm run build-web && npm run publish-app && npm run publish-web"
 	},
 	"build": {
 		"appId": "com.example.PathGenerator",
