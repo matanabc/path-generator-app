@@ -1,3 +1,5 @@
+![GitHub all releases](https://img.shields.io/github/downloads/matanabc/path-generator-app/total?logo=github) ![GitHub Release Date](https://img.shields.io/github/release-date/matanabc/path-generator-app?logo=github) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/matanabc/path-generator-app?logo=github)
+
 # PathGenerator
 
 ![App view](./app.png)
