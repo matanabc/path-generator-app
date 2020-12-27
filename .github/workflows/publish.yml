@@ -1,6 +1,24 @@
 name: publish
 on: [push]
 jobs:
+  publish-app:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          check-latest: true
+      - name: Publish App
+        uses: samuelmeuli/action-electron-builder@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          build_script_name: build-web
+          release: true
+
   publish-web:
     runs-on: ubuntu-latest
     steps:
