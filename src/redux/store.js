@@ -9,8 +9,9 @@ import app from './app/reducer';
 const reducers = reduceReducers(initialState, view, path, project, app);
 const store = createStore(reducers);
 
-store.subscribe(() => {
-	console.log('Store change!', store.getState());
-});
+if (process.env.NODE_ENV === 'development')
+	store.subscribe(() => {
+		console.log('Store change!', store.getState());
+	});
 
 export default store;
