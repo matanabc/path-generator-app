@@ -1,3 +1,4 @@
+import { addPath } from '../redux/path/actions';
 import { Swerve } from 'path-generator';
 
 export default class LocalStorageHandler {
@@ -31,9 +32,18 @@ export default class LocalStorageHandler {
 
 	async loadPathConfig() {}
 
-	async loadPaths() {}
+	async loadPaths() {
+		Object.keys(localStorage).forEach((key) => {
+			if (key.startsWith('path/')) this.loadPath(key);
+		});
+	}
 
-	async loadPath(fileName) {}
+	async loadPath(key) {
+		try {
+			const path = JSON.parse(localStorage.getItem(key));
+			this.dispatch(addPath(key.replace('path/', ''), path.waypoints, path.isInReverse));
+		} catch (error) {}
+	}
 
 	async saveJsonProject(settings) {
 		const projectSettings = { ...settings };
@@ -42,7 +52,7 @@ export default class LocalStorageHandler {
 	}
 
 	async saveJsonPath(pathName, path) {
-		const data = JSON.stringify({ isInReverse: path.isReverse(), waypoints: path.waypoints });
+		const data = { isInReverse: path.isReverse(), waypoints: path.waypoints };
 		localStorage.setItem(`path/${pathName}`, JSON.stringify(data));
 	}
 
