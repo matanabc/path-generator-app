@@ -1,5 +1,5 @@
+import { setRobotDrawConfig, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
-import { setRobotDrawConfig, setFieldConfig } from '../redux/project/actions';
 import { addPath } from '../redux/path/actions';
 import { Swerve } from 'path-generator';
 
@@ -40,7 +40,14 @@ export default class LocalStorageHandler {
 		this.dispatch(setFieldConfig(fieldConfig));
 	}
 
-	async loadFieldImage(image) {}
+	async loadFieldImage(image) {
+		try {
+			image = image ? image : this.jsonProject.image;
+			this.dispatch(setImage(image, image));
+		} catch (error) {
+			this.dispatch(setImage('', ''));
+		}
+	}
 
 	async loadPathConfig() {}
 
