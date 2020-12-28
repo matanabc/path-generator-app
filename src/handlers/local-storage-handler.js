@@ -1,7 +1,9 @@
 import { setRobotDrawConfig, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
+import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
 import { Swerve, Tank } from 'path-generator';
+import * as JSZip from 'jszip';
 
 export default class LocalStorageHandler {
 	constructor(callback) {
@@ -84,7 +86,24 @@ export default class LocalStorageHandler {
 		localStorage.setItem(`path/${pathName}`, JSON.stringify(data));
 	}
 
-	async saveCSVPath(path, pathName, csvFolder) {}
+	async saveCSVPath(path, pathName) {
+		try {
+			let zip = new JSZip();
+			let folder = zip.folder(pathName);
+			Object.keys(path).forEach((key) => {
+				if (!key.endsWith('Setpoints')) return;
+				const fileName = `${pathName}.${key.replace('_', '').replace('Setpoints', '')}.csv`;
+				folder.file(fileName, getSetpointsCSV(path[key]));
+			});
+			folder.file(`${pathName}.coords.csv`, getCoordsCSV(path));
+			const blob = await zip.generateAsync({ type: 'blob' });
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.download = `${pathName}.zip`;
+			link.href = url;
+			link.click();
+		} catch (error) {}
+	}
 
 	async deletePath(pathName) {
 		localStorage.removeItem(`path/${pathName}`);
