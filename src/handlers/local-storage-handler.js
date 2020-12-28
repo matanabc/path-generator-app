@@ -1,3 +1,5 @@
+import { Swerve } from 'path-generator';
+
 export default class LocalStorageHandler {
 	constructor(callback) {
 		this.dispatch = callback;
@@ -27,7 +29,11 @@ export default class LocalStorageHandler {
 
 	async loadPath(fileName) {}
 
-	async saveJsonProject(settings) {}
+	async saveJsonProject(settings) {
+		const projectSettings = { ...settings };
+		projectSettings.driveType = settings.driveType === Swerve ? 'swerve' : 'tank';
+		localStorage.setItem('project settings', JSON.stringify(projectSettings));
+	}
 
 	async saveJsonPath(pathName, path) {}
 
