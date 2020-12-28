@@ -15,7 +15,13 @@ export default class LocalStorageHandler {
 		this.loadPaths();
 	}
 
-	loadJsonProject() {}
+	loadJsonProject() {
+		try {
+			this.jsonProject = JSON.parse(localStorage.getItem('project settings'));
+		} catch (error) {
+			this.jsonProject = undefined;
+		}
+	}
 
 	async loadRobotDrawConfig() {}
 
