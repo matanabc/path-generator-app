@@ -1,7 +1,7 @@
 import { setRobotDrawConfig, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
-import { addPath } from '../redux/path/actions';
-import { Swerve } from 'path-generator';
+import { setPathConfig, addPath } from '../redux/path/actions';
+import { Swerve, Tank } from 'path-generator';
 
 export default class LocalStorageHandler {
 	constructor(callback) {
@@ -49,7 +49,16 @@ export default class LocalStorageHandler {
 		}
 	}
 
-	async loadPathConfig() {}
+	async loadPathConfig() {
+		try {
+			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
+			const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
+			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
+			this.dispatch(setPathConfig(pathConfig, driveType));
+		} catch (error) {
+			this.dispatch(setPathConfig(new Tank.PathConfig(), Tank));
+		}
+	}
 
 	async loadPaths() {
 		Object.keys(localStorage).forEach((key) => {
