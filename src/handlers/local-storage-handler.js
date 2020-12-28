@@ -58,7 +58,9 @@ export default class LocalStorageHandler {
 
 	async saveCSVPath(path, pathName, csvFolder) {}
 
-	async deletePath(pathName, csvFolder) {}
+	async deletePath(pathName) {
+		localStorage.removeItem(`path/${pathName}`);
+	}
 
 	async renameJsonPath(oldName, newName) {}
 }
