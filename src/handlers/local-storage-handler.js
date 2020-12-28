@@ -41,7 +41,10 @@ export default class LocalStorageHandler {
 		localStorage.setItem('project settings', JSON.stringify(projectSettings));
 	}
 
-	async saveJsonPath(pathName, path) {}
+	async saveJsonPath(pathName, path) {
+		const data = JSON.stringify({ isInReverse: path.isReverse(), waypoints: path.waypoints });
+		localStorage.setItem(`path/${pathName}`, JSON.stringify(data));
+	}
 
 	async saveCSVPath(path, pathName, csvFolder) {}
 
