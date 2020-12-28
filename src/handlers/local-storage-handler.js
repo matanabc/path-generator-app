@@ -62,5 +62,9 @@ export default class LocalStorageHandler {
 		localStorage.removeItem(`path/${pathName}`);
 	}
 
-	async renameJsonPath(oldName, newName) {}
+	async renameJsonPath(oldName, newName) {
+		const path = localStorage.getItem(`path/${oldName}`);
+		localStorage.setItem(`path/${newName}`, path);
+		localStorage.removeItem(`path/${oldName}`);
+	}
 }
