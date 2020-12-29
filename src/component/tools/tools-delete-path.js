@@ -7,6 +7,7 @@ import React from 'react';
 class ToolsDeletePath extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -16,16 +17,18 @@ class ToolsDeletePath extends React.Component {
 	}
 
 	onClick() {
+		this.ref.current.blur();
 		if (this.props.path) this.props.showDeletePathPopup();
 	}
 
 	render() {
 		return (
 			<Button
-				className="mr-3"
 				size="lg"
-				title="Delete path"
+				ref={this.ref}
 				variant="danger"
+				className="mr-3"
+				title="Delete path"
 				onClick={this.onClick}
 				disabled={!this.props.path}
 			>

@@ -50,3 +50,8 @@ div {
 ::-webkit-scrollbar-thumb:hover {
 	background: rgb(128, 128, 128);
 }
+
+.btn:focus {
+	outline: none;
+	box-shadow: none;
+}

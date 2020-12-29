@@ -15,6 +15,8 @@ class SwerveWaypointInfo extends React.Component {
 		this.v = React.createRef();
 		this.vMax = React.createRef();
 		this.angle = React.createRef();
+		this.addRef = React.createRef();
+		this.deleteRef = React.createRef();
 		this.robotAngle = React.createRef();
 
 		this.add = this.add.bind(this);
@@ -68,10 +70,12 @@ class SwerveWaypointInfo extends React.Component {
 	}
 
 	remove() {
+		this.deleteRef.current.blur();
 		this.props.removeWaypoint(this.props.id);
 	}
 
 	add() {
+		this.addRef.current.blur();
 		this.props.changeListenToMouseStatus(this.props.id);
 	}
 
@@ -141,11 +145,11 @@ class SwerveWaypointInfo extends React.Component {
 						onChange={this.onChange}
 					/>
 
-					<Button className="mr-2" variant="danger" onClick={this.remove}>
+					<Button ref={this.deleteRef} className="mr-2" variant="danger" onClick={this.remove}>
 						<MdDelete />
 					</Button>
 
-					<Button onClick={this.add} variant={this.props.color}>
+					<Button ref={this.addRef} onClick={this.add} variant={this.props.color}>
 						<MdAddCircle />
 					</Button>
 				</InputGroup>

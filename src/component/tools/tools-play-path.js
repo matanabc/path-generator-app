@@ -7,6 +7,7 @@ import React from 'react';
 class ToolsPlayPath extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 		this.canCreateInterval = this.canCreateInterval.bind(this);
 		this.getPlayButtonIcon = this.getPlayButtonIcon.bind(this);
@@ -20,6 +21,7 @@ class ToolsPlayPath extends React.Component {
 	}
 
 	onClick() {
+		this.ref.current.blur();
 		var interval = undefined;
 		if (this.canCreateInterval()) {
 			if (this.isRangePositionInTheEnd()) this.props.changeRangePosition(0);
@@ -35,7 +37,10 @@ class ToolsPlayPath extends React.Component {
 
 	canCreateInterval() {
 		return (
-			this.props.path && !this.props.drawRobotInterval && this.props.path.sourceSetpoints.length > 0
+			this.props.path &&
+			!this.props.drawRobotInterval &&
+			this.props.path.sourceSetpoints.length > 0 &&
+			!this.props.popupsStatus.settingsPopup
 		);
 	}
 
@@ -54,8 +59,9 @@ class ToolsPlayPath extends React.Component {
 	render() {
 		return (
 			<Button
-				className="mr-3 ml-4"
 				size="lg"
+				ref={this.ref}
+				className="mr-3 ml-4"
 				onClick={this.onClick}
 				disabled={!this.props.path || this.props.path.isIllegal()}
 			>
@@ -67,6 +73,7 @@ class ToolsPlayPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		popupsStatus: state.popupsStatus,
 		rangePosition: state.rangePosition,
 		path: state.paths[state.selectedPath],
 		drawRobotInterval: state.drawRobotInterval,

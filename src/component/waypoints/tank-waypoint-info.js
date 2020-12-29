@@ -9,11 +9,15 @@ class TankWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { id: -1, pathName: undefined, waypointsLength: -1 };
+
 		this.x = React.createRef();
 		this.y = React.createRef();
 		this.v = React.createRef();
 		this.vMax = React.createRef();
 		this.angle = React.createRef();
+		this.addRef = React.createRef();
+		this.deleteRef = React.createRef();
+
 		this.add = this.add.bind(this);
 		this.remove = this.remove.bind(this);
 		this.onChange = this.onChange.bind(this);
@@ -64,10 +68,12 @@ class TankWaypointInfo extends React.Component {
 	}
 
 	remove() {
+		this.deleteRef.current.blur();
 		this.props.removeWaypoint(this.props.id);
 	}
 
 	add() {
+		this.addRef.current.blur();
 		this.props.changeListenToMouseStatus(this.props.id);
 	}
 
@@ -127,11 +133,11 @@ class TankWaypointInfo extends React.Component {
 						onChange={this.onChange}
 					/>
 
-					<Button className="mr-2" variant="danger" onClick={this.remove}>
+					<Button ref={this.deleteRef} className="mr-2" variant="danger" onClick={this.remove}>
 						<MdDelete />
 					</Button>
 
-					<Button onClick={this.add} variant={this.props.color}>
+					<Button ref={this.addRef} onClick={this.add} variant={this.props.color}>
 						<MdAddCircle />
 					</Button>
 				</InputGroup>

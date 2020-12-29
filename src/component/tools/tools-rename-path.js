@@ -7,6 +7,7 @@ import React from 'react';
 class ToolsRenamePath extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -16,14 +17,16 @@ class ToolsRenamePath extends React.Component {
 	}
 
 	onClick() {
+		this.ref.current.blur();
 		if (this.props.path) this.props.showRenamePathPopup();
 	}
 
 	render() {
 		return (
 			<Button
-				className="mr-3"
 				size="lg"
+				ref={this.ref}
+				className="mr-3"
 				title="Rename path"
 				onClick={this.onClick}
 				disabled={!this.props.path}

@@ -7,6 +7,7 @@ import React from 'react';
 class ToolsAddWaypoint extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -16,6 +17,7 @@ class ToolsAddWaypoint extends React.Component {
 	}
 
 	onClick() {
+		this.ref.current.blur();
 		if (this.props.path) this.props.changeListenToMouseStatus();
 	}
 
@@ -23,10 +25,11 @@ class ToolsAddWaypoint extends React.Component {
 		return (
 			<Button
 				size="lg"
+				ref={this.ref}
 				className="mr-3"
-				title="Add waypoint with mouse"
-				disabled={!this.props.path}
 				onClick={this.onClick}
+				disabled={!this.props.path}
+				title="Add waypoint with mouse"
 				variant={this.props.listenToMouseClicks ? 'success' : 'primary'}
 			>
 				<GiClick />

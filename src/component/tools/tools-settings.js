@@ -7,6 +7,7 @@ import React from 'react';
 class ToolsSettings extends React.Component {
 	constructor(props) {
 		super(props);
+		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -17,14 +18,16 @@ class ToolsSettings extends React.Component {
 	}
 
 	onClick() {
+		this.ref.current.blur();
 		this.props.showSettings();
 	}
 
 	render() {
 		return (
 			<Button
-				className="mr-3"
 				size="lg"
+				ref={this.ref}
+				className="mr-3"
 				title="Settings"
 				onClick={this.onClick}
 				variant={this.props.newVersion ? 'success' : 'primary'}
