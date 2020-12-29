@@ -112,6 +112,7 @@ function addWaypoint(state, payload) {
 	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
 	const newState = { ...state, addWaypointInIndex: undefined };
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
+	if (state.addWaypointInIndex !== undefined) newState.listenToMouseClicks = false;
 	if (state.paths[state.selectedPath].isReverse())
 		newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
