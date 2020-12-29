@@ -7,7 +7,7 @@ import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
 import Popups from './popups/popups';
-import Tools from './ tools';
+import Tools from './tools/tools';
 import React from 'react';
 
 class App extends React.Component {
