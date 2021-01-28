@@ -43,8 +43,8 @@ class ToolsPlayPath extends React.Component {
 		return (
 			this.props.path &&
 			!this.props.drawRobotInterval &&
-			this.props.path.sourceSetpoints.length > 0 &&
-			!this.props.popupsStatus.settingsPopup
+			!this.props.settingsPopupStatus &&
+			this.props.path.sourceSetpoints.length > 0
 		);
 	}
 
@@ -75,11 +75,11 @@ class ToolsPlayPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		popupsStatus: state.popupsStatus,
 		rangePosition: state.rangePosition,
 		path: state.paths[state.selectedPath],
 		drawRobotInterval: state.drawRobotInterval,
 		robotLoopTime: state.pathConfig.robotLoopTime,
+		settingsPopupStatus: state.popupsStatus.settingsPopup,
 	};
 };
 
