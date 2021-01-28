@@ -17,7 +17,6 @@ class ToolsRenamePath extends React.Component {
 	}
 
 	onClick() {
-		this.ref.current.blur();
 		if (this.props.path) this.props.showRenamePathPopup();
 	}
 
