@@ -81,9 +81,11 @@ function removePath(state, payload) {
 
 function renamePath(state, payload) {
 	const newState = { ...state, selectedPath: payload.name };
-	newState.paths[payload.name] = newState.paths[state.selectedPath];
-	delete newState.paths[state.selectedPath];
-	renameJsonPath(state.selectedPath, payload.name);
+	if (payload.name !== state.selectedPath) {
+		newState.paths[payload.name] = newState.paths[state.selectedPath];
+		delete newState.paths[state.selectedPath];
+		renameJsonPath(state.selectedPath, payload.name);
+	}
 	return newState;
 }
 
