@@ -64,6 +64,7 @@ class Popups extends React.Component {
 					show={this.props.popupsStatus.createNewPathPopup}
 					close={this.props.closePopups}
 					confirm={this.createNewPath}
+					refToUse={this.newPathRef}
 					title="Create a new path"
 				/>
 
