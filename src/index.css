@@ -51,7 +51,7 @@ div {
 	background: rgb(128, 128, 128);
 }
 
-.btn:focus {
+.dropdown-toggle:focus {
 	outline: none;
 	box-shadow: none;
 }
