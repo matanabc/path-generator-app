@@ -20,8 +20,12 @@ class ToolsPlayPath extends React.Component {
 		Mousetrap.bind('space', this.onClick);
 	}
 
-	onClick() {
+	componentDidUpdate(){
+		this.ref.current.focus();
 		this.ref.current.blur();
+	}
+
+	onClick() {
 		var interval = undefined;
 		if (this.canCreateInterval()) {
 			if (this.isRangePositionInTheEnd()) this.props.changeRangePosition(0);
