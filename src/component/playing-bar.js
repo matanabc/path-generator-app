@@ -46,9 +46,7 @@ class PlayingBar extends React.Component {
 			<Container>
 				<Row>
 					<Col sm={0.5} style={style}>
-						{this.props.path
-							? (this.props.robotLoopTime * this.props.rangePosition).toFixed(2)
-							: '0.00'}
+						{this.props.path ? (this.props.robotLoopTime * this.props.rangePosition).toFixed(2) : '0.00'}
 					</Col>
 					<Col>
 						<Form.Control

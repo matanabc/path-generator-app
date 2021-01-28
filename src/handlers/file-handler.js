@@ -3,13 +3,7 @@ import { setPathConfig, addPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
 import { changePopupsStatus } from '../redux/view/actions';
 import { Swerve, Tank } from 'path-generator';
-import {
-	setRobotDrawConfig,
-	setProjectPath,
-	setFieldConfig,
-	setCSVPath,
-	setImage,
-} from '../redux/project/actions';
+import { setRobotDrawConfig, setProjectPath, setFieldConfig, setCSVPath, setImage } from '../redux/project/actions';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -42,8 +36,7 @@ export default class FileHandler {
 	}
 
 	async setCSVFolderPath() {
-		if (this.jsonProject && this.jsonProject.saveCSVTo)
-			this.dispatch(setCSVPath(this.jsonProject.saveCSVTo));
+		if (this.jsonProject && this.jsonProject.saveCSVTo) this.dispatch(setCSVPath(this.jsonProject.saveCSVTo));
 	}
 
 	loadJsonProject() {
@@ -130,8 +123,7 @@ export default class FileHandler {
 
 	async saveJsonPath(pathName, path) {
 		try {
-			if (!this.fs.existsSync(`${this.projectPath}/paths`))
-				this.fs.mkdirSync(`${this.projectPath}/paths`);
+			if (!this.fs.existsSync(`${this.projectPath}/paths`)) this.fs.mkdirSync(`${this.projectPath}/paths`);
 			const data = JSON.stringify({ isInReverse: path.isReverse(), waypoints: path.waypoints });
 			this.fs.writeFileSync(`${this.projectPath}/paths/${pathName}.json`, data);
 		} catch (error) {}

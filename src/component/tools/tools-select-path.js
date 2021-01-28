@@ -18,11 +18,7 @@ class ToolsSelectPath extends React.Component {
 	getPathsItem() {
 		return this.props.pathsName.map((pathName, index) => {
 			return (
-				<Dropdown.Item
-					as="button"
-					key={index}
-					onClick={() => this.props.changeSelectedPath(pathName)}
-				>
+				<Dropdown.Item as="button" key={index} onClick={() => this.props.changeSelectedPath(pathName)}>
 					{pathName}
 				</Dropdown.Item>
 			);
@@ -32,9 +28,7 @@ class ToolsSelectPath extends React.Component {
 	render() {
 		return (
 			<Dropdown>
-				<Dropdown.Toggle size="lg">
-					{this.props.pathName ? this.props.pathName : 'Select Path'}
-				</Dropdown.Toggle>
+				<Dropdown.Toggle size="lg">{this.props.pathName ? this.props.pathName : 'Select Path'}</Dropdown.Toggle>
 				<Dropdown.Menu>
 					{this.getPathsItem()}
 					<Dropdown.Divider />

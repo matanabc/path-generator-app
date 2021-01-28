@@ -38,8 +38,7 @@ class SettingsFoldersConfig extends SettingsConfig {
 	}
 
 	resetProjectPath() {
-		if (this.props.projectPath !== this.state.lastProjectPath)
-			changeProjectFolderPath(this.state.lastProjectPath);
+		if (this.props.projectPath !== this.state.lastProjectPath) changeProjectFolderPath(this.state.lastProjectPath);
 	}
 
 	getBody() {

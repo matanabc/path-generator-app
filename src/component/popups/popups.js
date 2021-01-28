@@ -16,8 +16,7 @@ class Popups extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.popupsStatus.renamePathPopup)
-			this.renamePathRef.current.defaultValue = this.props.pathName;
+		if (this.props.popupsStatus.renamePathPopup) this.renamePathRef.current.defaultValue = this.props.pathName;
 	}
 
 	deletePath() {
@@ -33,10 +32,7 @@ class Popups extends React.Component {
 	}
 
 	createNewPath() {
-		if (
-			this.newPathRef.current.value &&
-			!this.props.pathsName.includes(this.newPathRef.current.value)
-		) {
+		if (this.newPathRef.current.value && !this.props.pathsName.includes(this.newPathRef.current.value)) {
 			this.props.addPath(this.newPathRef.current.value);
 			this.props.resetRangePosition();
 			this.props.closePopups();
@@ -98,9 +94,7 @@ class Popups extends React.Component {
 
 				<Popup
 					show={
-						this.props.popupsStatus.savePathToCSVPopup &&
-						this.props.saveCSVTo === '' &&
-						!this.props.isWeb
+						this.props.popupsStatus.savePathToCSVPopup && this.props.saveCSVTo === '' && !this.props.isWeb
 					}
 					title="Save path CSV"
 					body="Can't save path CSV, you need to set CSV folder path in settings!"

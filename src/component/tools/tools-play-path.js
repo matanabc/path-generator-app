@@ -20,7 +20,7 @@ class ToolsPlayPath extends React.Component {
 		Mousetrap.bind('space', this.onClick);
 	}
 
-	componentDidUpdate(){
+	componentDidUpdate() {
 		this.ref.current.focus();
 		this.ref.current.blur();
 	}
@@ -49,9 +49,7 @@ class ToolsPlayPath extends React.Component {
 	}
 
 	isRangePositionInTheEnd() {
-		return (
-			this.props.path && this.props.path.sourceSetpoints.length - 1 === this.props.rangePosition
-		);
+		return this.props.path && this.props.path.sourceSetpoints.length - 1 === this.props.rangePosition;
 	}
 
 	getPlayButtonIcon() {

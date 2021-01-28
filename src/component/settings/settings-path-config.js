@@ -42,31 +42,19 @@ class SettingsPathConfig extends SettingsConfig {
 					<OverlayTrigger overlay={<Tooltip> m </Tooltip>}>
 						<Form.Label>Width</Form.Label>
 					</OverlayTrigger>
-					<Form.Control
-						type="number"
-						ref={this.pathWidthRef}
-						defaultValue={this.props.pathConfig.width}
-					/>
+					<Form.Control type="number" ref={this.pathWidthRef} defaultValue={this.props.pathConfig.width} />
 				</Form.Group>
 				<Form.Group as={Col}>
 					<OverlayTrigger overlay={<Tooltip> m / s </Tooltip>}>
 						<Form.Label>Max V</Form.Label>
 					</OverlayTrigger>
-					<Form.Control
-						type="number"
-						ref={this.robotMaxVRef}
-						defaultValue={this.props.pathConfig.vMax}
-					/>
+					<Form.Control type="number" ref={this.robotMaxVRef} defaultValue={this.props.pathConfig.vMax} />
 				</Form.Group>
 				<Form.Group as={Col}>
 					<OverlayTrigger overlay={<Tooltip> m / s ^ 2 </Tooltip>}>
 						<Form.Label>Max Acc</Form.Label>
 					</OverlayTrigger>
-					<Form.Control
-						type="number"
-						ref={this.robotMaxAccRef}
-						defaultValue={this.props.pathConfig.acc}
-					/>
+					<Form.Control type="number" ref={this.robotMaxAccRef} defaultValue={this.props.pathConfig.acc} />
 				</Form.Group>
 				<Form.Group as={Col}>
 					<OverlayTrigger overlay={<Tooltip> s </Tooltip>}>

@@ -13,8 +13,8 @@ When you finish setting up the path for your robot to follow, just press on the 
 
 ### Release:
 
-- Web latest version [here](https://matanabc.github.io/path-generator-app/).
-- Download desktop latest version [here](https://github.com/matanabc/path-generator-app/releases).
+-   Web latest version [here](https://matanabc.github.io/path-generator-app/).
+-   Download desktop latest version [here](https://github.com/matanabc/path-generator-app/releases).
 
 ### Source:
 
@@ -22,10 +22,10 @@ When you finish setting up the path for your robot to follow, just press on the 
 1. Clone this repository.
 1. Install all project dependencies: `npm i`.
 
-- npm commands:
-  - Development:
-    - `npm run start-web` to run in web mode.
-    - `npm run start-app` to run in desktop mode.
-  - Build:
-    - `npm run build-web` to build for web, Build files will located in `/build` folder.
-    - `npm run build-app` to build for desktop, Build files will located in `/dist` folder.
+-   npm commands:
+    -   Development:
+        -   `npm run start-web` to run in web mode.
+        -   `npm run start-app` to run in desktop mode.
+    -   Build:
+        -   `npm run build-web` to build for web, Build files will located in `/build` folder.
+        -   `npm run build-app` to build for desktop, Build files will located in `/dist` folder.

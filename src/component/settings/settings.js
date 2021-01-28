@@ -22,9 +22,9 @@ class Settings extends React.Component {
 		this.getFoldersConfig = this.getFoldersConfig.bind(this);
 	}
 
-	componentDidUpdate(){
+	componentDidUpdate() {
 		const Mousetrap = require('mousetrap');
-		if(this.props.popupsStatus.settingsPopup) Mousetrap.bind('enter', this.saveSettings);
+		if (this.props.popupsStatus.settingsPopup) Mousetrap.bind('enter', this.saveSettings);
 		else Mousetrap.unbind('enter');
 	}
 
@@ -48,10 +48,7 @@ class Settings extends React.Component {
 	getUpdateButton() {
 		if (this.props.newVersion !== undefined) {
 			return (
-				<Button
-					variant="outline-success"
-					onClick={updateApp}
-				>{`Update to v${this.props.newVersion}`}</Button>
+				<Button variant="outline-success" onClick={updateApp}>{`Update to v${this.props.newVersion}`}</Button>
 			);
 		}
 		return <span />;
@@ -74,11 +71,7 @@ class Settings extends React.Component {
 
 	render() {
 		return (
-			<Modal
-				show={this.props.popupsStatus.settingsPopup}
-				onHide={this.closeSettings}
-				backdrop="static"
-			>
+			<Modal show={this.props.popupsStatus.settingsPopup} onHide={this.closeSettings} backdrop="static">
 				<Modal.Header>
 					<Modal.Title>Settings</Modal.Title>
 				</Modal.Header>

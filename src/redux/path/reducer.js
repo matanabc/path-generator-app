@@ -22,11 +22,9 @@ function getNewWaypoint(state, waypoint, object, pathConfig, fieldConfig) {
 	};
 
 	if (newWaypointObject.x < 0) newWaypointObject.x = 0;
-	if (newWaypointObject.x > fieldConfig.widthInMeter)
-		newWaypointObject.x = fieldConfig.widthInMeter;
+	if (newWaypointObject.x > fieldConfig.widthInMeter) newWaypointObject.x = fieldConfig.widthInMeter;
 	if (newWaypointObject.y < 0) newWaypointObject.y = 0;
-	if (newWaypointObject.y > fieldConfig.heightInMeter)
-		newWaypointObject.y = fieldConfig.heightInMeter;
+	if (newWaypointObject.y > fieldConfig.heightInMeter) newWaypointObject.y = fieldConfig.heightInMeter;
 	if (newWaypointObject.v < 0) newWaypointObject.v = 0;
 	if (newWaypointObject.v > pathConfig.vMax) newWaypointObject.v = pathConfig.vMax;
 	if (newWaypointObject.vMax < 0) newWaypointObject.vMax = 0;
@@ -40,12 +38,10 @@ function setWaypoint(state, payload) {
 	const newState = { ...state };
 	const waypoints = state.paths[state.selectedPath].waypoints.map((element, index) => {
 		if (index !== payload.index) return element;
-		else
-			return getNewWaypoint(state, element, payload.waypoint, state.pathConfig, state.fieldConfig);
+		else return getNewWaypoint(state, element, payload.waypoint, state.pathConfig, state.fieldConfig);
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
-	if (state.paths[state.selectedPath].isReverse())
-		newState.paths[state.selectedPath].changeDirection();
+	if (state.paths[state.selectedPath].isReverse()) newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
@@ -57,8 +53,7 @@ function removeWaypoint(state, payload) {
 		if (index !== payload.index) waypoints.push(element);
 	});
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
-	if (state.paths[state.selectedPath].isReverse())
-		newState.paths[state.selectedPath].changeDirection();
+	if (state.paths[state.selectedPath].isReverse()) newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }
@@ -115,8 +110,7 @@ function addWaypoint(state, payload) {
 	const newState = { ...state, addWaypointInIndex: undefined };
 	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
 	if (state.addWaypointInIndex !== undefined) newState.listenToMouseClicks = false;
-	if (state.paths[state.selectedPath].isReverse())
-		newState.paths[state.selectedPath].changeDirection();
+	if (state.paths[state.selectedPath].isReverse()) newState.paths[state.selectedPath].changeDirection();
 	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
 	return newState;
 }

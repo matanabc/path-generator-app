@@ -10,7 +10,8 @@
 		"start-app": "concurrently \"cross-env BROWSER=none npm run start-web\" \"wait-on http://localhost:3000 && electron .\"",
 		"start-web": "react-scripts start",
 		"build-app": "npm run build-web && electron-builder",
-		"build-web": "react-scripts build"
+		"build-web": "react-scripts build",
+		"format": "prettier --write ."
 	},
 	"build": {
 		"appId": "com.example.PathGenerator",
