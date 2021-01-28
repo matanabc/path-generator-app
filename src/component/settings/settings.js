@@ -22,6 +22,12 @@ class Settings extends React.Component {
 		this.getFoldersConfig = this.getFoldersConfig.bind(this);
 	}
 
+	componentDidUpdate(){
+		const Mousetrap = require('mousetrap');
+		if(this.props.popupsStatus.settingsPopup) Mousetrap.bind('enter', this.saveSettings);
+		else Mousetrap.unbind('enter');
+	}
+
 	setElementData(key, func) {
 		this[key] = func;
 	}
