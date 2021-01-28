@@ -36,7 +36,9 @@ export default class FileHandler {
 	}
 
 	async setCSVFolderPath() {
-		if (this.jsonProject && this.jsonProject.saveCSVTo) this.dispatch(setCSVPath(this.jsonProject.saveCSVTo));
+		if (this.jsonProject && this.jsonProject.saveCSVTo && this.jsonProject.saveCSVTo !== '')
+			this.dispatch(setCSVPath(this.jsonProject.saveCSVTo));
+		else this.dispatch(setCSVPath(`${this.projectPath}/csv`));
 	}
 
 	loadJsonProject() {

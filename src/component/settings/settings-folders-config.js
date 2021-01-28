@@ -24,7 +24,7 @@ class SettingsFoldersConfig extends SettingsConfig {
 
 	getData() {
 		return {
-			saveCSVTo: this.CSVFolderRef.current.value,
+			saveCSVTo: this.CSVFolderRef.current.value || this.props.saveCSVTo,
 			projectPath: this.projectFolderRef.current.value,
 		};
 	}
