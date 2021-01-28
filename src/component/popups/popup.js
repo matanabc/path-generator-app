@@ -10,7 +10,7 @@ class Popup extends React.Component {
 	componentDidUpdate() {
 		if (!this.props.show) return;
 		if (this.props.refToUse !== undefined && this.props.refToUse.current !== null)
-			this.props.refToUse.current.focus();
+			setTimeout(() => this.props.refToUse.current.focus(), 100);
 		else if (this.cancelButtonRef.current !== null) this.cancelButtonRef.current.focus();
 	}
 
