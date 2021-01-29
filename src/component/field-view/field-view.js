@@ -43,7 +43,7 @@ class FieldView extends React.Component {
 					ref={this.canvas}
 					style={{
 						backgroundPosition: 'center',
-						backgroundSize: 'cover',
+						backgroundSize: 'contain',
 						backgroundRepeat: 'no-repeat',
 						backgroundImage: 'url(' + this.props.filedImageUrl + ')',
 					}}
