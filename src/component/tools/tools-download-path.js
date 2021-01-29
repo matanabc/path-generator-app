@@ -4,6 +4,8 @@ import { FiDownload } from 'react-icons/fi';
 import { MdError } from 'react-icons/md';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsDownloadPath extends React.Component {
@@ -13,8 +15,7 @@ class ToolsDownloadPath extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('s', this.onClick);
+		mousetrap.bind('s', this.onClick);
 	}
 
 	onClick() {

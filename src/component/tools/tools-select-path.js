@@ -2,6 +2,8 @@ import { changePopupsStatus } from '../../redux/view/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsSelectPath extends React.Component {
@@ -12,8 +14,7 @@ class ToolsSelectPath extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('n', this.props.showCreateNewPathPopup);
+		mousetrap.bind('n', this.props.showCreateNewPathPopup);
 	}
 
 	getPathsItem() {

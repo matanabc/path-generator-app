@@ -2,6 +2,8 @@ import { changePopupsStatus } from '../../redux/view/actions';
 import { MdDelete } from 'react-icons/md';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsDeletePath extends React.Component {
@@ -11,8 +13,7 @@ class ToolsDeletePath extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('d', this.onClick);
+		mousetrap.bind('d', this.onClick);
 	}
 
 	onClick() {

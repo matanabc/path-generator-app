@@ -2,6 +2,8 @@ import { changeListenToMouseStatus } from '../../redux/view/actions';
 import { Button } from 'react-bootstrap';
 import { GiClick } from 'react-icons/gi';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsAddWaypoint extends React.Component {
@@ -11,8 +13,7 @@ class ToolsAddWaypoint extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('a', this.onClick);
+		mousetrap.bind('a', this.onClick);
 	}
 
 	onClick() {

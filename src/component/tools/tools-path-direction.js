@@ -2,6 +2,8 @@ import { FiCircle, FiCheckCircle } from 'react-icons/fi';
 import { changeDirection } from '../../redux/path/actions';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsPathDirection extends React.Component {
@@ -12,8 +14,7 @@ class ToolsPathDirection extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('c', this.onClick);
+		mousetrap.bind('c', this.onClick);
 	}
 
 	onClick() {

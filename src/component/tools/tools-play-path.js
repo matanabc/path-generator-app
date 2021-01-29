@@ -2,6 +2,8 @@ import { setDrawRobotInterval, changeRangePosition } from '../../redux/view/acti
 import { MdPlayArrow, MdReplay, MdPause } from 'react-icons/md';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsPlayPath extends React.Component {
@@ -15,8 +17,8 @@ class ToolsPlayPath extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('space', this.onClick);
+		mousetrap.bindGlobal('space', this.onClick);
+		window.onkeydown = (e) => e.keyCode !== 32;
 	}
 
 	onClick() {

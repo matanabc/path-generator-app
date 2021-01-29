@@ -2,6 +2,8 @@ import { changePopupsStatus } from '../../redux/view/actions';
 import { MdBuild } from 'react-icons/md';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsSettings extends React.Component {
@@ -11,9 +13,8 @@ class ToolsSettings extends React.Component {
 	}
 
 	componentDidMount() {
-		const Mousetrap = require('mousetrap');
-		Mousetrap.bind('p', this.onClick);
-		Mousetrap.bind('esc', this.props.closeSettings);
+		mousetrap.bind('p', this.onClick);
+		mousetrap.bind('esc', this.props.closeSettings);
 	}
 
 	onClick() {
