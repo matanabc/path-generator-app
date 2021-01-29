@@ -15,7 +15,7 @@ class ToolsDownloadPath extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('s', this.onClick);
+		mousetrap.bindGlobal(['command+s', 'alt+s'], this.onClick);
 	}
 
 	onClick() {

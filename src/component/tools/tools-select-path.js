@@ -14,7 +14,7 @@ class ToolsSelectPath extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('n', this.props.showCreateNewPathPopup);
+		mousetrap.bindGlobal(['command+n', 'alt+n'], this.props.showCreateNewPathPopup);
 	}
 
 	getPathsItem() {

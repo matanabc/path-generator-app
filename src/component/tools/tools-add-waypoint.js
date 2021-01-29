@@ -13,7 +13,7 @@ class ToolsAddWaypoint extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('a', this.onClick);
+		mousetrap.bindGlobal(['command+a', 'alt+a'], this.onClick);
 	}
 
 	onClick() {

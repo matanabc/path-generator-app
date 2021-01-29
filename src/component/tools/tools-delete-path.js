@@ -13,7 +13,7 @@ class ToolsDeletePath extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('d', this.onClick);
+		mousetrap.bindGlobal(['command+d', 'alt+d'], this.onClick);
 	}
 
 	onClick() {

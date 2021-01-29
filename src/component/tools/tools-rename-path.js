@@ -14,7 +14,7 @@ class ToolsRenamePath extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('r', this.onClick);
+		mousetrap.bindGlobal(['command+r', 'alt+r'], this.onClick);
 	}
 
 	onClick() {

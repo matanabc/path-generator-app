@@ -14,7 +14,7 @@ class ToolsPathDirection extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('c', this.onClick);
+		mousetrap.bindGlobal(['command+c', 'alt+c'], this.onClick);
 	}
 
 	onClick() {
