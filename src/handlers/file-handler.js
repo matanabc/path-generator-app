@@ -80,7 +80,7 @@ export default class FileHandler {
 			const imageUrl = URL.createObjectURL(new Blob([data]));
 			this.dispatch(setImage(imageUrl, image));
 		} catch (error) {
-			this.dispatch(setImage('', ''));
+			this.dispatch(setImage('', image || ''));
 		}
 	}
 
