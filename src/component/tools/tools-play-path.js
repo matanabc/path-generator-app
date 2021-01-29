@@ -7,7 +7,6 @@ import React from 'react';
 class ToolsPlayPath extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 		this.canCreateInterval = this.canCreateInterval.bind(this);
 		this.getPlayButtonIcon = this.getPlayButtonIcon.bind(this);
@@ -20,12 +19,8 @@ class ToolsPlayPath extends React.Component {
 		Mousetrap.bind('space', this.onClick);
 	}
 
-	componentDidUpdate() {
-		this.ref.current.focus();
-		this.ref.current.blur();
-	}
-
 	onClick() {
+		if (document.activeElement) document.activeElement.blur();
 		var interval = undefined;
 		if (this.canCreateInterval()) {
 			if (this.isRangePositionInTheEnd()) this.props.changeRangePosition(0);
@@ -62,7 +57,6 @@ class ToolsPlayPath extends React.Component {
 		return (
 			<Button
 				size="lg"
-				ref={this.ref}
 				className="mr-3 ml-4"
 				onClick={this.onClick}
 				disabled={!this.props.path || this.props.path.isIllegal()}

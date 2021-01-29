@@ -8,6 +8,7 @@ class ToolsSelectPath extends React.Component {
 	constructor(props) {
 		super(props);
 		this.getPathsItem = this.getPathsItem.bind(this);
+		this.setSelectedPath = this.setSelectedPath.bind(this);
 	}
 
 	componentDidMount() {
@@ -18,11 +19,16 @@ class ToolsSelectPath extends React.Component {
 	getPathsItem() {
 		return this.props.pathsName.map((pathName, index) => {
 			return (
-				<Dropdown.Item as="button" key={index} onClick={() => this.props.changeSelectedPath(pathName)}>
+				<Dropdown.Item as="button" key={index} onClick={() => this.setSelectedPath(pathName)}>
 					{pathName}
 				</Dropdown.Item>
 			);
 		});
+	}
+
+	setSelectedPath(pathName) {
+		if (document.activeElement) document.activeElement.blur();
+		this.props.changeSelectedPath(pathName);
 	}
 
 	render() {

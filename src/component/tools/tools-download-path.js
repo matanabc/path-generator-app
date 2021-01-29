@@ -9,7 +9,6 @@ import React from 'react';
 class ToolsDownloadPath extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -19,7 +18,7 @@ class ToolsDownloadPath extends React.Component {
 	}
 
 	onClick() {
-		this.ref.current.blur();
+		if (document.activeElement) document.activeElement.blur();
 		if (!this.props.path || (this.props.saveCSVTo === '' && !this.props.isWeb)) return;
 		if (this.props.path.isIllegal()) this.props.showIllegalPathPopup();
 		else saveCSVPath(this.props.path, this.props.pathName, this.props.saveCSVTo);
@@ -30,7 +29,6 @@ class ToolsDownloadPath extends React.Component {
 		return (
 			<Button
 				size="lg"
-				ref={this.ref}
 				className="mr-3"
 				onClick={this.onClick}
 				disabled={!this.props.path}

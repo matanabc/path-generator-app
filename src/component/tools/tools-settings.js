@@ -7,7 +7,6 @@ import React from 'react';
 class ToolsSettings extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 	}
 
@@ -18,7 +17,7 @@ class ToolsSettings extends React.Component {
 	}
 
 	onClick() {
-		this.ref.current.blur();
+		if (document.activeElement) document.activeElement.blur();
 		this.props.showSettings();
 	}
 
@@ -26,7 +25,6 @@ class ToolsSettings extends React.Component {
 		return (
 			<Button
 				size="lg"
-				ref={this.ref}
 				className="mr-3"
 				title="Settings"
 				onClick={this.onClick}

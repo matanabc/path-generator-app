@@ -7,7 +7,6 @@ import React from 'react';
 class ToolsPathDirection extends React.Component {
 	constructor(props) {
 		super(props);
-		this.ref = React.createRef();
 		this.onClick = this.onClick.bind(this);
 		this.getButtonIcon = this.getButtonIcon.bind(this);
 	}
@@ -18,7 +17,7 @@ class ToolsPathDirection extends React.Component {
 	}
 
 	onClick() {
-		this.ref.current.blur();
+		if (document.activeElement) document.activeElement.blur();
 		if (this.props.path) this.props.changeDirection();
 	}
 
@@ -31,7 +30,6 @@ class ToolsPathDirection extends React.Component {
 		return (
 			<Button
 				size="lg"
-				ref={this.ref}
 				className="mr-3"
 				onClick={this.onClick}
 				disabled={!this.props.path || this.props.path.isTurnInPlace()}
