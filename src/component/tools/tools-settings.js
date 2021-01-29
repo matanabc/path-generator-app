@@ -13,8 +13,8 @@ class ToolsSettings extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bind('p', this.onClick);
-		mousetrap.bind('esc', this.props.closeSettings);
+		mousetrap.bindGlobal(['command+p', 'alt+p'], this.onClick);
+		mousetrap.bindGlobal('esc', this.props.closeSettings);
 	}
 
 	onClick() {

@@ -9,6 +9,8 @@ import SettingsPathConfig from './settings-path-config';
 import { updateApp } from '../../handlers/app-handler';
 import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class Settings extends React.Component {
@@ -23,9 +25,8 @@ class Settings extends React.Component {
 	}
 
 	componentDidUpdate() {
-		const Mousetrap = require('mousetrap');
-		if (this.props.popupsStatus.settingsPopup) Mousetrap.bind('enter', this.saveSettings);
-		else Mousetrap.unbind('enter');
+		if (this.props.popupsStatus.settingsPopup) mousetrap.bindGlobal('enter', this.saveSettings);
+		else mousetrap.unbind('enter');
 	}
 
 	setElementData(key, func) {
@@ -40,9 +41,9 @@ class Settings extends React.Component {
 			...this.robotDrawConfig(),
 		};
 		if (this.foldersConfig) settings = Object.assign(settings, this.foldersConfig());
+		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
 		this.props.setSettings(settings);
 		this.props.closePopups();
-		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
 	}
 
 	getUpdateButton() {
