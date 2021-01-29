@@ -8,12 +8,17 @@ import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
 import Popups from './popups/popups';
 import Tools from './tools/tools';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class App extends React.Component {
 	componentDidMount() {
 		appUpdaterInit(this.props.dispatch);
 		projectInit(this.props.dispatch);
+		mousetrap.bindGlobal('esc', () => {
+			if (document.activeElement) document.activeElement.blur();
+		});
 	}
 
 	render() {
