@@ -1,4 +1,6 @@
 import { Modal, Button } from 'react-bootstrap';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
 import React from 'react';
 
 class Popup extends React.Component {
@@ -12,6 +14,10 @@ class Popup extends React.Component {
 		if (this.props.refToUse !== undefined && this.props.refToUse.current !== null)
 			setTimeout(() => this.props.refToUse.current.focus(), 100);
 		else if (this.cancelButtonRef.current !== null) this.cancelButtonRef.current.focus();
+		if (this.props.confirm)
+			mousetrap.bindGlobal(['return', 'enter'], () => {
+				if (this.props.show) this.props.confirm();
+			});
 	}
 
 	render() {
