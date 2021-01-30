@@ -1,5 +1,6 @@
 import { setDrawRobotInterval, changeRangePosition } from '../../redux/view/actions';
 import { MdPlayArrow, MdReplay, MdPause } from 'react-icons/md';
+import { PopupsConfig } from '../popups/popups-config';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
@@ -22,6 +23,7 @@ class ToolsPlayPath extends React.Component {
 	}
 
 	onClick() {
+		if (JSON.stringify(this.props.popupsStatus) !== JSON.stringify(new PopupsConfig())) return;
 		if (document.activeElement) document.activeElement.blur();
 		var interval = undefined;
 		if (this.canCreateInterval()) {
@@ -40,7 +42,7 @@ class ToolsPlayPath extends React.Component {
 		return (
 			this.props.path &&
 			!this.props.drawRobotInterval &&
-			!this.props.settingsPopupStatus &&
+			!this.props.popupsStatus.settingsPopup &&
 			this.props.path.sourceSetpoints.length > 0
 		);
 	}
@@ -75,7 +77,7 @@ const mapStateToProps = (state) => {
 		path: state.paths[state.selectedPath],
 		drawRobotInterval: state.drawRobotInterval,
 		robotLoopTime: state.pathConfig.robotLoopTime,
-		settingsPopupStatus: state.popupsStatus.settingsPopup,
+		popupsStatus: state.popupsStatus,
 	};
 };
 
