@@ -16,6 +16,7 @@ class Popup extends React.Component {
 		else if (this.cancelButtonRef.current !== null) this.cancelButtonRef.current.focus();
 		if (this.props.confirm)
 			mousetrap.bindGlobal(['return', 'enter'], () => {
+				if (document.activeElement === this.cancelButtonRef.current) return;
 				if (this.props.show) this.props.confirm();
 			});
 	}
