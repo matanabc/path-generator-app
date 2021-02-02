@@ -1,6 +1,7 @@
 import ToolsPathDirection from './tools-path-direction';
 import ToolsDownloadPath from './tools-download-path';
 import ToolsAddWaypoint from './tools-add-waypoint';
+import ToolsChangeMode from './tools-change-mode';
 import ToolsSelectPath from './tools-select-path';
 import ToolsDeletePath from './tools-delete-path';
 import ToolsRenamePath from './tools-rename-path';
@@ -18,6 +19,7 @@ class Tools extends React.Component {
 					<ToolsAddWaypoint />
 					<ToolsDownloadPath />
 					<ToolsSettings />
+					<ToolsChangeMode />
 					<ToolsSelectPath />
 					<ToolsPlayPath />
 					<ToolsDeletePath />

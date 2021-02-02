@@ -10,6 +10,7 @@ export const initialState = {
 	listenToMouseClicks: false,
 	selectedPath: undefined,
 	rangePosition: 0,
+	isPathMode: true,
 
 	// Path
 	driveType: Tank,
