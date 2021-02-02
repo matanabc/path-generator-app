@@ -6,7 +6,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsSelectPath extends React.Component {
+class ToolsSelect extends React.Component {
 	constructor(props) {
 		super(props);
 		this.getPathsItem = this.getPathsItem.bind(this);
@@ -33,14 +33,20 @@ class ToolsSelectPath extends React.Component {
 	}
 
 	render() {
+		const selectDropdownText = this.props.pathName
+			? this.props.pathName
+			: this.props.isPathMode
+			? 'Select Path'
+			: 'Select Paths Group';
+
 		return (
 			<Dropdown>
-				<Dropdown.Toggle size="lg">{this.props.pathName ? this.props.pathName : 'Select Path'}</Dropdown.Toggle>
+				<Dropdown.Toggle size="lg">{selectDropdownText}</Dropdown.Toggle>
 				<Dropdown.Menu>
 					{this.getPathsItem()}
 					<Dropdown.Divider />
 					<Dropdown.Item as="button" onClick={this.props.showCreateNewPathPopup}>
-						New path
+						{this.props.isPathMode ? 'New Path' : 'New Paths Group'}
 					</Dropdown.Item>
 				</Dropdown.Menu>
 			</Dropdown>
@@ -51,6 +57,7 @@ class ToolsSelectPath extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		pathsName: Object.keys(state.paths),
+		isPathMode: state.isPathMode,
 		pathName: state.selectedPath,
 	};
 };
@@ -62,4 +69,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsSelectPath);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsSelect);

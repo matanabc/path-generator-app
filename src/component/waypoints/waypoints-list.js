@@ -49,8 +49,10 @@ class WaypointsList extends React.Component {
 					this.props.path.waypoints.map((element, index) => {
 						return this.getWaypointInfo(element, index);
 					})
-				) : (
+				) : this.props.isPathMode ? (
 					<span>There is no waypoints...</span>
+				) : (
+					<span />
 				)}
 			</div>
 		);
@@ -60,6 +62,7 @@ class WaypointsList extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		driveType: state.driveType,
+		isPathMode: state.isPathMode,
 		path: state.paths[state.selectedPath],
 		addWaypointInIndex: state.addWaypointInIndex,
 	};

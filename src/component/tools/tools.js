@@ -1,14 +1,14 @@
 import ToolsPathDirection from './tools-path-direction';
 import ToolsDownloadPath from './tools-download-path';
-import ToolsAddWaypoint from './tools-add-waypoint';
 import ToolsChangeMode from './tools-change-mode';
-import ToolsSelectPath from './tools-select-path';
 import ToolsDeletePath from './tools-delete-path';
 import ToolsRenamePath from './tools-rename-path';
 import { Container, Row } from 'react-bootstrap';
 import ToolsPlayPath from './tools-play-path';
 import ToolsSettings from './tools-settings';
+import ToolsSelect from './tools-select';
 import { connect } from 'react-redux';
+import ToolsAdd from './tools-add';
 import React from 'react';
 
 class Tools extends React.Component {
@@ -16,15 +16,15 @@ class Tools extends React.Component {
 		return (
 			<Container>
 				<Row>
-					<ToolsAddWaypoint />
+					<ToolsAdd />
 					<ToolsDownloadPath />
 					<ToolsSettings />
 					<ToolsChangeMode />
-					<ToolsSelectPath />
+					<ToolsSelect />
 					<ToolsPlayPath />
 					<ToolsDeletePath />
 					<ToolsRenamePath />
-					<ToolsPathDirection />
+					{this.props.isPathMode ? <ToolsPathDirection /> : <span />}
 				</Row>
 			</Container>
 		);
@@ -32,7 +32,9 @@ class Tools extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		isPathMode: state.isPathMode,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
