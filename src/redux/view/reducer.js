@@ -34,7 +34,7 @@ function changeListenToMouseStatus(state, payload) {
 }
 
 function changeMode(state, payload) {
-	return { ...state, listenToMouseClicks: false, isPathMode: !state.isPathMode };
+	return { ...state, listenToMouseClicks: false, isPathMode: !state.isPathMode, selected: undefined };
 }
 
 export default function view(state, action) {
