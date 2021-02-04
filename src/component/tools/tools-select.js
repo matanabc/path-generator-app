@@ -18,7 +18,8 @@ class ToolsSelect extends React.Component {
 	}
 
 	getPathsItem() {
-		return this.props.pathsName.map((pathName, index) => {
+		const list = this.props.isPathMode ? this.props.pathsName : this.props.pathsGroups;
+		return list.map((pathName, index) => {
 			return (
 				<Dropdown.Item as="button" key={index} onClick={() => this.setSelectedPath(pathName)}>
 					{pathName}
@@ -56,6 +57,7 @@ class ToolsSelect extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		pathsGroups: Object.keys(state.pathsGroups),
 		pathsName: Object.keys(state.paths),
 		isPathMode: state.isPathMode,
 		pathName: state.selectedPath,

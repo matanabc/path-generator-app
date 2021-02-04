@@ -12,6 +12,11 @@ export const initialState = {
 	rangePosition: 0,
 	isPathMode: true,
 
+	// PathsGroup
+	pathsGroups: {
+		Test10: ['Test1', 'Test2', 'Test4'],
+	},
+
 	// Path
 	driveType: Tank,
 	paths: {},
