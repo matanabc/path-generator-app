@@ -1,3 +1,4 @@
+import { changeSelectedPathsGroup } from '../../redux/pathsGroup/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
 import { Dropdown } from 'react-bootstrap';
@@ -10,7 +11,7 @@ class ToolsSelect extends React.Component {
 	constructor(props) {
 		super(props);
 		this.getPathsItem = this.getPathsItem.bind(this);
-		this.setSelectedPath = this.setSelectedPath.bind(this);
+		this.setSelected = this.setSelected.bind(this);
 	}
 
 	componentDidMount() {
@@ -19,23 +20,24 @@ class ToolsSelect extends React.Component {
 
 	getPathsItem() {
 		const list = this.props.isPathMode ? this.props.pathsName : this.props.pathsGroups;
-		return list.map((pathName, index) => {
+		return list.map((element, index) => {
 			return (
-				<Dropdown.Item as="button" key={index} onClick={() => this.setSelectedPath(pathName)}>
-					{pathName}
+				<Dropdown.Item as="button" key={index} onClick={() => this.setSelected(element)}>
+					{element}
 				</Dropdown.Item>
 			);
 		});
 	}
 
-	setSelectedPath(pathName) {
+	setSelected(selected) {
 		if (document.activeElement) document.activeElement.blur();
-		this.props.changeSelectedPath(pathName);
+		if (this.props.isPathMode) this.props.changeSelectedPath(selected);
+		else this.props.changeSelectedPathsGroup(selected);
 	}
 
 	render() {
-		const selectDropdownText = this.props.pathName
-			? this.props.pathName
+		const selectDropdownText = this.props.selected
+			? this.props.selected
 			: this.props.isPathMode
 			? 'Select Path'
 			: 'Select Paths Group';
@@ -60,12 +62,13 @@ const mapStateToProps = (state) => {
 		pathsGroups: Object.keys(state.pathsGroups),
 		pathsName: Object.keys(state.paths),
 		isPathMode: state.isPathMode,
-		pathName: state.selectedPath,
+		selected: state.selected,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		changeSelectedPathsGroup: (pathsGroupName) => dispatch(changeSelectedPathsGroup(pathsGroupName)),
 		showCreateNewPathPopup: () => dispatch(changePopupsStatus('createNewPathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 	};

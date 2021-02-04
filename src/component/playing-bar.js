@@ -73,7 +73,7 @@ class PlayingBar extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		rangePosition: state.rangePosition,
-		path: state.paths[state.selectedPath],
+		path: state.paths[state.selected],
 		robotLoopTime: state.pathConfig.robotLoopTime,
 	};
 };

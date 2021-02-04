@@ -46,8 +46,8 @@ const mapStateToProps = (state) => {
 	return {
 		isWeb: state.isWeb,
 		saveCSVTo: state.saveCSVTo,
-		pathName: state.selectedPath,
-		path: state.paths[state.selectedPath],
+		pathName: state.selected,
+		path: state.paths[state.selected],
 	};
 };
 

@@ -8,13 +8,13 @@ export const initialState = {
 	addWaypointInIndex: undefined,
 	drawRobotInterval: undefined,
 	listenToMouseClicks: false,
-	selectedPath: undefined,
+	selected: undefined,
 	rangePosition: 0,
 	isPathMode: true,
 
 	// PathsGroup
 	pathsGroups: {
-		Test10: ['Test1', 'Test2', 'Test4'],
+		Test10: ['RIGHT_TO_DJ', 'RIGHT_DJ_TO_SHOT', 'RIGHT_SHOT_TO_BALLS'],
 	},
 
 	// Path

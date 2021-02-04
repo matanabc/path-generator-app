@@ -74,7 +74,7 @@ class ToolsPlayPath extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		rangePosition: state.rangePosition,
-		path: state.paths[state.selectedPath],
+		path: state.paths[state.selected],
 		drawRobotInterval: state.drawRobotInterval,
 		robotLoopTime: state.pathConfig.robotLoopTime,
 		popupsStatus: state.popupsStatus,

@@ -148,7 +148,7 @@ class TankWaypointInfo extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathName: state.selectedPath,
+		pathName: state.selected,
 	};
 };
 

@@ -63,7 +63,7 @@ const mapStateToProps = (state) => {
 	return {
 		driveType: state.driveType,
 		isPathMode: state.isPathMode,
-		path: state.paths[state.selectedPath],
+		path: state.paths[state.selected],
 		addWaypointInIndex: state.addWaypointInIndex,
 	};
 };

@@ -10,11 +10,11 @@ import {
 
 function setSettings(state, payload) {
 	saveJsonProject(payload.settings);
-	return { ...state, ...payload.settings, selectedPath: undefined, listenToMouseClicks: false };
+	return { ...state, ...payload.settings, selected: undefined, listenToMouseClicks: false };
 }
 
 function setProjectPath(state, payload) {
-	return { ...state, projectPath: payload.projectPath, selectedPath: undefined, paths: {} };
+	return { ...state, projectPath: payload.projectPath, selected: undefined, paths: {} };
 }
 
 function setFieldConfig(state, payload) {
