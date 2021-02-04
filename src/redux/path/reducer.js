@@ -59,10 +59,11 @@ function removeWaypoint(state, payload) {
 }
 
 function changeSelectedPath(state, payload) {
-	const oldPath = state.paths[payload.pathName];
+	const path = state.paths[payload.pathName];
 	const newState = { ...state, selected: payload.pathName };
-	newState.paths[payload.pathName] = new state.driveType.Path(oldPath.waypoints, state.pathConfig);
-	if (oldPath.isReverse()) newState.paths[payload.pathName].changeDirection();
+	newState.paths[payload.pathName] = new state.driveType.Path(path.waypoints, state.pathConfig);
+	if (path.isReverse()) newState.paths[payload.pathName].changeDirection();
+	newState.path = path;
 	return newState;
 }
 

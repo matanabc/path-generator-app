@@ -55,10 +55,10 @@ class FieldView extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
 		filedImageUrl: state.imageUrl,
 		fieldConfig: state.fieldConfig,
 		rangePosition: state.rangePosition,
-		path: state.paths[state.selected],
 		robotDrawConfig: state.robotDrawConfig,
 		listenToMouseClicks: state.listenToMouseClicks,
 		isPathInReverse: state.paths[state.selected] ? state.paths[state.selected].isReverse() : false,

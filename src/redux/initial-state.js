@@ -11,6 +11,7 @@ export const initialState = {
 	selected: undefined,
 	rangePosition: 0,
 	isPathMode: true,
+	path: undefined,
 
 	// PathsGroup
 	pathsGroups: {
