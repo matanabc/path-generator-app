@@ -43,6 +43,7 @@ function setWaypoint(state, payload) {
 	newState.paths[state.selected] = new state.driveType.Path(waypoints, newState.pathConfig);
 	if (state.paths[state.selected].isReverse()) newState.paths[state.selected].changeDirection();
 	saveJsonPath(state.selected, newState.paths[state.selected]);
+	newState.path = newState.paths[state.selected];
 	return newState;
 }
 
