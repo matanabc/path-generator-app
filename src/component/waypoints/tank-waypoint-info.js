@@ -8,7 +8,7 @@ import React from 'react';
 class TankWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { id: -1, pathName: undefined, waypointsLength: -1 };
+		this.state = { id: -1, selected: undefined, waypointsLength: -1 };
 
 		this.x = React.createRef();
 		this.y = React.createRef();
@@ -28,7 +28,7 @@ class TankWaypointInfo extends React.Component {
 	isNeedToUpdateState() {
 		return (
 			this.state.id !== this.props.id ||
-			this.state.pathName !== this.props.pathName ||
+			this.state.selected !== this.props.selected ||
 			this.state.waypointsLength !== this.props.waypointsLength
 		);
 	}
@@ -40,6 +40,7 @@ class TankWaypointInfo extends React.Component {
 	}
 
 	componentDidUpdate() {
+		this.angle.current.value = this.getValue(this.angle.current.value, this.props.waypoint.angle);
 		this.vMax.current.value = this.getValue(this.vMax.current.value, this.props.waypoint.vMax);
 		this.x.current.value = this.getValue(this.x.current.value, this.props.waypoint.x);
 		this.y.current.value = this.getValue(this.y.current.value, this.props.waypoint.y);
@@ -49,7 +50,7 @@ class TankWaypointInfo extends React.Component {
 			this.setState(() => {
 				return {
 					id: this.props.id,
-					pathName: this.props.pathName,
+					selected: this.props.selected,
 					waypointsLength: this.props.waypointsLength,
 				};
 			});
@@ -148,7 +149,7 @@ class TankWaypointInfo extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathName: state.selected,
+		selected: state.selected,
 	};
 };
 
