@@ -114,6 +114,7 @@ function addWaypoint(state, payload) {
 	if (state.addWaypointInIndex !== undefined) newState.listenToMouseClicks = false;
 	if (state.paths[state.selected].isReverse()) newState.paths[state.selected].changeDirection();
 	saveJsonPath(state.selected, newState.paths[state.selected]);
+	newState.path = newState.paths[state.selected];
 	return newState;
 }
 
