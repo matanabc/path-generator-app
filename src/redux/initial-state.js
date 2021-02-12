@@ -13,8 +13,8 @@ export const initialState = {
 	isPathMode: true,
 	path: undefined,
 
-	// PathsGroup
-	pathsGroups: {
+	// group
+	groups: {
 		Test10: ['RIGHT_TO_DJ', 'RIGHT_DJ_TO_SHOT', 'RIGHT_SHOT_TO_BALLS', 'RIGHT_BALLS1', 'RIGHT_BALLS2'],
 	},
 

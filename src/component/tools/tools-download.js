@@ -53,7 +53,6 @@ const mapStateToProps = (state) => {
 		pathName: state.selected,
 		saveCSVTo: state.saveCSVTo,
 		isPathMode: state.isPathMode,
-		pathsGroup: state.pathsGroups[state.selected],
 	};
 };
 

@@ -1,4 +1,4 @@
-import { changeSelectedPathsGroup } from '../../redux/pathsGroup/actions';
+import { changeSelectedGroup } from '../../redux/group/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
 import { Dropdown } from 'react-bootstrap';
@@ -19,7 +19,7 @@ class ToolsSelect extends React.Component {
 	}
 
 	getItems() {
-		const list = this.props.isPathMode ? this.props.pathsName : this.props.pathsGroups;
+		const list = this.props.isPathMode ? this.props.pathsName : this.props.groups;
 		return list.map((element, index) => {
 			return (
 				<Dropdown.Item
@@ -37,7 +37,7 @@ class ToolsSelect extends React.Component {
 	setSelected(selected) {
 		if (document.activeElement) document.activeElement.blur();
 		if (this.props.isPathMode) this.props.changeSelectedPath(selected);
-		else this.props.changeSelectedPathsGroup(selected);
+		else this.props.changeSelectedGroup(selected);
 	}
 
 	render() {
@@ -64,8 +64,8 @@ class ToolsSelect extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathsGroups: Object.keys(state.pathsGroups),
 		pathsName: Object.keys(state.paths),
+		groups: Object.keys(state.groups),
 		isPathMode: state.isPathMode,
 		selected: state.selected,
 	};
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeSelectedPathsGroup: (pathsGroupName) => dispatch(changeSelectedPathsGroup(pathsGroupName)),
+		changeSelectedGroup: (groupName) => dispatch(changeSelectedGroup(groupName)),
 		showCreateNewPathPopup: () => dispatch(changePopupsStatus('createNewPathPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 	};
