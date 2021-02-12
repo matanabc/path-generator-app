@@ -44,15 +44,13 @@ class WaypointsList extends React.Component {
 
 	render() {
 		return (
-			<div className="WaypointsList">
+			<div className="AppListView">
 				{this.props.path ? (
 					this.props.path.waypoints.map((element, index) => {
 						return this.getWaypointInfo(element, index);
 					})
-				) : this.props.isPathMode ? (
-					<span>There is no waypoints...</span>
 				) : (
-					<span />
+					<span>There is no waypoints...</span>
 				)}
 			</div>
 		);
@@ -63,7 +61,6 @@ const mapStateToProps = (state) => {
 	return {
 		path: state.path,
 		driveType: state.driveType,
-		isPathMode: state.isPathMode,
 		addWaypointInIndex: state.addWaypointInIndex,
 	};
 };

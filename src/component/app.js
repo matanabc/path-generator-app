@@ -3,6 +3,7 @@ import { appUpdaterInit } from '../handlers/app-handler';
 import WaypointsList from './waypoints/waypoints-list';
 import FieldView from './field-view/field-view';
 import { Container } from 'react-bootstrap';
+import PathsList from './paths/paths-list';
 import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
@@ -11,7 +12,6 @@ import Tools from './tools/tools';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
-
 class App extends React.Component {
 	componentDidMount() {
 		appUpdaterInit(this.props.dispatch);
@@ -30,7 +30,7 @@ class App extends React.Component {
 					<FieldView />
 					<PlayingBar />
 					<Tools />
-					<WaypointsList />
+					{this.props.isPathMode ? <WaypointsList /> : <PathsList />}
 				</Container>
 			</div>
 		);
@@ -38,7 +38,9 @@ class App extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	return {};
+	return {
+		isPathMode: state.isPathMode,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
