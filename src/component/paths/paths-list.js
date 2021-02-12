@@ -1,4 +1,5 @@
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { changeOrder } from '../../redux/group/actions';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { Button, Alert } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -13,11 +14,12 @@ class PathsList extends React.Component {
 
 	onDragEnd(result) {
 		if (!result.destination) return;
+		this.props.changeOrder(result.source.index, result.destination.index);
 	}
 
 	getListOfPathsItem() {
 		return this.props.groupPaths.map((pathName, index) => (
-			<Draggable key={index} draggableId={pathName} index={index}>
+			<Draggable key={pathName} draggableId={pathName} index={index}>
 				{(provided, snapshot) => (
 					<Alert
 						className={index > 0 ? 'mb-0 mt-2' : 'mb-0 mt-0'}
@@ -31,7 +33,6 @@ class PathsList extends React.Component {
 							<Button className="mr-2" variant="danger">
 								<MdDelete />
 							</Button>
-
 							<Button variant={this.props.color}>
 								<MdEdit />
 							</Button>
@@ -50,6 +51,7 @@ class PathsList extends React.Component {
 						{(provided, snapshot) => (
 							<div {...provided.droppableProps} ref={provided.innerRef}>
 								{this.getListOfPathsItem()}
+								{provided.placeholder}
 							</div>
 						)}
 					</Droppable>
@@ -67,7 +69,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		changeOrder: (source, destination) => dispatch(changeOrder(source, destination)),
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PathsList);

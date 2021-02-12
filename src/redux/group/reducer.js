@@ -1,7 +1,7 @@
 import { PopupsConfig } from '../../component/popups/popups-config';
-import { CHANGE_SELECTED_PATHS_GROUP } from './action-types';
+import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER } from './action-types';
 
-function changeSelectedgroup(state, payload) {
+function changeSelectedGroup(state, payload) {
 	const group = { coords: [], waypoints: [], sourceSetpoints: [], isIllegal: () => false };
 	const newState = { ...state, selected: payload.pathGroupName, popupsStatus: new PopupsConfig() };
 	state.groups[payload.pathGroupName].forEach((pathName) => {
@@ -25,7 +25,21 @@ function changeSelectedgroup(state, payload) {
 	return newState;
 }
 
+function reorder(list, startIndex, endIndex) {
+	const result = Array.from(list);
+	const [removed] = result.splice(startIndex, 1);
+	result.splice(endIndex, 0, removed);
+	return result;
+}
+
+function changeOrder(state, payload) {
+	const newState = { ...state };
+	newState.groups[state.selected] = reorder(state.groups[state.selected], payload.source, payload.destination);
+	return state;
+}
+
 export default function group(state, action) {
-	if (action.type === CHANGE_SELECTED_PATHS_GROUP) return changeSelectedgroup(state, action.payload);
+	if (action.type === CHANGE_SELECTED_PATHS_GROUP) return changeSelectedGroup(state, action.payload);
+	if (action.type === CHANGE_ORDER) return changeOrder(state, action.payload);
 	return state;
 }
