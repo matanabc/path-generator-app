@@ -10,7 +10,7 @@ import React from 'react';
 class ToolsSelect extends React.Component {
 	constructor(props) {
 		super(props);
-		this.getPathsItem = this.getPathsItem.bind(this);
+		this.getItems = this.getItems.bind(this);
 		this.setSelected = this.setSelected.bind(this);
 	}
 
@@ -18,11 +18,16 @@ class ToolsSelect extends React.Component {
 		mousetrap.bindGlobal(['command+n', 'alt+n'], this.props.showCreateNewPathPopup);
 	}
 
-	getPathsItem() {
+	getItems() {
 		const list = this.props.isPathMode ? this.props.pathsName : this.props.pathsGroups;
 		return list.map((element, index) => {
 			return (
-				<Dropdown.Item as="button" key={index} onClick={() => this.setSelected(element)}>
+				<Dropdown.Item
+					as="button"
+					key={index}
+					active={element === this.props.selected}
+					onClick={() => this.setSelected(element)}
+				>
 					{element}
 				</Dropdown.Item>
 			);
@@ -46,7 +51,7 @@ class ToolsSelect extends React.Component {
 			<Dropdown>
 				<Dropdown.Toggle size="lg">{selectDropdownText}</Dropdown.Toggle>
 				<Dropdown.Menu>
-					{this.getPathsItem()}
+					{this.getItems()}
 					<Dropdown.Divider />
 					<Dropdown.Item as="button" onClick={this.props.showCreateNewPathPopup}>
 						{this.props.isPathMode ? 'New Path' : 'New Paths Group'}
