@@ -8,7 +8,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsDownloadPath extends React.Component {
+class ToolsDownload extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
@@ -22,7 +22,10 @@ class ToolsDownloadPath extends React.Component {
 		if (document.activeElement) document.activeElement.blur();
 		if (!this.props.path || (this.props.saveCSVTo === '' && !this.props.isWeb)) return;
 		if (this.props.path.isIllegal()) this.props.showIllegalPathPopup();
-		else saveCSVPath(this.props.path, this.props.pathName, this.props.saveCSVTo);
+		const pathsToDownload = this.props.isPathMode ? [this.props.pathName] : Object.keys(this.props.paths);
+		pathsToDownload.forEach((pathName) => {
+			saveCSVPath(this.props.paths[pathName], pathName, this.props.saveCSVTo);
+		});
 	}
 
 	render() {
@@ -44,10 +47,13 @@ class ToolsDownloadPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
+		paths: state.paths,
 		isWeb: state.isWeb,
-		saveCSVTo: state.saveCSVTo,
 		pathName: state.selected,
-		path: state.paths[state.selected],
+		saveCSVTo: state.saveCSVTo,
+		isPathMode: state.isPathMode,
+		pathsGroup: state.pathsGroups[state.selected],
 	};
 };
 
@@ -57,4 +63,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsDownloadPath);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsDownload);
