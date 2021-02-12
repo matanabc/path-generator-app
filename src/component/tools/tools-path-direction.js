@@ -19,6 +19,7 @@ class ToolsPathDirection extends React.Component {
 
 	onClick() {
 		if (document.activeElement) document.activeElement.blur();
+		if (!this.props.isPathMode) return;
 		if (this.props.path) this.props.changeDirection();
 	}
 
@@ -44,6 +45,7 @@ class ToolsPathDirection extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		isPathMode: state.isPathMode,
 		path: state.paths[state.selected],
 		isPathReverse: state.selected ? state.paths[state.selected].isReverse() : false,
 	};
