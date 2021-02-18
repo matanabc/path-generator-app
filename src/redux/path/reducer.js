@@ -96,19 +96,21 @@ function addPath(state, payload) {
 }
 
 function addWaypoint(state, payload) {
+	const newState = { ...state, addWaypointInIndex: undefined };
+
 	const waypoints = [];
-	const object = { ...payload.waypoint };
-	const newWaypoint = Object.assign(new state.driveType.Waypoint(), object);
+	const newWaypoint = Object.assign(new state.driveType.Waypoint(), { ...payload.waypoint });
 	state.paths[state.selectedPath].waypoints.forEach((waypoint, index) => {
 		waypoints.push(waypoint);
 		if (index === state.addWaypointInIndex) waypoints.push(newWaypoint);
 	});
 	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
-	const newState = { ...state, addWaypointInIndex: undefined };
-	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, state.pathConfig);
 	if (state.addWaypointInIndex !== undefined) newState.listenToMouseClicks = false;
-	if (state.paths[state.selectedPath].isReverse()) newState.paths[state.selectedPath].changeDirection();
-	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
+	state.paths[state.selectedPath].waypoints = waypoints;
+
+	newState.path = new state.driveType.Path(waypoints, state.pathConfig);
+	if (state.paths[state.selectedPath].isInReverse) newState.path.changeDirection();
+	// TODO: save path to json
 	return newState;
 }
 
