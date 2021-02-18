@@ -1,3 +1,4 @@
+import { Util } from 'path-generator';
 import { PopupsConfig } from '../../component/popups/popups-config';
 import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER } from './action-types';
 
@@ -25,7 +26,13 @@ function changeSelectedGroup(state, payload) {
 		const path = new state.driveType.Path(state.paths[pathName].waypoints, state.pathConfig);
 		group.sourceSetpoints.push(...path.sourceSetpoints);
 		group.waypoints.push(...path.waypoints);
-		group.coords.push(...path.coords);
+
+		const coords = path.coords;
+		if (state.paths[pathName].isInReverse)
+			path.coords.forEach((coord) => {
+				coord.angle += Util.d2r(180);
+			});
+		group.coords.push(...coords);
 	});
 
 	newState.path = group;
