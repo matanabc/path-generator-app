@@ -10,7 +10,7 @@ export function drawOnCanvas(canvas, props) {
 	}
 
 	drawCoords(ctx, props);
-	drawWaypoints(ctx, props);
+	if (props.isPathMode) drawWaypoints(ctx, props);
 	drawRobot(ctx, props);
 }
 
@@ -40,6 +40,7 @@ function drawWaypoints(ctx, props) {
 function drawCoords(ctx, props) {
 	ctx.beginPath();
 	props.path.coords.forEach((setpoint, index) => {
+		if (!props.isPathMode && index > props.rangePosition) return;
 		const x = setpoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
 		const y = setpoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
 		if (index === 0) ctx.moveTo(x, y);
