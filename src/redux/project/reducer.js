@@ -10,7 +10,7 @@ import {
 
 function setSettings(state, payload) {
 	saveJsonProject(payload.settings);
-	return { ...state, ...payload.settings, selectedPath: undefined, listenToMouseClicks: false };
+	return { ...state, ...payload.settings, selectedPath: undefined, path: undefined, listenToMouseClicks: false };
 }
 
 function setProjectPath(state, payload) {
