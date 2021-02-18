@@ -12,8 +12,9 @@ export const initialState = {
 	rangePosition: 0,
 
 	// Path
+	pathsWaypoints: {},
+	path: undefined,
 	driveType: Tank,
-	paths: {},
 
 	//Project
 	robotDrawConfig: new RobotDrawConfig(),
