@@ -15,7 +15,7 @@ function pathMissingInGroup(group, state) {
 	group.error = {
 		info: 'Missing Path In Group!',
 		problem: `Can't find all paths in group!`,
-		solution: `Check that all the paths in the group are exists!`,
+		solution: `Check that all the paths in the group exists!`,
 	};
 }
 
