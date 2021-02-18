@@ -45,7 +45,7 @@ class WaypointsList extends React.Component {
 	render() {
 		return (
 			<div className="WaypointsList">
-				{this.props.path ? (
+				{this.props.path && this.props.path.waypoints.length > 0 ? (
 					this.props.path.waypoints.map((element, index) => {
 						return this.getWaypointInfo(element, index);
 					})

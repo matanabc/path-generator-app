@@ -91,8 +91,17 @@ function addPath(state, payload) {
 		payload.waypoints.forEach((waypoint) => {
 			waypoints.push(Object.assign(new state.driveType.Waypoint(), waypoint));
 		});
-	newState.paths[payload.name] = { waypoints: waypoints, isInReverse: payload.isInReverse };
-	if (!payload.waypoints) saveJsonPath(payload.name, newState.paths[payload.name]);
+
+	newState.paths[payload.name] = {
+		waypoints: waypoints,
+		isInReverse: payload.isInReverse ? payload.isInReverse : false,
+	};
+
+	if (!payload.waypoints) {
+		saveJsonPath(payload.name, newState.paths[payload.name]);
+		newState.path = new state.driveType.Path(waypoints, state.pathConfig);
+		newState.selectedPath = payload.name;
+	}
 	return newState;
 }
 
