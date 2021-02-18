@@ -61,7 +61,7 @@ const mapStateToProps = (state) => {
 		rangePosition: state.rangePosition,
 		robotDrawConfig: state.robotDrawConfig,
 		listenToMouseClicks: state.listenToMouseClicks,
-		isPathInReverse: state.selected ? state.paths[state.selected].isInReverse : false,
+		isPathInReverse: state.path ? state.path.isReverse() : false,
 	};
 };
 
