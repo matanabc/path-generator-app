@@ -50,7 +50,7 @@ class ToolsSelectPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		pathsName: Object.keys(state.pathsWaypoints),
+		pathsName: Object.keys(state.paths),
 		pathName: state.selectedPath,
 	};
 };
