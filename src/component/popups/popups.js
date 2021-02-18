@@ -117,11 +117,11 @@ const mapStateToProps = (state) => {
 	return {
 		pathName: state.selected ? state.selected : '',
 		pathsName: Object.keys(state.paths),
-		path: state.path,
 		popupsStatus: state.popupsStatus,
 		newVersion: state.newVersion,
 		saveCSVTo: state.saveCSVTo,
 		isWeb: state.isWeb,
+		path: state.path,
 	};
 };
 

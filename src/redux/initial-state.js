@@ -11,7 +11,6 @@ export const initialState = {
 	selected: undefined,
 	rangePosition: 0,
 	isPathMode: true,
-	path: undefined,
 
 	// group
 	groups: {
@@ -27,6 +26,7 @@ export const initialState = {
 
 	// Path
 	driveType: Tank,
+	path: undefined,
 	paths: {},
 
 	//Project

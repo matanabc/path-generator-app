@@ -39,7 +39,7 @@ class ToolsDeletePath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		path: state.paths[state.selected],
+		path: state.path,
 	};
 };
 

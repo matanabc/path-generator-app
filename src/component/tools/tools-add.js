@@ -40,8 +40,8 @@ class ToolsAdd extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
 		isPathMode: state.isPathMode,
-		path: state.paths[state.selected],
 		listenToMouseClicks: state.listenToMouseClicks,
 	};
 };

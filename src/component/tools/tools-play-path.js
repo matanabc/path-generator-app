@@ -63,7 +63,7 @@ class ToolsPlayPath extends React.Component {
 				size="lg"
 				className="mr-3 ml-4"
 				onClick={this.onClick}
-				disabled={!this.props.path || this.props.path.isIllegal()}
+				disabled={!this.props.path || this.props.path.waypoints.length <= 1 || this.props.path.isIllegal()}
 			>
 				{this.getPlayButtonIcon()}
 			</Button>
