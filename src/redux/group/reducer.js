@@ -2,14 +2,30 @@ import { Util } from 'path-generator';
 import { PopupsConfig } from '../../component/popups/popups-config';
 import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER } from './action-types';
 
-function pathMissing(group, state) {
+function illegalGroup(group, state) {
+	group.coords = [];
+	group.waypoints = [];
+	group.sourceSetpoints = [];
 	group.isIllegal = () => true;
+	state.popupsStatus.pathIsIllegalPopup = true;
+}
+
+function pathMissingInGroup(group, state) {
+	illegalGroup(group, state);
 	group.error = {
 		info: 'Missing Path In Group!',
 		problem: `Can't find all paths in group!`,
 		solution: `Check that all the paths in the group are exists!`,
 	};
-	state.popupsStatus.pathIsIllegalPopup = true;
+}
+
+function illegalPathInGroup(group, state) {
+	illegalGroup(group, state);
+	group.error = {
+		info: 'Illegal Path In Group!',
+		problem: `There is illegal path!`,
+		solution: `Fix the illegal path!`,
+	};
 }
 
 function changeSelectedGroup(state, payload) {
@@ -17,13 +33,16 @@ function changeSelectedGroup(state, payload) {
 	const newState = { ...state, selected: payload.pathGroupName, popupsStatus: new PopupsConfig() };
 	state.groups[payload.pathGroupName].forEach((pathName) => {
 		if (!state.paths[pathName]) {
-			pathMissing(group, newState);
+			pathMissingInGroup(group, newState);
 			return;
 		}
 
-		// TODO: if path is illegal
-
 		const path = new state.driveType.Path(state.paths[pathName].waypoints, state.pathConfig);
+		if (path.isIllegal()) {
+			illegalPathInGroup(group, newState);
+			return;
+		}
+
 		group.sourceSetpoints.push(...path.sourceSetpoints);
 		group.waypoints.push(...path.waypoints);
 
