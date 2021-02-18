@@ -53,9 +53,10 @@ function removeWaypoint(state, payload) {
 	state.paths[state.selectedPath].waypoints.forEach((element, index) => {
 		if (index !== payload.index) waypoints.push(element);
 	});
-	newState.paths[state.selectedPath] = new state.driveType.Path(waypoints, newState.pathConfig);
-	if (state.paths[state.selectedPath].isReverse()) newState.paths[state.selectedPath].changeDirection();
-	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
+	state.paths[state.selectedPath].waypoints = waypoints;
+	newState.path = new state.driveType.Path(waypoints, state.pathConfig);
+	if (state.paths[state.selectedPath].isInReverse) newState.path.changeDirection();
+	// TODO: save path to json
 	return newState;
 }
 
