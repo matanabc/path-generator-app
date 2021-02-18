@@ -59,8 +59,8 @@ class WaypointsList extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
 		driveType: state.driveType,
-		path: state.paths[state.selectedPath],
 		addWaypointInIndex: state.addWaypointInIndex,
 	};
 };

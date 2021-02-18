@@ -39,7 +39,7 @@ class ToolsRenamePath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		path: state.paths[state.selectedPath],
+		path: state.path,
 	};
 };
 

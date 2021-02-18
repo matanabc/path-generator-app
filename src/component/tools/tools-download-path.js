@@ -44,10 +44,10 @@ class ToolsDownloadPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
 		isWeb: state.isWeb,
 		saveCSVTo: state.saveCSVTo,
 		pathName: state.selectedPath,
-		path: state.paths[state.selectedPath],
 	};
 };
 
