@@ -15,7 +15,14 @@ export const initialState = {
 
 	// group
 	groups: {
-		Test10: ['RIGHT_TO_DJ', 'RIGHT_DJ_TO_SHOT', 'RIGHT_SHOT_TO_BALLS', 'RIGHT_BALLS1', 'RIGHT_BALLS2'],
+		Test10: [
+			'START_TO_ROCKET_A',
+			'START_TO_ROCKET_B',
+			'ROCKET_TO_PLAYER_A',
+			'ROCKET_TO_PLAYER_B',
+			'PLAYER_TO_ROCKET_A',
+			'PLAYER_TO_ROCKET_B',
+		],
 	},
 
 	// Path
