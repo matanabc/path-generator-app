@@ -126,7 +126,7 @@ export default class FileHandler {
 	async saveJsonPath(pathName, path) {
 		try {
 			if (!this.fs.existsSync(`${this.projectPath}/paths`)) this.fs.mkdirSync(`${this.projectPath}/paths`);
-			const data = JSON.stringify({ isInReverse: path.isReverse(), waypoints: path.waypoints });
+			const data = JSON.stringify({ ...path });
 			this.fs.writeFileSync(`${this.projectPath}/paths/${pathName}.json`, data);
 		} catch (error) {}
 	}

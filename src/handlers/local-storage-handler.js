@@ -82,7 +82,7 @@ export default class LocalStorageHandler {
 	}
 
 	async saveJsonPath(pathName, path) {
-		const data = { isInReverse: path.isReverse(), waypoints: path.waypoints };
+		const data = { ...path };
 		localStorage.setItem(`path/${pathName}`, JSON.stringify(data));
 	}
 
