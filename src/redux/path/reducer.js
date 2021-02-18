@@ -68,7 +68,7 @@ function changeSelectedPath(state, payload) {
 }
 
 function removePath(state, payload) {
-	const newState = { ...state, listenToMouseClicks: false, selectedPath: undefined };
+	const newState = { ...state, listenToMouseClicks: false, selectedPath: undefined, path: undefined };
 	delete newState.paths[state.selectedPath];
 	deletePath(state.selectedPath, state.saveCSVTo);
 	return newState;
