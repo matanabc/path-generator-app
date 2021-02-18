@@ -45,7 +45,7 @@ class ToolsPathDirection extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		path: state.path,
-		isPathReverse: state.selectedPath ? state.paths[state.selectedPath].isReverse() : false,
+		isPathReverse: state.selectedPath ? state.paths[state.selectedPath].isInReverse : false,
 	};
 };
 
