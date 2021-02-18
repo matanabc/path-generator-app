@@ -125,8 +125,9 @@ function setPathConfig(state, payload) {
 
 function changeDirection(state, payload) {
 	const newState = { ...state };
-	newState.paths[state.selectedPath].changeDirection();
-	saveJsonPath(state.selectedPath, newState.paths[state.selectedPath]);
+	newState.path.changeDirection();
+	state.paths[state.selectedPath].isInReverse = !state.paths[state.selectedPath].isInReverse;
+	// TODO: save path to json
 	return newState;
 }
 
