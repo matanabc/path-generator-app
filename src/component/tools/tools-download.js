@@ -1,9 +1,9 @@
 import { changePopupsStatus } from '../../redux/view/actions';
-import { saveCSVPath } from '../../handlers/project-handler';
 import { FiDownload } from 'react-icons/fi';
 import { MdError } from 'react-icons/md';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { downloadPath } from './util';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
@@ -21,11 +21,7 @@ class ToolsDownload extends React.Component {
 	onClick() {
 		if (document.activeElement) document.activeElement.blur();
 		if (!this.props.path || (this.props.saveCSVTo === '' && !this.props.isWeb)) return;
-		if (this.props.path.isIllegal()) this.props.showIllegalPathPopup();
-		const pathsToDownload = this.props.isPathMode ? [this.props.pathName] : Object.keys(this.props.paths);
-		pathsToDownload.forEach((pathName) => {
-			saveCSVPath(this.props.paths[pathName], pathName, this.props.saveCSVTo);
-		});
+		downloadPath(this.props);
 	}
 
 	render() {
@@ -52,13 +48,17 @@ const mapStateToProps = (state) => {
 		isWeb: state.isWeb,
 		pathName: state.selected,
 		saveCSVTo: state.saveCSVTo,
+		driveType: state.driveType,
+		pathConfig: state.pathConfig,
 		isPathMode: state.isPathMode,
+		group: state.groups[state.selected],
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		showIllegalPathPopup: () => dispatch(changePopupsStatus('pathIsIllegalPopup')),
+		showCSVSavePopup: () => dispatch(changePopupsStatus('savePathToCSVPopup')),
 	};
 };
 

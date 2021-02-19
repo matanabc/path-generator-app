@@ -1,9 +1,8 @@
+import { setRobotDrawConfig, setProjectPath, setFieldConfig, setCSVPath, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
-import { changePopupsStatus } from '../redux/view/actions';
 import { Swerve, Tank } from 'path-generator';
-import { setRobotDrawConfig, setProjectPath, setFieldConfig, setCSVPath, setImage } from '../redux/project/actions';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -144,7 +143,6 @@ export default class FileHandler {
 				this.fs.writeFileSync(`${csvFolder}/${pathName}/${fileName}`, getSetpointsCSV(path[key]));
 			});
 			this.fs.writeFileSync(`${csvFolder}/${pathName}/${pathName}.coords.csv`, getCoordsCSV(path));
-			this.dispatch(changePopupsStatus('savePathToCSVPopup'));
 		} catch (error) {}
 	}
 
