@@ -6,7 +6,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsRenamePath extends React.Component {
+class ToolsRename extends React.Component {
 	constructor(props) {
 		super(props);
 		this.ref = React.createRef();
@@ -18,7 +18,7 @@ class ToolsRenamePath extends React.Component {
 	}
 
 	onClick() {
-		if (this.props.path) this.props.showRenamePathPopup();
+		if (this.props.path) this.props.showRenamePopup();
 	}
 
 	render() {
@@ -27,7 +27,7 @@ class ToolsRenamePath extends React.Component {
 				size="lg"
 				ref={this.ref}
 				className="mr-3"
-				title="Rename path"
+				title="Rename"
 				onClick={this.onClick}
 				disabled={!this.props.path}
 			>
@@ -45,8 +45,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		showRenamePathPopup: () => dispatch(changePopupsStatus('renamePathPopup')),
+		showRenamePopup: () => dispatch(changePopupsStatus('renamePopup')),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsRenamePath);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsRename);

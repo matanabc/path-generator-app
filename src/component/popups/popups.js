@@ -16,7 +16,7 @@ class Popups extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.popupsStatus.renamePathPopup) this.renamePathRef.current.defaultValue = this.props.pathName;
+		if (this.props.popupsStatus.renamePopup) this.renamePathRef.current.defaultValue = this.props.pathName;
 	}
 
 	deleteAction() {
@@ -52,7 +52,7 @@ class Popups extends React.Component {
 				/>
 
 				<Popup
-					show={this.props.popupsStatus.renamePathPopup}
+					show={this.props.popupsStatus.renamePopup}
 					body={<FormControl ref={this.renamePathRef} />}
 					close={this.props.closePopups}
 					refToUse={this.renamePathRef}
