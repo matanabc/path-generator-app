@@ -10,9 +10,9 @@ class Popups extends React.Component {
 		super(props);
 		this.newPathRef = React.createRef();
 		this.renamePathRef = React.createRef();
+		this.createNew = this.createNew.bind(this);
 		this.renamePath = this.renamePath.bind(this);
 		this.deleteAction = this.deleteAction.bind(this);
-		this.createNewPath = this.createNewPath.bind(this);
 	}
 
 	componentDidUpdate() {
@@ -31,7 +31,7 @@ class Popups extends React.Component {
 		}
 	}
 
-	createNewPath() {
+	createNew() {
 		if (this.newPathRef.current.value && !this.props.pathsName.includes(this.newPathRef.current.value)) {
 			this.props.createNewAction(this.props.isPathMode, this.newPathRef.current.value);
 			this.props.resetRangePosition();
@@ -62,9 +62,9 @@ class Popups extends React.Component {
 
 				<Popup
 					body={<FormControl ref={this.newPathRef} placeholder={`${type} name`} />}
-					show={this.props.popupsStatus.createNewPathPopup}
+					show={this.props.popupsStatus.createNewPopup}
 					close={this.props.closePopups}
-					confirm={this.createNewPath}
+					confirm={this.createNew}
 					refToUse={this.newPathRef}
 					title={`Create a new ${type}`}
 				/>

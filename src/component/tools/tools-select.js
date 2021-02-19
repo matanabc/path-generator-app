@@ -15,7 +15,7 @@ class ToolsSelect extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bindGlobal(['command+n', 'alt+n'], this.props.showCreateNewPathPopup);
+		mousetrap.bindGlobal(['command+n', 'alt+n'], this.props.showCreateNewPopup);
 	}
 
 	getItems() {
@@ -45,7 +45,7 @@ class ToolsSelect extends React.Component {
 			? this.props.selected
 			: this.props.isPathMode
 			? 'Select Path'
-			: 'Select Paths Group';
+			: 'Select Group';
 
 		return (
 			<Dropdown>
@@ -53,8 +53,8 @@ class ToolsSelect extends React.Component {
 				<Dropdown.Menu>
 					{this.getItems()}
 					<Dropdown.Divider />
-					<Dropdown.Item as="button" onClick={this.props.showCreateNewPathPopup}>
-						{this.props.isPathMode ? 'New Path' : 'New Paths Group'}
+					<Dropdown.Item as="button" onClick={this.props.showCreateNewPopup}>
+						{this.props.isPathMode ? 'New Path' : 'New Group'}
 					</Dropdown.Item>
 				</Dropdown.Menu>
 			</Dropdown>
@@ -74,7 +74,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeSelectedGroup: (groupName) => dispatch(changeSelectedGroup(groupName)),
-		showCreateNewPathPopup: () => dispatch(changePopupsStatus('createNewPathPopup')),
+		showCreateNewPopup: () => dispatch(changePopupsStatus('createNewPopup')),
 		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 	};
 };
