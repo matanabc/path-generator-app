@@ -1,3 +1,4 @@
+import { getGroup, reorder } from './util';
 import {
 	CHANGE_SELECTED_PATHS_GROUP,
 	CHANGE_ORDER,
@@ -6,11 +7,9 @@ import {
 	RENAME_GROUP,
 	ADD_GROUP,
 } from './action-types';
-import { PopupsConfig } from '../../component/popups/popups-config';
-import { getGroup, reorder } from './util';
 
 function changeSelectedGroup(state, payload) {
-	const newState = { ...state, selected: payload.groupName, popupsStatus: new PopupsConfig() };
+	const newState = { ...state, selected: payload.groupName };
 	newState.path = getGroup(newState);
 	return newState;
 }
