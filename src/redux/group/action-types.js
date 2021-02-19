@@ -3,3 +3,4 @@ export const CHANGE_ORDER = 'CHANGE_ORDER';
 export const RENAME_GROUP = 'RENAME_GROUP';
 export const DELETE_GROUP = 'DELETE_GROUP';
 export const REMOVE_PATH = 'REMOVE_PATH';
+export const ADD_GROUP = 'ADD_GROUP';

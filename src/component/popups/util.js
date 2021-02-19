@@ -1,5 +1,5 @@
-import { deleteGroup, renameGroup } from '../../redux/group/actions';
-import { deletePath, renamePath } from '../../redux/path/actions';
+import { deleteGroup, renameGroup, addGroup } from '../../redux/group/actions';
+import { deletePath, renamePath, addPath } from '../../redux/path/actions';
 
 export function deleteAction(isPathMode) {
 	if (isPathMode) return deletePath();
@@ -9,4 +9,9 @@ export function deleteAction(isPathMode) {
 export function renameAction(isPathMode, name) {
 	if (isPathMode) return renamePath(name);
 	return renameGroup(name);
+}
+
+export function createNewAction(isPathMode, name) {
+	if (isPathMode) return addPath(name);
+	return addGroup(name);
 }

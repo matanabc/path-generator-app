@@ -1,4 +1,11 @@
-import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER, REMOVE_PATH, DELETE_GROUP, RENAME_GROUP } from './action-types';
+import {
+	CHANGE_SELECTED_PATHS_GROUP,
+	CHANGE_ORDER,
+	REMOVE_PATH,
+	DELETE_GROUP,
+	RENAME_GROUP,
+	ADD_GROUP,
+} from './action-types';
 
 export function changeSelectedGroup(groupName) {
 	return {
@@ -40,6 +47,16 @@ export function renameGroup(name) {
 		type: RENAME_GROUP,
 		payload: {
 			name: name,
+		},
+	};
+}
+
+export function addGroup(name, paths) {
+	return {
+		type: ADD_GROUP,
+		payload: {
+			name: name,
+			paths: paths,
 		},
 	};
 }

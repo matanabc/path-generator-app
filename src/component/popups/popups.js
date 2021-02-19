@@ -1,6 +1,5 @@
 import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
-import { deleteAction, renameAction } from './util';
-import { addPath } from '../../redux/path/actions';
+import { deleteAction, renameAction, createNewAction } from './util';
 import { FormControl } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import Popup from './popup';
@@ -34,7 +33,7 @@ class Popups extends React.Component {
 
 	createNewPath() {
 		if (this.newPathRef.current.value && !this.props.pathsName.includes(this.newPathRef.current.value)) {
-			this.props.addPath(this.newPathRef.current.value);
+			this.props.createNewAction(this.props.isPathMode, this.newPathRef.current.value);
 			this.props.resetRangePosition();
 			this.props.closePopups();
 		}
@@ -62,12 +61,12 @@ class Popups extends React.Component {
 				/>
 
 				<Popup
-					body={<FormControl ref={this.newPathRef} placeholder="Path name" />}
+					body={<FormControl ref={this.newPathRef} placeholder={`${type} name`} />}
 					show={this.props.popupsStatus.createNewPathPopup}
 					close={this.props.closePopups}
 					confirm={this.createNewPath}
 					refToUse={this.newPathRef}
-					title="Create a new path"
+					title={`Create a new ${type}`}
 				/>
 
 				<Popup
@@ -130,11 +129,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		createNewAction: (isPathMode, name) => dispatch(createNewAction(isPathMode, name)),
 		renameAction: (isPathMode, name) => dispatch(renameAction(isPathMode, name)),
 		deleteAction: (isPathMode) => dispatch(deleteAction(isPathMode)),
 		resetRangePosition: () => dispatch(changeRangePosition(0)),
 		closePopups: () => dispatch(changePopupsStatus()),
-		addPath: (name) => dispatch(addPath(name)),
 	};
 };
 
