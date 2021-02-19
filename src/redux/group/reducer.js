@@ -11,6 +11,7 @@ function changeSelectedGroup(state, payload) {
 function changeOrder(state, payload) {
 	const newState = { ...state };
 	newState.groups[state.selected] = reorder(state.groups[state.selected], payload.source, payload.destination);
+	newState.path = getGroup(newState);
 	return newState;
 }
 
