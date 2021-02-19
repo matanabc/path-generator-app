@@ -27,7 +27,7 @@ class ToolsDelete extends React.Component {
 				size="lg"
 				variant="danger"
 				className="mr-3"
-				title="Delete path"
+				title="Delete"
 				onClick={this.onClick}
 				disabled={!this.props.path}
 			>
