@@ -1,4 +1,4 @@
-import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER, REMOVE_PATH, DELETE_GROUP } from './action-types';
+import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER, REMOVE_PATH, DELETE_GROUP, RENAME_GROUP } from './action-types';
 
 export function changeSelectedGroup(groupName) {
 	return {
@@ -32,5 +32,14 @@ export function deleteGroup() {
 	return {
 		type: DELETE_GROUP,
 		payload: {},
+	};
+}
+
+export function renameGroup(name) {
+	return {
+		type: RENAME_GROUP,
+		payload: {
+			name: name,
+		},
 	};
 }

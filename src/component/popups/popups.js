@@ -1,7 +1,7 @@
 import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
-import { renamePath, addPath } from '../../redux/path/actions';
+import { deleteAction, renameAction } from './util';
+import { addPath } from '../../redux/path/actions';
 import { FormControl } from 'react-bootstrap';
-import { deleteAction } from './util';
 import { connect } from 'react-redux';
 import Popup from './popup';
 import React from 'react';
@@ -27,7 +27,7 @@ class Popups extends React.Component {
 
 	renamePath() {
 		if (this.renamePathRef.current.value) {
-			this.props.renamePath(this.renamePathRef.current.value);
+			this.props.renameAction(this.props.isPathMode, this.renamePathRef.current.value);
 			this.props.closePopups();
 		}
 	}
@@ -58,7 +58,7 @@ class Popups extends React.Component {
 					close={this.props.closePopups}
 					refToUse={this.renamePathRef}
 					confirm={this.renamePath}
-					title="Rename path"
+					title={`Rename ${type}`}
 				/>
 
 				<Popup
@@ -130,10 +130,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		renameAction: (isPathMode, name) => dispatch(renameAction(isPathMode, name)),
 		deleteAction: (isPathMode) => dispatch(deleteAction(isPathMode)),
 		resetRangePosition: () => dispatch(changeRangePosition(0)),
 		closePopups: () => dispatch(changePopupsStatus()),
-		renamePath: (name) => dispatch(renamePath(name)),
 		addPath: (name) => dispatch(addPath(name)),
 	};
 };
