@@ -46,16 +46,20 @@ class PathsList extends React.Component {
 	render() {
 		return (
 			<div className="AppListView">
-				<DragDropContext onDragEnd={this.onDragEnd}>
-					<Droppable droppableId="droppable">
-						{(provided, snapshot) => (
-							<div {...provided.droppableProps} ref={provided.innerRef}>
-								{this.getListOfPathsItem()}
-								{provided.placeholder}
-							</div>
-						)}
-					</Droppable>
-				</DragDropContext>
+				{this.props.groupPaths.length > 0 ? (
+					<DragDropContext onDragEnd={this.onDragEnd}>
+						<Droppable droppableId="droppable">
+							{(provided, snapshot) => (
+								<div {...provided.droppableProps} ref={provided.innerRef}>
+									{this.getListOfPathsItem()}
+									{provided.placeholder}
+								</div>
+							)}
+						</Droppable>
+					</DragDropContext>
+				) : (
+					<span>There is no paths...</span>
+				)}
 			</div>
 		);
 	}
