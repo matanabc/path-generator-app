@@ -1,10 +1,10 @@
-import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER } from './action-types';
+import { CHANGE_SELECTED_PATHS_GROUP, CHANGE_ORDER, REMOVE_PATH } from './action-types';
 
-export function changeSelectedGroup(pathGroupName) {
+export function changeSelectedGroup(groupName) {
 	return {
 		type: CHANGE_SELECTED_PATHS_GROUP,
 		payload: {
-			pathGroupName: pathGroupName,
+			groupName: groupName,
 		},
 	};
 }
@@ -15,6 +15,15 @@ export function changeOrder(source, destination) {
 		payload: {
 			source: source,
 			destination: destination,
+		},
+	};
+}
+
+export function removePath(pathName) {
+	return {
+		type: REMOVE_PATH,
+		payload: {
+			pathName: pathName,
 		},
 	};
 }
