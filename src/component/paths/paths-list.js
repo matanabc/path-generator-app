@@ -1,4 +1,5 @@
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { changeSelectedPath } from '../../redux/path/actions';
 import { changeOrder } from '../../redux/group/actions';
 import { MdDelete, MdEdit } from 'react-icons/md';
 import { Button, Alert } from 'react-bootstrap';
@@ -33,7 +34,7 @@ class PathsList extends React.Component {
 							<Button className="mr-2" variant="danger">
 								<MdDelete />
 							</Button>
-							<Button variant={this.props.color}>
+							<Button variant={this.props.color} onClick={() => this.props.changeSelectedPath(pathName)}>
 								<MdEdit />
 							</Button>
 						</div>
@@ -75,6 +76,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		changeOrder: (source, destination) => dispatch(changeOrder(source, destination)),
+		changeSelectedPath: (pathName) => dispatch(changeSelectedPath(pathName)),
 	};
 };
 
