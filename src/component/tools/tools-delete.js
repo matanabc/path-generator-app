@@ -6,7 +6,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsDeletePath extends React.Component {
+class ToolsDelete extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
@@ -18,7 +18,7 @@ class ToolsDeletePath extends React.Component {
 
 	onClick() {
 		if (document.activeElement) document.activeElement.blur();
-		if (this.props.path) this.props.showDeletePathPopup();
+		if (this.props.path) this.props.showDeletePopup();
 	}
 
 	render() {
@@ -45,8 +45,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		showDeletePathPopup: () => dispatch(changePopupsStatus('deletePathPopup')),
+		showDeletePopup: () => dispatch(changePopupsStatus('deletePopup')),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsDeletePath);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsDelete);

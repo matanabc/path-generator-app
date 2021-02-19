@@ -40,7 +40,6 @@ function addPathToGroup(state, group, path, pathName) {
 
 export function getGroup(state) {
 	const group = { coords: [], waypoints: [], sourceSetpoints: [], isIllegal: () => false, isReverse: () => false };
-	console.log(state.selected);
 	state.groups[state.selected].forEach((pathName) => {
 		if (!state.paths[pathName]) {
 			pathMissingInGroup(group, state);

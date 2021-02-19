@@ -1,11 +1,11 @@
 import ToolsPathDirection from './tools-path-direction';
 import ToolsChangeMode from './tools-change-mode';
-import ToolsDeletePath from './tools-delete-path';
 import ToolsRenamePath from './tools-rename-path';
 import { Container, Row } from 'react-bootstrap';
 import ToolsPlayPath from './tools-play-path';
 import ToolsDownload from './tools-download';
 import ToolsSettings from './tools-settings';
+import ToolsDelete from './tools-delete';
 import ToolsSelect from './tools-select';
 import { connect } from 'react-redux';
 import ToolsAdd from './tools-add';
@@ -22,7 +22,7 @@ class Tools extends React.Component {
 					<ToolsChangeMode />
 					<ToolsSelect />
 					<ToolsPlayPath />
-					<ToolsDeletePath />
+					<ToolsDelete />
 					<ToolsRenamePath />
 					{this.props.isPathMode ? <ToolsPathDirection /> : <span />}
 				</Row>

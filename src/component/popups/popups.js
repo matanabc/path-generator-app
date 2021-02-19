@@ -1,6 +1,7 @@
-import { deletePath, renamePath, addPath } from '../../redux/path/actions';
 import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
+import { renamePath, addPath } from '../../redux/path/actions';
 import { FormControl } from 'react-bootstrap';
+import { deleteAction } from './util';
 import { connect } from 'react-redux';
 import Popup from './popup';
 import React from 'react';
@@ -11,7 +12,7 @@ class Popups extends React.Component {
 		this.newPathRef = React.createRef();
 		this.renamePathRef = React.createRef();
 		this.renamePath = this.renamePath.bind(this);
-		this.deletePath = this.deletePath.bind(this);
+		this.deleteAction = this.deleteAction.bind(this);
 		this.createNewPath = this.createNewPath.bind(this);
 	}
 
@@ -19,9 +20,9 @@ class Popups extends React.Component {
 		if (this.props.popupsStatus.renamePathPopup) this.renamePathRef.current.defaultValue = this.props.pathName;
 	}
 
-	deletePath() {
+	deleteAction() {
 		this.props.closePopups();
-		this.props.deletePath();
+		this.props.deleteAction(this.props.isPathMode);
 	}
 
 	renamePath() {
@@ -40,14 +41,15 @@ class Popups extends React.Component {
 	}
 
 	render() {
+		const type = this.props.isPathMode ? 'path' : 'group';
 		return (
 			<div>
 				<Popup
-					show={this.props.popupsStatus.deletePathPopup}
-					body="Are you sure you want to delete path?"
+					show={this.props.popupsStatus.deletePopup}
+					body={`Are you sure you want to delete ${type}?`}
 					close={this.props.closePopups}
-					confirm={this.deletePath}
-					title="Delete path"
+					confirm={this.deleteAction}
+					title={`Delete ${type}`}
 				/>
 
 				<Popup
@@ -119,6 +121,7 @@ const mapStateToProps = (state) => {
 		pathsName: Object.keys(state.paths),
 		popupsStatus: state.popupsStatus,
 		newVersion: state.newVersion,
+		isPathMode: state.isPathMode,
 		saveCSVTo: state.saveCSVTo,
 		isWeb: state.isWeb,
 		path: state.path,
@@ -127,11 +130,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		deleteAction: (isPathMode) => dispatch(deleteAction(isPathMode)),
 		resetRangePosition: () => dispatch(changeRangePosition(0)),
 		closePopups: () => dispatch(changePopupsStatus()),
 		renamePath: (name) => dispatch(renamePath(name)),
 		addPath: (name) => dispatch(addPath(name)),
-		deletePath: () => dispatch(deletePath()),
 	};
 };
 
