@@ -7,7 +7,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsPlayPath extends React.Component {
+class ToolsPlay extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
@@ -88,4 +88,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsPlayPath);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsPlay);
