@@ -18,7 +18,7 @@ class ToolsAdd extends React.Component {
 
 	onClick() {
 		if (document.activeElement) document.activeElement.blur();
-		if (this.props.path) this.props.changeListenToMouseStatus();
+		if (this.props.path && this.props.isPathMode) this.props.changeListenToMouseStatus();
 	}
 
 	render() {
