@@ -1,12 +1,12 @@
 import { changeListenToMouseStatus } from '../../redux/view/actions';
-import { GiClick, BiAddToQueue } from 'react-icons/all';
+import { GiClick } from 'react-icons/all';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class ToolsAdd extends React.Component {
+class ToolsAddWaypoint extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
@@ -22,17 +22,16 @@ class ToolsAdd extends React.Component {
 	}
 
 	render() {
-		const title = this.props.isPathMode ? 'Add waypoint with mouse' : 'Add path to group';
 		return (
 			<Button
 				size="lg"
-				title={title}
+				title="Add waypoint with mouse"
 				className="mr-3"
 				onClick={this.onClick}
 				disabled={!this.props.path}
 				variant={this.props.listenToMouseClicks ? 'success' : 'primary'}
 			>
-				{this.props.isPathMode ? <GiClick /> : <BiAddToQueue />}
+				<GiClick />
 			</Button>
 		);
 	}
@@ -52,4 +51,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ToolsAdd);
+export default connect(mapStateToProps, mapDispatchToProps)(ToolsAddWaypoint);

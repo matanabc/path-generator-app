@@ -1,4 +1,5 @@
 import ToolsPathDirection from './tools-path-direction';
+import ToolsAddWaypoint from './tools-add-waypoint';
 import ToolsChangeMode from './tools-change-mode';
 import { Container, Row } from 'react-bootstrap';
 import ToolsDownload from './tools-download';
@@ -8,7 +9,6 @@ import ToolsDelete from './tools-delete';
 import ToolsSelect from './tools-select';
 import { connect } from 'react-redux';
 import ToolsPlay from './tools-play';
-import ToolsAdd from './tools-add';
 import React from 'react';
 
 class Tools extends React.Component {
@@ -16,7 +16,7 @@ class Tools extends React.Component {
 		return (
 			<Container>
 				<Row>
-					<ToolsAdd />
+					<ToolsAddWaypoint />
 					<ToolsDownload />
 					<ToolsSettings />
 					<ToolsChangeMode />
