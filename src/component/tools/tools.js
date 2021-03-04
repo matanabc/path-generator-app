@@ -4,6 +4,7 @@ import ToolsChangeMode from './tools-change-mode';
 import { Container, Row } from 'react-bootstrap';
 import ToolsDownload from './tools-download';
 import ToolsSettings from './tools-settings';
+import ToolsAddPath from './tools-add-path';
 import ToolsRename from './tools-rename';
 import ToolsDelete from './tools-delete';
 import ToolsSelect from './tools-select';
@@ -16,7 +17,7 @@ class Tools extends React.Component {
 		return (
 			<Container>
 				<Row>
-					<ToolsAddWaypoint />
+					{this.props.isPathMode ? <ToolsAddWaypoint /> : <span />}
 					<ToolsDownload />
 					<ToolsSettings />
 					<ToolsChangeMode />
@@ -24,7 +25,7 @@ class Tools extends React.Component {
 					<ToolsPlay />
 					<ToolsDelete />
 					<ToolsRename />
-					{this.props.isPathMode ? <ToolsPathDirection /> : <span />}
+					{this.props.isPathMode ? <ToolsPathDirection /> : <ToolsAddPath />}
 				</Row>
 			</Container>
 		);
