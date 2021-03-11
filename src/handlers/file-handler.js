@@ -130,6 +130,14 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
+	async saveJsonGroup(groupName, paths) {
+		try {
+			if (!this.fs.existsSync(`${this.projectPath}/groups`)) this.fs.mkdirSync(`${this.projectPath}/groups`);
+			const data = JSON.stringify(paths);
+			this.fs.writeFileSync(`${this.projectPath}/groups/${groupName}.json`, data);
+		} catch (error) {}
+	}
+
 	async saveCSVPath(path, pathName, csvFolder) {
 		try {
 			if (!this.fs.existsSync(csvFolder)) this.fs.mkdirSync(csvFolder);

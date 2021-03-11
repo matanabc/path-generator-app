@@ -52,3 +52,9 @@ export async function saveCSVPath(path, pathName, folder) {
 		handler.saveCSVPath(path, pathName, folder);
 	} catch (error) {}
 }
+
+export async function saveJsonGroup(groupName, paths) {
+	try {
+		handler.saveJsonGroup(groupName, paths);
+	} catch (error) {}
+}

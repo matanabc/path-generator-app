@@ -1,3 +1,4 @@
+import { saveJsonGroup } from '../../handlers/project-handler';
 import { getGroup, reorder } from './util';
 import {
 	CHANGE_SELECTED_PATHS_GROUP,
@@ -19,6 +20,7 @@ function changeOrder(state, payload) {
 	const newState = { ...state };
 	newState.groups[state.selected] = reorder(state.groups[state.selected], payload.source, payload.destination);
 	newState.path = getGroup(newState);
+	saveJsonGroup(state.selected, newState.groups[state.selected]);
 	return newState;
 }
 
@@ -26,6 +28,7 @@ function removePath(state, payload) {
 	const newState = { ...state };
 	newState.groups[state.selected] = state.groups[state.selected].filter((pathName) => pathName !== payload.pathName);
 	newState.path = getGroup(newState);
+	saveJsonGroup(state.selected, newState.groups[state.selected]);
 	return newState;
 }
 
@@ -51,6 +54,7 @@ function addGroup(state, payload) {
 	if (!payload.paths) {
 		newState.path = undefined;
 		newState.selected = payload.name;
+		saveJsonGroup(state.selected, newState.groups[state.selected]);
 	}
 	return newState;
 }
@@ -59,6 +63,7 @@ function addPath(state, payload) {
 	const newState = { ...state };
 	newState.groups[state.selected].push(payload.name);
 	newState.path = getGroup(newState);
+	saveJsonGroup(state.selected, newState.groups[state.selected]);
 	return newState;
 }
 
