@@ -1,4 +1,4 @@
-import { saveJsonGroup } from '../../handlers/project-handler';
+import { saveJsonGroup, deleteGroup } from '../../handlers/project-handler';
 import { getGroup, reorder } from './util';
 import {
 	CHANGE_SELECTED_PATHS_GROUP,
@@ -32,9 +32,10 @@ function removePath(state, payload) {
 	return newState;
 }
 
-function deleteGroup(state, payload) {
+function removeGroup(state, payload) {
 	const newState = { ...state, selected: undefined, path: undefined };
 	delete newState.groups[state.selected];
+	deleteGroup(state.selected);
 	return newState;
 }
 
@@ -54,7 +55,7 @@ function addGroup(state, payload) {
 	if (!payload.paths) {
 		newState.path = undefined;
 		newState.selected = payload.name;
-		saveJsonGroup(state.selected, newState.groups[state.selected]);
+		saveJsonGroup(newState.selected, newState.groups[state.selected]);
 	}
 	return newState;
 }
@@ -71,7 +72,7 @@ export default function group(state, action) {
 	if (action.type === CHANGE_SELECTED_PATHS_GROUP) return changeSelectedGroup(state, action.payload);
 	if (action.type === CHANGE_ORDER) return changeOrder(state, action.payload);
 	if (action.type === RENAME_GROUP) return renameGroup(state, action.payload);
-	if (action.type === DELETE_GROUP) return deleteGroup(state, action.payload);
+	if (action.type === DELETE_GROUP) return removeGroup(state, action.payload);
 	if (action.type === REMOVE_PATH) return removePath(state, action.payload);
 	if (action.type === ADD_GROUP) return addGroup(state, action.payload);
 	if (action.type === ADD_PATH) return addPath(state, action.payload);

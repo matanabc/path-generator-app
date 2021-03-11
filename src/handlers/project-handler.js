@@ -29,6 +29,12 @@ export async function deletePath(pathName, csvFolder) {
 	} catch (error) {}
 }
 
+export async function deleteGroup(pathName) {
+	try {
+		handler.deleteGroup(pathName);
+	} catch (error) {}
+}
+
 export async function renameJsonPath(oldName, newName) {
 	try {
 		handler.renameJsonPath(oldName, newName);

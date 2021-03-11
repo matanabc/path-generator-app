@@ -161,6 +161,12 @@ export default class FileHandler {
 		} catch (error) {}
 	}
 
+	async deleteGroup(groupName) {
+		try {
+			this.fs.unlinkSync(`${this.projectPath}/groups/${groupName}.json`);
+		} catch (error) {}
+	}
+
 	async renameJsonPath(oldName, newName) {
 		try {
 			this.fs.renameSync(
