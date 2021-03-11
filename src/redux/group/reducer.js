@@ -6,6 +6,7 @@ import {
 	DELETE_GROUP,
 	RENAME_GROUP,
 	ADD_GROUP,
+	ADD_PATH,
 } from './action-types';
 
 function changeSelectedGroup(state, payload) {
@@ -54,6 +55,13 @@ function addGroup(state, payload) {
 	return newState;
 }
 
+function addPath(state, payload) {
+	const newState = { ...state };
+	newState.groups[state.selected].push(payload.name);
+	newState.path = getGroup(newState);
+	return newState;
+}
+
 export default function group(state, action) {
 	if (action.type === CHANGE_SELECTED_PATHS_GROUP) return changeSelectedGroup(state, action.payload);
 	if (action.type === CHANGE_ORDER) return changeOrder(state, action.payload);
@@ -61,5 +69,6 @@ export default function group(state, action) {
 	if (action.type === DELETE_GROUP) return deleteGroup(state, action.payload);
 	if (action.type === REMOVE_PATH) return removePath(state, action.payload);
 	if (action.type === ADD_GROUP) return addGroup(state, action.payload);
+	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	return state;
 }

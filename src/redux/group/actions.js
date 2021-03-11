@@ -5,6 +5,7 @@ import {
 	DELETE_GROUP,
 	RENAME_GROUP,
 	ADD_GROUP,
+	ADD_PATH,
 } from './action-types';
 
 export function changeSelectedGroup(groupName) {
@@ -57,6 +58,15 @@ export function addGroup(name, paths) {
 		payload: {
 			name: name,
 			paths: paths,
+		},
+	};
+}
+
+export function addPathToGroup(name) {
+	return {
+		type: ADD_PATH,
+		payload: {
+			name: name,
 		},
 	};
 }

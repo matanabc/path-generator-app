@@ -1,3 +1,4 @@
+import { addPathToGroup } from '../../redux/group/actions';
 import { BsFileEarmarkPlus } from 'react-icons/all';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
@@ -13,7 +14,7 @@ class ToolsAddPath extends React.Component {
 				<Dropdown.Menu>
 					{this.props.pathsName.map((element, index) => {
 						return (
-							<Dropdown.Item as="button" key={index}>
+							<Dropdown.Item as="button" key={index} onClick={() => this.props.addPathToGroup(element)}>
 								{element}
 							</Dropdown.Item>
 						);
@@ -31,7 +32,9 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {};
+	return {
+		addPathToGroup: (name) => dispatch(addPathToGroup(name)),
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ToolsAddPath);
