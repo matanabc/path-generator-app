@@ -13,16 +13,7 @@ export const initialState = {
 	isPathMode: true,
 
 	// group
-	groups: {
-		Test10: [
-			'START_TO_ROCKET_A',
-			'START_TO_ROCKET_B',
-			'ROCKET_TO_PLAYER_A',
-			'ROCKET_TO_PLAYER_B',
-			'PLAYER_TO_ROCKET_A',
-			'PLAYER_TO_ROCKET_B',
-		],
-	},
+	groups: {},
 
 	// Path
 	driveType: Tank,

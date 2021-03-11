@@ -2,6 +2,7 @@ import { setRobotDrawConfig, setProjectPath, setFieldConfig, setCSVPath, setImag
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
+import { addGroup } from '../redux/group/actions';
 import { Swerve, Tank } from 'path-generator';
 
 export default class FileHandler {
@@ -21,6 +22,7 @@ export default class FileHandler {
 		this.loadFieldConfig();
 		this.loadFieldImage();
 		this.loadPathConfig();
+		this.loadGroups();
 		this.loadPaths();
 	}
 
@@ -92,6 +94,23 @@ export default class FileHandler {
 		} catch (error) {
 			this.dispatch(setPathConfig(new Tank.PathConfig(), Tank));
 		}
+	}
+
+	async loadGroups() {
+		try {
+			const files = this.fs.readdirSync(`${this.projectPath}/groups`);
+			files.forEach(async (fileName) => {
+				if (fileName.endsWith('.json')) this.loadGroup(fileName);
+			});
+		} catch (error) {}
+	}
+
+	async loadGroup(fileName) {
+		try {
+			const data = this.fs.readFileSync(`${this.projectPath}/groups/${fileName}`);
+			const paths = JSON.parse(data);
+			this.dispatch(addGroup(fileName.replace('.json', ''), paths));
+		} catch (error) {}
 	}
 
 	async loadPaths() {
