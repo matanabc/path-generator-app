@@ -37,7 +37,13 @@ export async function deleteGroup(pathName) {
 
 export async function renameJsonPath(oldName, newName) {
 	try {
-		handler.renameJsonPath(oldName, newName);
+		handler.renameJson(oldName, newName, 'paths');
+	} catch (error) {}
+}
+
+export async function renameJsonGroup(oldName, newName) {
+	try {
+		handler.renameJson(oldName, newName, 'groups');
 	} catch (error) {}
 }
 

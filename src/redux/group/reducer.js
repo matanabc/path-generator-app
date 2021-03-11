@@ -1,4 +1,4 @@
-import { saveJsonGroup, deleteGroup } from '../../handlers/project-handler';
+import { saveJsonGroup, deleteGroup, renameJsonGroup } from '../../handlers/project-handler';
 import { getGroup, reorder } from './util';
 import {
 	CHANGE_SELECTED_PATHS_GROUP,
@@ -42,6 +42,7 @@ function removeGroup(state, payload) {
 function renameGroup(state, payload) {
 	const newState = { ...state, selected: payload.name };
 	if (payload.name !== state.selected) {
+		renameJsonGroup(state.selected, payload.name);
 		newState.groups[payload.name] = newState.groups[state.selected];
 		delete newState.groups[state.selected];
 	}
