@@ -1,16 +1,14 @@
 import { Row, Col, Button } from 'react-bootstrap';
+import * as PathGenerator from 'path-generator';
 import SettingsConfig from './settings-config';
-import { Swerve, Tank } from 'path-generator';
 import { connect } from 'react-redux';
 import React from 'react';
 
 class SettingsDriveTypeConfig extends SettingsConfig {
 	constructor(props) {
 		super(props);
-		this.state = { driveType: Tank };
-
-		this.setDriveTypeTank = this.setDriveTypeTank.bind(this);
-		this.setDriveTypeSwerve = this.setDriveTypeSwerve.bind(this);
+		this.state = { driveType: PathGenerator.Tank };
+		this.setDriveType = this.setDriveType.bind(this);
 	}
 
 	getData() {
@@ -26,15 +24,9 @@ class SettingsDriveTypeConfig extends SettingsConfig {
 		});
 	}
 
-	setDriveTypeTank() {
+	setDriveType(type) {
 		this.setState(() => {
-			return { driveType: Tank };
-		});
-	}
-
-	setDriveTypeSwerve() {
-		this.setState(() => {
-			return { driveType: Swerve };
+			return { driveType: PathGenerator[type] };
 		});
 	}
 
@@ -45,16 +37,19 @@ class SettingsDriveTypeConfig extends SettingsConfig {
 	getBody() {
 		return (
 			<Row className="mb-3">
-				<Col>
-					<Button block onClick={this.setDriveTypeTank} active={this.state.driveType === Tank}>
-						Tank
-					</Button>
-				</Col>
-				<Col>
-					<Button block onClick={this.setDriveTypeSwerve} active={this.state.driveType === Swerve}>
-						Swerve
-					</Button>
-				</Col>
+				{PathGenerator.driveTypes.map((type, index) => {
+					return (
+						<Col key={index}>
+							<Button
+								block
+								onClick={() => this.setDriveType(type)}
+								active={this.state.driveType === PathGenerator[type]}
+							>
+								{type}
+							</Button>
+						</Col>
+					);
+				})}
 			</Row>
 		);
 	}

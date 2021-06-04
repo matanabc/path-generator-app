@@ -29,13 +29,26 @@ div {
 }
 
 .FieldView canvas {
+	width: 100%;
 	height: 65vh;
+	display: flex;
 }
 
 .AppListView {
 	height: 22vh;
 	margin-top: 5px;
 	overflow-y: auto;
+}
+
+.AppListView .btn,
+.AppListView .input-group-text {
+	height: calc(1.5em + 0.75rem + 2px);
+}
+
+.AppListView .form-control,
+.AppListView .input-group-prepend {
+	display: flex;
+	align-self: center;
 }
 
 .SettingsBody {

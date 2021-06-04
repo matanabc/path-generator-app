@@ -5,7 +5,7 @@ import { MdDelete, MdAddCircle } from 'react-icons/md';
 import { connect } from 'react-redux';
 import React from 'react';
 
-class SwerveWaypointInfo extends React.Component {
+class HolonomicWaypointInfo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { id: -1, selected: undefined, waypointsLength: -1 };
@@ -174,4 +174,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SwerveWaypointInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(HolonomicWaypointInfo);

@@ -9,6 +9,7 @@ class SettingsPathConfig extends SettingsConfig {
 
 		this.pathWidthRef = React.createRef();
 		this.robotMaxVRef = React.createRef();
+		this.pathLengthRef = React.createRef();
 		this.robotMaxAccRef = React.createRef();
 		this.robotLoopTimeRef = React.createRef();
 	}
@@ -21,17 +22,19 @@ class SettingsPathConfig extends SettingsConfig {
 		this.robotMaxVRef.current.value = this.props.pathConfig.vMax;
 		this.pathWidthRef.current.value = this.props.pathConfig.width;
 		this.robotMaxAccRef.current.value = this.props.pathConfig.acc;
+		this.pathLengthRef.current.value = this.props.pathConfig.length;
 		this.robotLoopTimeRef.current.value = this.props.pathConfig.robotLoopTime;
 	}
 
 	getData() {
 		return {
-			pathConfig: {
-				vMax: Number(this.robotMaxVRef.current.value),
-				width: Number(this.pathWidthRef.current.value),
-				acc: Number(this.robotMaxAccRef.current.value),
-				robotLoopTime: Number(this.robotLoopTimeRef.current.value),
-			},
+			pathConfig: new this.props.driveType.PathConfig(
+				Number(this.robotMaxVRef.current.value),
+				Number(this.robotMaxAccRef.current.value),
+				Number(this.pathWidthRef.current.value),
+				Number(this.pathLengthRef.current.value),
+				Number(this.robotLoopTimeRef.current.value)
+			),
 		};
 	}
 
@@ -43,6 +46,12 @@ class SettingsPathConfig extends SettingsConfig {
 						<Form.Label>Width</Form.Label>
 					</OverlayTrigger>
 					<Form.Control type="number" ref={this.pathWidthRef} defaultValue={this.props.pathConfig.width} />
+				</Form.Group>
+				<Form.Group as={Col}>
+					<OverlayTrigger overlay={<Tooltip> m </Tooltip>}>
+						<Form.Label>Length</Form.Label>
+					</OverlayTrigger>
+					<Form.Control type="number" ref={this.pathLengthRef} defaultValue={this.props.pathConfig.length} />
 				</Form.Group>
 				<Form.Group as={Col}>
 					<OverlayTrigger overlay={<Tooltip> m / s </Tooltip>}>
@@ -74,6 +83,7 @@ class SettingsPathConfig extends SettingsConfig {
 const mapStateToProps = (state) => {
 	return {
 		pathConfig: state.pathConfig,
+		driveType: state.driveType,
 	};
 };
 

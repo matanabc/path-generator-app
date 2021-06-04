@@ -2,7 +2,7 @@ import { setRobotDrawConfig, setFieldConfig, setImage } from '../redux/project/a
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
 import { setPathConfig, addPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
-import { Swerve, Tank } from 'path-generator';
+import { Holonomic, Tank } from 'path-generator';
 import * as JSZip from 'jszip';
 
 export default class LocalStorageHandler {
@@ -53,8 +53,8 @@ export default class LocalStorageHandler {
 
 	async loadPathConfig() {
 		try {
-			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
-			const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
+			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'Tank';
+			const driveType = this.jsonProject.driveType === 'Holonomic' ? Holonomic : Tank;
 			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
 			this.dispatch(setPathConfig(pathConfig, driveType));
 		} catch (error) {
@@ -77,7 +77,7 @@ export default class LocalStorageHandler {
 
 	async saveJsonProject(settings) {
 		const projectSettings = { ...settings };
-		projectSettings.driveType = settings.driveType === Swerve ? 'swerve' : 'tank';
+		projectSettings.driveType = settings.driveType === Holonomic ? 'Holonomic' : 'Tank';
 		localStorage.setItem('project settings', JSON.stringify(projectSettings));
 	}
 

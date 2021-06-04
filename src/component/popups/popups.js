@@ -71,12 +71,14 @@ class Popups extends React.Component {
 
 				<Popup
 					show={this.props.popupsStatus.pathIsIllegalPopup}
-					title={this.props.path && this.props.path.isIllegal() ? this.props.path.error.info : ''}
+					title={this.props.path && this.props.path.isIllegal() && this.props.path.error.message}
 					body={
 						<div>
-							{this.props.path && this.props.path.isIllegal()
-								? `${this.props.path.error.problem}\n \n${this.props.path.error.solution}`
-								: ''}
+							{this.props.path &&
+								this.props.path.isIllegal() &&
+								this.props.path.error.problem &&
+								`${this.props.path.error.problem}\n\n`}
+							{this.props.path && this.props.path.isIllegal() && `${this.props.path.error.solution}!`}
 						</div>
 					}
 					close={this.props.closePopups}

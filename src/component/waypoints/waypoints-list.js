@@ -1,13 +1,13 @@
-import SwerveWaypointInfo from './swerve-waypoint-info';
+import HolonomicWaypointInfo from './holonomic-waypoint-info';
 import TankWaypointInfo from './tank-waypoint-info';
-import { Swerve, Tank } from 'path-generator';
+import { Holonomic, Tank } from 'path-generator';
 import { connect } from 'react-redux';
 import React from 'react';
 
 class WaypointsList extends React.Component {
 	constructor(props) {
 		super(props);
-		this.getSwerveWaypointInfo = this.getSwerveWaypointInfo.bind(this);
+		this.getHolonomicWaypointInfo = this.getHolonomicWaypointInfo.bind(this);
 		this.getTankWaypointInfo = this.getTankWaypointInfo.bind(this);
 		this.getWaypointInfo = this.getWaypointInfo.bind(this);
 	}
@@ -24,9 +24,9 @@ class WaypointsList extends React.Component {
 		);
 	}
 
-	getSwerveWaypointInfo(element, index) {
+	getHolonomicWaypointInfo(element, index) {
 		return (
-			<SwerveWaypointInfo
+			<HolonomicWaypointInfo
 				id={index}
 				key={index}
 				waypoint={element}
@@ -38,7 +38,7 @@ class WaypointsList extends React.Component {
 
 	getWaypointInfo(element, index) {
 		if (this.props.driveType === Tank) return this.getTankWaypointInfo(element, index);
-		else if (this.props.driveType === Swerve) return this.getSwerveWaypointInfo(element, index);
+		else if (this.props.driveType === Holonomic) return this.getHolonomicWaypointInfo(element, index);
 		return <span />;
 	}
 

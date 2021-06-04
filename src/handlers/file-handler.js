@@ -3,7 +3,7 @@ import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-confi
 import { setPathConfig, addPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
 import { addGroup } from '../redux/group/actions';
-import { Swerve, Tank } from 'path-generator';
+import { Holonomic, Tank } from 'path-generator';
 
 export default class FileHandler {
 	constructor(callback) {
@@ -87,8 +87,8 @@ export default class FileHandler {
 
 	async loadPathConfig() {
 		try {
-			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'tank';
-			const driveType = this.jsonProject.driveType === 'swerve' ? Swerve : Tank;
+			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'Tank';
+			const driveType = this.jsonProject.driveType === 'Holonomic' ? Holonomic : Tank;
 			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
 			this.dispatch(setPathConfig(pathConfig, driveType));
 		} catch (error) {
@@ -133,7 +133,7 @@ export default class FileHandler {
 	async saveJsonProject(settings) {
 		try {
 			const projectSettings = { ...settings };
-			projectSettings.driveType = settings.driveType === Swerve ? 'swerve' : 'tank';
+			projectSettings.driveType = settings.driveType === Holonomic ? 'Holonomic' : 'Tank';
 			delete projectSettings.projectPath;
 			const jsonProject = JSON.stringify(projectSettings);
 			if (!this.fs.existsSync(this.projectPath)) this.fs.mkdirSync(this.projectPath);
