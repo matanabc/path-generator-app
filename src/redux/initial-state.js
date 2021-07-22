@@ -5,9 +5,7 @@ import { Tank } from 'path-generator';
 export const initialState = {
 	//View
 	popupsStatus: new PopupsConfig(),
-	addWaypointInIndex: undefined,
 	drawRobotInterval: undefined,
-	listenToMouseClicks: false,
 	selected: undefined,
 	rangePosition: 0,
 	isPathMode: true,

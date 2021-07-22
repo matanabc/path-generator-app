@@ -20,11 +20,12 @@ export function setSelectedWaypoint(index) {
 	};
 }
 
-export function addWaypoint(waypoint) {
+export function addWaypoint(waypoint, index) {
 	return {
 		type: ADD_WAYPOINT,
 		payload: {
 			waypoint: waypoint,
+			index: index,
 		},
 	};
 }

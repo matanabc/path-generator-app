@@ -11,7 +11,6 @@ class FieldView extends React.Component {
 			index: undefined,
 		};
 		this.canvas = React.createRef();
-		this.onClick = this.onClick.bind(this);
 	}
 
 	componentDidMount() {
@@ -28,16 +27,18 @@ class FieldView extends React.Component {
 
 	onDoubleClick = (event) => {
 		if (!this.props.path) return;
-		const { waypoint, index } = this.getWaypoint(this.getMousePosition(event));
+		const { x, y } = this.getMousePosition(event);
+		const { waypoint, index } = this.getWaypoint(x, y);
 		if (!waypoint) return;
 		this.props.setSelectedWaypoint(index);
 	};
 
 	onDown = (event) => {
 		if (!this.props.path) return;
-		const { waypoint, index } = this.getWaypoint(this.getMousePosition(event));
+		const { x, y } = this.getMousePosition(event);
+		const { waypoint, index } = this.getWaypoint(x, y);
 		if (!waypoint) return;
-		if (event.which > 1) alert('Right');
+		if (event.which > 1) this.props.addWaypoint({ x: x + 0.5, y: y }, index);
 		else {
 			const canvas = this.canvas.current;
 			this.setState(() => ({ waypoint: waypoint, index: index }));
@@ -57,13 +58,12 @@ class FieldView extends React.Component {
 		this.setState(() => ({ waypoint: undefined, index: undefined }));
 	};
 
-	getWaypoint = ({ x, y }) => {
-		const space = 0.1;
-		const maxX = x + space;
-		const minX = x - space;
-		const maxY = y + space;
-		const minY = y - space;
-
+	getWaypoint = (x, y) => {
+		const space = 0.1,
+			maxX = x + space,
+			minX = x - space,
+			maxY = y + space,
+			minY = y - space;
 		const { waypoints } = this.props.path;
 		let index = undefined;
 		const waypoint = waypoints.filter((waypoint, i) => {
@@ -89,20 +89,6 @@ class FieldView extends React.Component {
 			this.props.fieldConfig.hightPixelToMeter;
 		return { x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) };
 	};
-
-	onClick(event) {
-		const canvas = this.canvas.current;
-		const rect = canvas.getBoundingClientRect();
-		const scaleX = canvas.width / rect.width;
-		const scaleY = canvas.height / rect.height;
-		const x =
-			((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel) *
-			this.props.fieldConfig.widthPixelToMeter;
-		const y =
-			((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel) *
-			this.props.fieldConfig.hightPixelToMeter;
-		this.props.addWaypoint({ x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) });
-	}
 
 	render() {
 		return (
@@ -137,7 +123,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
+		addWaypoint: (waypoint, index) => dispatch(addWaypoint(waypoint, index)),
 		setSelectedWaypoint: (index) => dispatch(setSelectedWaypoint(index)),
 		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
 	};

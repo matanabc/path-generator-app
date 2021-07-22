@@ -1,6 +1,4 @@
 import ToolsPathDirection from './tools-path-direction';
-import ToolsAddWaypoint from './tools-add-waypoint';
-import ToolsChangeMode from './tools-change-mode';
 import { Container, Row } from 'react-bootstrap';
 import ToolsDownload from './tools-download';
 import ToolsSettings from './tools-settings';
@@ -17,10 +15,8 @@ class Tools extends React.Component {
 		return (
 			<Container>
 				<Row>
-					{this.props.isPathMode ? <ToolsAddWaypoint /> : <span />}
 					<ToolsDownload />
 					<ToolsSettings />
-					<ToolsChangeMode />
 					<ToolsSelect />
 					<ToolsPlay />
 					<ToolsDelete />
