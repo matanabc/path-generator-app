@@ -1,4 +1,5 @@
 import {
+	SET_SELECTED_WAYPOINT,
 	CHANGE_SELECTED_PATH,
 	CHANGE_DIRECTION,
 	REMOVE_WAYPOINT,
@@ -9,6 +10,15 @@ import {
 	RENAME_PATH,
 	ADD_PATH,
 } from './action-types';
+
+export function setSelectedWaypoint(index) {
+	return {
+		type: SET_SELECTED_WAYPOINT,
+		payload: {
+			index: index,
+		},
+	};
+}
 
 export function addWaypoint(waypoint) {
 	return {

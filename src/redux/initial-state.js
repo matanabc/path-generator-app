@@ -16,6 +16,7 @@ export const initialState = {
 	groups: {},
 
 	// Path
+	selectedWaypoint: undefined,
 	driveType: Tank,
 	path: undefined,
 	paths: {},

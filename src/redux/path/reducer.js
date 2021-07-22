@@ -1,5 +1,6 @@
 import { saveJsonPath, deletePath, renameJsonPath } from '../../handlers/project-handler';
 import {
+	SET_SELECTED_WAYPOINT,
 	CHANGE_SELECTED_PATH,
 	CHANGE_DIRECTION,
 	REMOVE_WAYPOINT,
@@ -49,7 +50,7 @@ function setWaypoint(state, payload) {
 
 function removeWaypoint(state, payload) {
 	const waypoints = [];
-	const newState = { ...state };
+	const newState = { ...state, selectedWaypoint: undefined };
 	state.paths[state.selected].waypoints.forEach((element, index) => {
 		if (index !== payload.index) waypoints.push(element);
 	});
@@ -157,6 +158,10 @@ function changeDirection(state, payload) {
 	return newState;
 }
 
+function setSelectedWaypoint(state, payload) {
+	return { ...state, selectedWaypoint: payload.index };
+}
+
 export default function path(state, action) {
 	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	if (action.type === RENAME_PATH) return renamePath(state, action.payload);
@@ -167,5 +172,6 @@ export default function path(state, action) {
 	if (action.type === REMOVE_WAYPOINT) return removeWaypoint(state, action.payload);
 	if (action.type === CHANGE_DIRECTION) return changeDirection(state, action.payload);
 	if (action.type === CHANGE_SELECTED_PATH) return changeSelectedPath(state, action.payload);
+	if (action.type === SET_SELECTED_WAYPOINT) return setSelectedWaypoint(state, action.payload);
 	return state;
 }

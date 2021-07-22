@@ -1,4 +1,4 @@
-import { addWaypoint, setWaypoint } from '../../redux/path/actions';
+import { addWaypoint, setWaypoint, setSelectedWaypoint } from '../../redux/path/actions';
 import { drawOnCanvas } from './canvas-painter';
 import { connect } from 'react-redux';
 import React from 'react';
@@ -18,12 +18,20 @@ class FieldView extends React.Component {
 		const canvas = this.canvas.current;
 		drawOnCanvas(canvas, this.props);
 		canvas.addEventListener('mousedown', this.onDown);
+		canvas.addEventListener('dblclick', this.onDoubleClick);
 	}
 
 	componentDidUpdate() {
 		const canvas = this.canvas.current;
 		drawOnCanvas(canvas, this.props);
 	}
+
+	onDoubleClick = (event) => {
+		if (!this.props.path) return;
+		const { waypoint, index } = this.getWaypoint(this.getMousePosition(event));
+		if (!waypoint) return;
+		this.props.setSelectedWaypoint(index);
+	};
 
 	onDown = (event) => {
 		if (!this.props.path) return;
@@ -37,9 +45,11 @@ class FieldView extends React.Component {
 			canvas.addEventListener('mouseup', this.onUp);
 		}
 	};
+
 	whileMove = (event) => {
 		this.props.setWaypoint({ ...this.state.waypoint, ...this.getMousePosition(event) }, this.state.index);
 	};
+
 	onUp = (event) => {
 		const canvas = this.canvas.current;
 		canvas.removeEventListener('mousemove', this.whileMove);
@@ -48,7 +58,7 @@ class FieldView extends React.Component {
 	};
 
 	getWaypoint = ({ x, y }) => {
-		const space = 0.075;
+		const space = 0.1;
 		const maxX = x + space;
 		const minX = x - space;
 		const maxY = y + space;
@@ -77,7 +87,7 @@ class FieldView extends React.Component {
 		const y =
 			((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel) *
 			this.props.fieldConfig.hightPixelToMeter;
-		return { x: x, y: y };
+		return { x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) };
 	};
 
 	onClick(event) {
@@ -128,6 +138,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		addWaypoint: (waypoint) => dispatch(addWaypoint(waypoint)),
+		setSelectedWaypoint: (index) => dispatch(setSelectedWaypoint(index)),
 		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
 	};
 };
