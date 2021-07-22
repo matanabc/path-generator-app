@@ -24,14 +24,11 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<Container fluid="md">
-					<Popups />
-					<Settings />
-					<FieldView />
-					<PlayingBar />
-					<Tools />
-					{this.props.isPathMode ? <WaypointsList /> : <PathsList />}
-				</Container>
+				<Popups />
+				<Settings />
+				<FieldView />
+				<PlayingBar />
+				<Tools />
 			</div>
 		);
 	}
