@@ -8,7 +8,7 @@ class ToolsAddPath extends React.Component {
 	render() {
 		return (
 			<Dropdown>
-				<Dropdown.Toggle size="lg">
+				<Dropdown.Toggle size="lg" disabled={!this.props.path}>
 					<BsFileEarmarkPlus />
 				</Dropdown.Toggle>
 				<Dropdown.Menu>
@@ -27,6 +27,7 @@ class ToolsAddPath extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		path: state.path,
 		pathsName: Object.keys(state.paths),
 	};
 };

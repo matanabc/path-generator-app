@@ -107,14 +107,26 @@ function addPath(state, payload) {
 
 function addWaypoint(state, payload) {
 	const newState = { ...state, addWaypointInIndex: undefined };
-
 	const waypoints = [];
 	const newWaypoint = Object.assign(new state.driveType.Waypoint(), { ...payload.waypoint });
 	state.paths[state.selected].waypoints.forEach((waypoint, index) => {
 		waypoints.push(waypoint);
-		if (index === state.addWaypointInIndex) waypoints.push(newWaypoint);
+		if (index === state.addWaypointInIndex) {
+			newWaypoint.vMax = state.pathConfig.vMax;
+			if (index !== state.paths[state.selected].waypoints.length - 1) {
+				newWaypoint.v = waypoints[index].vMax;
+			} else newWaypoint.vMax = 0;
+			if (waypoints.length > 1) waypoints[waypoints.length - 1].v = waypoints[waypoints.length - 2].vMax;
+			if (waypoints[waypoints.length - 1].vMax === 0)
+				waypoints[waypoints.length - 1].vMax = state.pathConfig.vMax;
+			waypoints.push(newWaypoint);
+		}
 	});
-	if (state.addWaypointInIndex === undefined) waypoints.push(newWaypoint);
+	if (state.addWaypointInIndex === undefined) {
+		if (waypoints[waypoints.length - 1]) waypoints[waypoints.length - 1].vMax = state.pathConfig.vMax;
+		if (waypoints.length > 1) waypoints[waypoints.length - 1].v = waypoints[waypoints.length - 2].vMax;
+		waypoints.push(newWaypoint);
+	}
 	if (state.addWaypointInIndex !== undefined) newState.listenToMouseClicks = false;
 	state.paths[state.selected].waypoints = waypoints;
 

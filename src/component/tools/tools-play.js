@@ -1,7 +1,7 @@
 import { setDrawRobotInterval, changeRangePosition } from '../../redux/view/actions';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { MdPlayArrow, MdReplay, MdPause } from 'react-icons/md';
 import { PopupsConfig } from '../popups/popups-config';
-import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
@@ -11,6 +11,7 @@ class ToolsPlay extends React.Component {
 	constructor(props) {
 		super(props);
 		this.onClick = this.onClick.bind(this);
+		this.getToolTip = this.getToolTip.bind(this);
 		this.canCreateInterval = this.canCreateInterval.bind(this);
 		this.getPlayButtonIcon = this.getPlayButtonIcon.bind(this);
 		this.updateRangePosition = this.updateRangePosition.bind(this);
@@ -57,16 +58,29 @@ class ToolsPlay extends React.Component {
 		else return <MdPlayArrow />;
 	}
 
+	getToolTip() {
+		if (!this.props.path) return <Tooltip></Tooltip>;
+		const setpoint = this.props.path.sourceSetpoints[this.props.rangePosition];
+		return (
+			<Tooltip style={{ width: '10em' }}>
+				<span>{`Velocity: ${setpoint.velocity.toFixed(2)}\n`}</span>
+				<span>{`Acceleration: ${setpoint.velocity.toFixed(2)}\n`}</span>
+			</Tooltip>
+		);
+	}
+
 	render() {
 		return (
-			<Button
-				size="lg"
-				className="mr-3 ml-4"
-				onClick={this.onClick}
-				disabled={!this.props.path || this.props.path.waypoints.length <= 1 || this.props.path.isIllegal()}
-			>
-				{this.getPlayButtonIcon()}
-			</Button>
+			<OverlayTrigger overlay={this.getToolTip()}>
+				<Button
+					size="lg"
+					className="mr-3 ml-4"
+					onClick={this.onClick}
+					disabled={!this.props.path || this.props.path.waypoints.length <= 1 || this.props.path.isIllegal()}
+				>
+					{this.getPlayButtonIcon()}
+				</Button>
+			</OverlayTrigger>
 		);
 	}
 }
