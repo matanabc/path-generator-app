@@ -62,12 +62,12 @@ class ToolsPlay extends React.Component {
 		if (!this.props.path) return <Tooltip></Tooltip>;
 		let setpoint = this.props.path.sourceSetpoints[this.props.rangePosition];
 		if (!setpoint) {
-			setpoint = { velocity: 0 };
+			setpoint = { velocity: 0, acceleration: 0 };
 		}
 		return (
 			<Tooltip style={{ width: '10em' }}>
 				<span>{`Velocity: ${setpoint.velocity.toFixed(2)}\n`}</span>
-				<span>{`Acceleration: ${setpoint.velocity.toFixed(2)}\n`}</span>
+				<span>{`Acceleration: ${setpoint.acceleration.toFixed(2)}\n`}</span>
 			</Tooltip>
 		);
 	}

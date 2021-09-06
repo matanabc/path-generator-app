@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import 'mousetrap-global-bind';
 import React from 'react';
 
-class Settings extends React.Component {
+class Waypoint extends React.Component {
 	onChange = (value) => this.props.setWaypoint({ ...this.props.waypoint, ...value }, this.props.index);
 	remove = () => this.props.removeWaypoint(this.props.index);
 	render() {
@@ -99,4 +99,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Settings);
+export default connect(mapStateToProps, mapDispatchToProps)(Waypoint);
