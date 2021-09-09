@@ -6,11 +6,9 @@ import React from 'react';
 class FieldView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			waypoint: undefined,
-			index: undefined,
-		};
+		this.state = { index: undefined };
 		this.canvas = React.createRef();
+		this.space = 0.5;
 	}
 
 	componentDidMount() {
@@ -20,50 +18,73 @@ class FieldView extends React.Component {
 		canvas.addEventListener('dblclick', this.onDoubleClick);
 	}
 
-	componentDidUpdate() {
-		const canvas = this.canvas.current;
-		drawOnCanvas(canvas, this.props);
-	}
+	componentDidUpdate = () => drawOnCanvas(this.canvas.current, this.props);
 
 	onDoubleClick = (event) => {
 		if (!this.props.path) return;
 		const { x, y } = this.getMousePosition(event);
-		const { waypoint, index } = this.getWaypoint(x, y);
-		if (!waypoint) return;
+		const index = this.getWaypointIndex(x, y);
+		if (!index === undefined) return;
 		this.props.setSelectedWaypoint(index);
 	};
 
 	onDown = (event) => {
 		if (!this.props.path) return;
 		const { x, y } = this.getMousePosition(event);
-		const { waypoint, index } = this.getWaypoint(x, y);
-		if (!waypoint) return;
-		if (event.which > 1) this.props.addWaypoint({ x: x + 0.5, y: y }, index);
-		else {
-			const canvas = this.canvas.current;
-			this.setState(() => ({ waypoint: waypoint, index: index }));
-			canvas.addEventListener('mousemove', this.whileMove);
-			canvas.addEventListener('mouseup', this.onUp);
-		}
+		const index = this.getWaypointIndex(x, y);
+		if (!index === undefined) return;
+		const canvas = this.canvas.current;
+		this.setState(() => ({ index: index }));
+		canvas.addEventListener('mousemove', this.whileMove);
+		canvas.addEventListener('mouseup', this.onUp);
 	};
 
 	whileMove = (event) => {
-		this.props.setWaypoint({ ...this.state.waypoint, ...this.getMousePosition(event) }, this.state.index);
+		const { path, setWaypoint } = this.props;
+		const { index } = this.state;
+		const { waypoints } = path;
+		setWaypoint({ ...waypoints[index], ...this.getMousePosition(event) }, index);
 	};
 
-	onUp = (event) => {
+	onUp = () => {
 		const canvas = this.canvas.current;
 		canvas.removeEventListener('mousemove', this.whileMove);
 		canvas.removeEventListener('mouseup', this.onUp);
-		this.setState(() => ({ waypoint: undefined, index: undefined }));
+		this.setState(() => ({ index: undefined }));
 	};
 
-	getWaypoint = (x, y) => {
-		const space = 0.1,
-			maxX = x + space,
-			minX = x - space,
-			maxY = y + space,
-			minY = y - space;
+	getNewWaypointIndex = (x, y) => {
+		const { coords, waypoints } = this.props.path;
+		let waypointCoord = coords[0];
+		let waypointIndex = 0;
+		let i = 0;
+		coords.forEach((coord) => {
+			const dx = Math.abs(coord.x - x);
+			const best_dx = Math.abs(coord.x - waypointCoord.x);
+			const dy = Math.abs(coord.y - y);
+			const best_dy = Math.abs(coord.y - waypointCoord.y);
+			if (waypoints[i].x === coord.x && waypoints[i].y === coord.y) i++;
+			if (dx <= best_dx && dy <= best_dy) {
+				waypointIndex = i;
+				waypointCoord = coord;
+			}
+		});
+		const maxX = x + this.space,
+			minX = x - this.space,
+			maxY = y + this.space,
+			minY = y - this.space;
+		if (maxX >= waypointCoord.x && minX <= waypointCoord.x && maxY >= waypointCoord.y && minY <= waypointCoord.y) {
+			this.props.addWaypoint({ x: waypointCoord.x, y: waypointCoord.y }, waypointIndex - 1);
+			return waypointIndex;
+		}
+		return {};
+	};
+
+	getWaypointIndex = (x, y) => {
+		const maxX = x + this.space,
+			minX = x - this.space,
+			maxY = y + this.space,
+			minY = y - this.space;
 		const { waypoints } = this.props.path;
 		let index = undefined;
 		const waypoint = waypoints.filter((waypoint, i) => {
@@ -72,8 +93,9 @@ class FieldView extends React.Component {
 				return true;
 			}
 			return false;
-		})[0];
-		return { waypoint: waypoint, index: index };
+		});
+		if (waypoint.length > 0) return index;
+		else return this.getNewWaypointIndex(x, y);
 	};
 
 	getMousePosition = (event) => {

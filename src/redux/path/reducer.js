@@ -92,7 +92,11 @@ function addPath(state, payload) {
 		payload.waypoints.forEach((waypoint) => {
 			waypoints.push(Object.assign(new state.driveType.Waypoint(), waypoint));
 		});
-	else waypoints.push(new state.driveType.Waypoint());
+	else
+		waypoints.push(
+			Object.assign(new state.driveType.Waypoint(), { vMax: state.pathConfig.vMax }),
+			new state.driveType.Waypoint(2, 2)
+		);
 	newState.paths[payload.name] = {
 		waypoints: waypoints,
 		isInReverse: payload.isInReverse ? payload.isInReverse : false,
