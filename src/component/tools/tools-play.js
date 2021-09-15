@@ -1,5 +1,5 @@
 import { setDrawRobotInterval, changeRangePosition } from '../../redux/view/actions';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { MdPlayArrow, MdReplay, MdPause } from 'react-icons/md';
 import { PopupsConfig } from '../popups/popups-config';
 import { connect } from 'react-redux';
@@ -8,22 +8,12 @@ import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsPlay extends React.Component {
-	constructor(props) {
-		super(props);
-		this.onClick = this.onClick.bind(this);
-		this.getToolTip = this.getToolTip.bind(this);
-		this.canCreateInterval = this.canCreateInterval.bind(this);
-		this.getPlayButtonIcon = this.getPlayButtonIcon.bind(this);
-		this.updateRangePosition = this.updateRangePosition.bind(this);
-		this.isRangePositionInTheEnd = this.isRangePositionInTheEnd.bind(this);
-	}
-
 	componentDidMount() {
 		mousetrap.bindGlobal('space', this.onClick);
 		window.onkeydown = (e) => e.keyCode !== 32;
 	}
 
-	onClick() {
+	onClick = () => {
 		if (JSON.stringify(this.props.popupsStatus) !== JSON.stringify(new PopupsConfig())) return;
 		if (document.activeElement) document.activeElement.blur();
 		var interval = undefined;
@@ -32,58 +22,42 @@ class ToolsPlay extends React.Component {
 			interval = setInterval(this.updateRangePosition, this.props.robotLoopTime * 1000);
 		}
 		this.props.setDrawRobotInterval(interval);
-	}
+	};
 
-	updateRangePosition() {
+	updateRangePosition = () => {
 		if (this.isRangePositionInTheEnd()) this.props.setDrawRobotInterval();
 		else this.props.changeRangePosition(this.props.rangePosition + 1);
-	}
+	};
 
-	canCreateInterval() {
+	canCreateInterval = () => {
 		return (
 			this.props.path &&
 			!this.props.drawRobotInterval &&
 			!this.props.popupsStatus.settingsPopup &&
 			this.props.path.sourceSetpoints.length > 0
 		);
-	}
+	};
 
-	isRangePositionInTheEnd() {
+	isRangePositionInTheEnd = () => {
 		return this.props.path && this.props.path.sourceSetpoints.length - 1 === this.props.rangePosition;
-	}
+	};
 
-	getPlayButtonIcon() {
+	getPlayButtonIcon = () => {
 		if (this.props.drawRobotInterval) return <MdPause />;
 		else if (this.isRangePositionInTheEnd()) return <MdReplay />;
 		else return <MdPlayArrow />;
-	}
-
-	getToolTip() {
-		if (!this.props.path) return <Tooltip></Tooltip>;
-		let setpoint = this.props.path.sourceSetpoints[this.props.rangePosition];
-		if (!setpoint) {
-			setpoint = { velocity: 0, acceleration: 0 };
-		}
-		return (
-			<Tooltip style={{ width: '10em' }}>
-				<span>{`Velocity: ${setpoint.velocity.toFixed(2)}\n`}</span>
-				<span>{`Acceleration: ${setpoint.acceleration.toFixed(2)}\n`}</span>
-			</Tooltip>
-		);
-	}
+	};
 
 	render() {
 		return (
-			<OverlayTrigger overlay={this.getToolTip()}>
-				<Button
-					size="lg"
-					className="mr-3 ml-4"
-					onClick={this.onClick}
-					disabled={!this.props.path || this.props.path.waypoints.length <= 1 || this.props.path.isIllegal()}
-				>
-					{this.getPlayButtonIcon()}
-				</Button>
-			</OverlayTrigger>
+			<Button
+				size="lg"
+				className="mr-3 ml-4"
+				onClick={this.onClick}
+				disabled={!this.props.path || this.props.path.waypoints.length <= 1 || this.props.path.isIllegal()}
+			>
+				{this.getPlayButtonIcon()}
+			</Button>
 		);
 	}
 }
