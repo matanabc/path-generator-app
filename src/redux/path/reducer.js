@@ -36,7 +36,7 @@ function getNewWaypoint(state, waypoint, object, pathConfig, fieldConfig) {
 }
 
 function setWaypoint(state, payload) {
-	const newState = { ...state };
+	const newState = { ...state, selectedWaypoint: payload.index };
 	const waypoints = state.paths[state.selected].waypoints.map((element, index) => {
 		if (index !== payload.index) return element;
 		else return getNewWaypoint(state, element, payload.waypoint, state.pathConfig, state.fieldConfig);

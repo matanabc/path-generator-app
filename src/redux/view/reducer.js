@@ -12,9 +12,10 @@ function changeRangePosition(state, payload) {
 }
 
 function setDrawRobotInterval(state, payload) {
-	if (!state.drawRobotInterval && payload.interval) return { ...state, drawRobotInterval: payload.interval };
+	if (!state.drawRobotInterval && payload.interval)
+		return { ...state, drawRobotInterval: payload.interval, selectedWaypoint: undefined };
 	clearInterval(state.drawRobotInterval);
-	return { ...state, drawRobotInterval: undefined };
+	return { ...state, drawRobotInterval: undefined, selectedWaypoint: undefined };
 }
 
 function changePopupsStatus(state, payload) {

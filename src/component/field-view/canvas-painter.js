@@ -1,3 +1,5 @@
+import { d2r } from 'path-generator/lib/util';
+
 export function drawOnCanvas(canvas, props) {
 	const ctx = canvas.getContext('2d');
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -11,7 +13,7 @@ export function drawOnCanvas(canvas, props) {
 
 	drawCoords(ctx, props);
 	if (props.isPathMode) drawWaypoints(ctx, props);
-	drawRobot(ctx, props);
+	if (props.drawRobotInterval !== undefined || props.rangePosition > 0) drawRobotFromCoord(ctx, props);
 }
 
 function drawFieldBorders(ctx, props) {
@@ -35,6 +37,8 @@ function drawWaypoints(ctx, props) {
 		if (props.selectedWaypoint === index) ctx.fillStyle = 'blue';
 		else ctx.fillStyle = 'red';
 		ctx.fill();
+		if (index === props.selectedWaypoint)
+			drawRobot(ctx, props, x, y, d2r(waypoint.robotAngle === undefined ? waypoint.angle : waypoint.robotAngle));
 	});
 }
 
@@ -51,7 +55,15 @@ function drawCoords(ctx, props) {
 	ctx.stroke();
 }
 
-function drawRobot(ctx, props) {
+function drawRobotFromCoord(ctx, props) {
+	const index = props.rangePosition;
+	const coord = props.path.coords[index];
+	const robotX = coord.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
+	const robotY = coord.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
+	drawRobot(ctx, props, robotX, robotY, coord.angle);
+}
+
+function drawRobot(ctx, props, x, y, angle) {
 	const robotInReverse = props.isPathInReverse ? -1 : 1;
 	const robotLength = props.robotDrawConfig.length / props.fieldConfig.widthPixelToMeter;
 	const robotBorder = (props.robotDrawConfig.width * 0.6) / props.fieldConfig.hightPixelToMeter;
@@ -59,34 +71,27 @@ function drawRobot(ctx, props) {
 
 	ctx.beginPath();
 	ctx.save();
-	drawRobotShape(ctx, props, robotLength, robotCenter);
+	drawRobotShape(ctx, props, robotLength, robotCenter, x, y, angle * robotInReverse);
 	drawRobotCenter(ctx);
 	drawRobotBorders(ctx, robotInReverse, robotLength, robotCenter, robotBorder, 'blue');
 	drawRobotBorders(ctx, robotInReverse, -robotLength, robotCenter, robotBorder, 'red');
 	ctx.restore();
 }
 
-function drawRobotShape(ctx, props, robotLength, robotCenter) {
-	const index = props.rangePosition;
+function drawRobotShape(ctx, props, robotLength, robotCenter, x, y, angle) {
 	const robotWidth = props.robotDrawConfig.width / props.fieldConfig.hightPixelToMeter;
-	const robotX =
-		props.path.coords[index].x / props.fieldConfig.widthPixelToMeter -
-		robotLength / 2 +
-		props.fieldConfig.topLeftXPixel;
-	const robotY =
-		props.path.coords[index].y / props.fieldConfig.hightPixelToMeter -
-		robotWidth / 2 +
-		props.fieldConfig.topLeftYPixel;
+	const robotX = x - robotLength / 2;
+	const robotY = y - robotWidth / 2;
 
 	ctx.translate(robotX + robotLength / 2, robotY + robotWidth / 2);
-	ctx.rotate(props.path.coords[index].angle);
+	ctx.rotate(angle);
 	ctx.fillStyle = 'white';
 	ctx.fillRect(-robotLength / 2 - robotCenter, -robotWidth / 2, robotLength, robotWidth);
 }
 
 function drawRobotCenter(ctx) {
 	ctx.arc(0, 0, 1.5, 0, Math.PI * 2, false);
-	ctx.fillStyle = 'rgb(50, 100, 0)';
+	ctx.fillStyle = 'blue';
 	ctx.fill();
 }
 
