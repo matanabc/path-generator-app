@@ -25,10 +25,10 @@ class App extends React.Component {
 			<div className="App">
 				<Popups />
 				<Settings />
-				<Waypoint />
 				<FieldView />
 				<PlayingBar />
 				<Tools />
+				<Waypoint />
 			</div>
 		);
 	}

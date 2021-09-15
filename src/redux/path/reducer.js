@@ -62,7 +62,7 @@ function removeWaypoint(state, payload) {
 }
 
 function changeSelectedPath(state, payload) {
-	const newState = { ...state, selected: payload.pathName, isPathMode: true };
+	const newState = { ...state, selected: payload.pathName, isPathMode: true, selectedWaypoint: undefined };
 	newState.path = new state.driveType.Path(newState.paths[payload.pathName].waypoints, state.pathConfig);
 	if (newState.paths[payload.pathName].isInReverse) newState.path.changeDirection();
 	return newState;
@@ -86,7 +86,7 @@ function renamePath(state, payload) {
 }
 
 function addPath(state, payload) {
-	const newState = { ...state };
+	const newState = { ...state, selectedWaypoint: undefined };
 	const waypoints = [];
 	if (payload.waypoints)
 		payload.waypoints.forEach((waypoint) => {
@@ -94,8 +94,8 @@ function addPath(state, payload) {
 		});
 	else
 		waypoints.push(
-			Object.assign(new state.driveType.Waypoint(), { vMax: state.pathConfig.vMax }),
-			new state.driveType.Waypoint(2, 2)
+			Object.assign(new state.driveType.Waypoint(), { y: 1, vMax: state.pathConfig.vMax }),
+			Object.assign(new state.driveType.Waypoint(), { x: 2, y: 1 })
 		);
 	newState.paths[payload.name] = {
 		waypoints: waypoints,

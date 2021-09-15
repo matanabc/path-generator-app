@@ -27,12 +27,13 @@ function drawFieldBorders(ctx, props) {
 }
 
 function drawWaypoints(ctx, props) {
-	props.path.waypoints.forEach((waypoint) => {
+	props.path.waypoints.forEach((waypoint, index) => {
 		const x = waypoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
 		const y = waypoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
 		ctx.beginPath();
 		ctx.arc(x, y, 2, 0, Math.PI * 2, false);
-		ctx.fillStyle = 'red';
+		if (props.selectedWaypoint === index) ctx.fillStyle = 'blue';
+		else ctx.fillStyle = 'red';
 		ctx.fill();
 	});
 }
