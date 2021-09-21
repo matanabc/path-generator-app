@@ -1,3 +1,4 @@
+import { Holonomic } from 'path-generator';
 import { d2r } from 'path-generator/lib/util';
 
 export function drawOnCanvas(canvas, props) {
@@ -38,7 +39,7 @@ function drawWaypoints(ctx, props) {
 		else ctx.fillStyle = 'red';
 		ctx.fill();
 		if (index === props.selectedWaypoint)
-			drawRobot(ctx, props, x, y, d2r(waypoint.robotAngle === undefined ? waypoint.angle : waypoint.robotAngle));
+			drawRobot(ctx, props, x, y, waypoint instanceof Holonomic.Waypoint ? waypoint.robotAngle : waypoint.angle);
 	});
 }
 
@@ -71,7 +72,7 @@ function drawRobot(ctx, props, x, y, angle) {
 
 	ctx.beginPath();
 	ctx.save();
-	drawRobotShape(ctx, props, robotLength, robotCenter, x, y, angle * robotInReverse);
+	drawRobotShape(ctx, props, robotLength, robotCenter, x, y, d2r(angle));
 	drawRobotCenter(ctx);
 	drawRobotBorders(ctx, robotInReverse, robotLength, robotCenter, robotBorder, 'blue');
 	drawRobotBorders(ctx, robotInReverse, -robotLength, robotCenter, robotBorder, 'red');

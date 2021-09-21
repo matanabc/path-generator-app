@@ -1,5 +1,3 @@
-import { Util } from 'path-generator';
-
 export function getSetpointsCSV(setpoints) {
 	var setpointKeys = [];
 	const csvLines = setpoints.map((setpoint, index) => {
@@ -29,5 +27,5 @@ export function getCoordsCSV(path) {
 
 function getCoordCSV(coord) {
 	if (!coord) return 'Angle,X,Y,\n';
-	return `${Util.r2d(coord.angle)},${coord.x},${coord.y},`;
+	return `${coord.angle},${coord.x},${coord.y},`;
 }

@@ -22,7 +22,7 @@ class PlayingBar extends React.Component {
 
 	componentDidUpdate() {
 		if (this.props.path) {
-			this.range.current.max = this.props.path.sourceSetpoints.length - 1;
+			this.range.current.max = this.props.path.coords.length - 1;
 			this.range.current.value = this.props.rangePosition;
 			this.range.current.disabled = false;
 		} else {
@@ -35,18 +35,19 @@ class PlayingBar extends React.Component {
 		if (!this.props.path) return;
 		this.props.setDrawRobotInterval();
 		const lastPosition = this.props.rangePosition;
-		const maxPosition = this.props.path.sourceSetpoints.length - 1;
+		const maxPosition = this.props.path.coords.length - 1;
 		const position = newPosition >= 0 && newPosition <= maxPosition ? newPosition : lastPosition;
 		this.props.changeRangePosition(position);
 	}
 
 	render() {
 		const style = { fontSize: '12px' };
+		const { rangePosition, robotLoopTime, path } = this.props;
 		return (
 			<Container>
 				<Row>
 					<Col sm={0.5} style={style}>
-						{this.props.path ? (this.props.robotLoopTime * this.props.rangePosition).toFixed(2) : '0.00'}
+						{path ? (robotLoopTime * rangePosition).toFixed(2) : '0.00'}
 					</Col>
 					<Col>
 						<Form.Control
@@ -56,13 +57,7 @@ class PlayingBar extends React.Component {
 						/>
 					</Col>
 					<Col sm={0.5} style={style}>
-						{this.props.path && !this.props.path.isIllegal()
-							? (
-									Math.sign(this.props.path.sourceSetpoints.length) *
-									(this.props.path.sourceSetpoints.length - 1) *
-									this.props.robotLoopTime
-							  ).toFixed(2)
-							: '0.00'}
+						{path && !path.isIllegal() ? ((path.coords.length - 1) * robotLoopTime).toFixed(2) : '0.00'}
 					</Col>
 				</Row>
 			</Container>

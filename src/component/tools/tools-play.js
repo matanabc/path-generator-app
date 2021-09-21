@@ -33,13 +33,13 @@ class ToolsPlay extends React.Component {
 		return (
 			this.props.path &&
 			!this.props.drawRobotInterval &&
-			!this.props.popupsStatus.settingsPopup &&
-			this.props.path.sourceSetpoints.length > 0
+			this.props.path.coords.length > 0 &&
+			!this.props.popupsStatus.settingsPopup
 		);
 	};
 
 	isRangePositionInTheEnd = () => {
-		return this.props.path && this.props.path.sourceSetpoints.length - 1 === this.props.rangePosition;
+		return this.props.path && this.props.path.coords.length - 1 === this.props.rangePosition;
 	};
 
 	getPlayButtonIcon = () => {
