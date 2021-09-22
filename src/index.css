@@ -1,3 +1,10 @@
+html,
+body,
+#root,
+.App {
+	height: 100%;
+}
+
 body {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
 		'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -16,7 +23,15 @@ body {
 
 .App {
 	font-size: calc(10px + 2vmin);
+	flex-direction: column;
 	color: white;
+	display: flex;
+}
+
+#bottom {
+	align-self: flex-end;
+	margin-bottom: 5px;
+	width: 100%;
 }
 
 div {
@@ -26,6 +41,7 @@ div {
 .FieldView {
 	width: 100%;
 	display: flex;
+	height: inherit;
 	text-align: center;
 	align-items: center;
 	justify-content: center;

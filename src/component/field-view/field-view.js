@@ -1,12 +1,13 @@
 import { addWaypoint, setWaypoint, setSelectedWaypoint } from '../../redux/path/actions';
 import { drawOnCanvas } from './canvas-painter';
 import { connect } from 'react-redux';
+import Waypoint from '../waypoint';
 import React from 'react';
 
 class FieldView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { index: undefined, newWaypoint: false };
+		this.state = { index: undefined, newWaypoint: false, showInfo: false };
 		this.canvas = React.createRef();
 		this.space = 0.5;
 	}
@@ -15,6 +16,8 @@ class FieldView extends React.Component {
 		const canvas = this.canvas.current;
 		drawOnCanvas(canvas, this.props);
 		canvas.addEventListener('mousedown', this.onDown);
+		canvas.addEventListener('dblclick', this.ondblclick);
+
 		document.onkeydown = (e) => this.setState(() => ({ newWaypoint: e.ctrlKey }));
 		document.onkeyup = (e) => this.setState(() => ({ newWaypoint: e.ctrlKey }));
 	}
@@ -48,7 +51,18 @@ class FieldView extends React.Component {
 		const canvas = this.canvas.current;
 		canvas.removeEventListener('mousemove', this.whileMove);
 		canvas.removeEventListener('mouseup', this.onUp);
-		this.setState(() => ({ index: undefined }));
+	};
+
+	ondblclick = (event) => {
+		if (!this.props.path) return;
+		const { x, y } = this.getMousePosition(event);
+		const index = this.getWaypointIndex(x, y);
+		if (index === undefined) return;
+		this.setState(() => ({ index: index, showInfo: true }));
+	};
+
+	onClose = () => {
+		this.setState(() => ({ showInfo: false }));
 	};
 
 	getWaypointIndex = (x, y) => {
@@ -84,8 +98,11 @@ class FieldView extends React.Component {
 	};
 
 	render() {
+		const { index, showInfo } = this.state;
+		const { waypoints } = this.props;
 		return (
 			<div className="FieldView">
+				<Waypoint show={showInfo} waypoint={waypoints[index]} index={index} close={this.onClose} />
 				<canvas
 					className="FieldImage"
 					ref={this.canvas}

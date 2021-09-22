@@ -1,7 +1,7 @@
 import { changeSelectedGroup } from '../../redux/group/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
-import { Dropdown } from 'react-bootstrap';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
@@ -48,16 +48,13 @@ class ToolsSelect extends React.Component {
 			: 'Select Group';
 
 		return (
-			<Dropdown>
-				<Dropdown.Toggle size="lg">{selectDropdownText}</Dropdown.Toggle>
-				<Dropdown.Menu>
-					{this.getItems()}
-					<Dropdown.Divider />
-					<Dropdown.Item as="button" onClick={this.props.showCreateNewPopup}>
-						{this.props.isPathMode ? 'New Path' : 'New Group'}
-					</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown>
+			<DropdownButton size="lg" drop="up" title={selectDropdownText}>
+				{this.getItems()}
+				<Dropdown.Divider />
+				<Dropdown.Item as="button" onClick={this.props.showCreateNewPopup}>
+					{this.props.isPathMode ? 'New Path' : 'New Group'}
+				</Dropdown.Item>
+			</DropdownButton>
 		);
 	}
 }

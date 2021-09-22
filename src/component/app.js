@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import Popups from './popups/popups';
 import Tools from './tools/tools';
 import mousetrap from 'mousetrap';
-import Waypoint from './waypoint';
 import 'mousetrap-global-bind';
 import React from 'react';
 
@@ -26,9 +25,10 @@ class App extends React.Component {
 				<Popups />
 				<Settings />
 				<FieldView />
-				<PlayingBar />
-				<Tools />
-				<Waypoint />
+				<div id="bottom">
+					<PlayingBar />
+					<Tools />
+				</div>
 			</div>
 		);
 	}
