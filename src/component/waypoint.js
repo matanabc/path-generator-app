@@ -13,7 +13,7 @@ class Waypoint extends React.Component {
 	};
 
 	render() {
-		const { waypoint, show, index, close, length } = this.props;
+		const { waypoint, show, index, close, length, driveType } = this.props;
 		if (!waypoint) return <></>;
 
 		return (
@@ -49,7 +49,7 @@ class Waypoint extends React.Component {
 						onChange={(e) => this.onChange({ angle: Number(e.target.value) })}
 					/>
 
-					{this.props.driveType === Holonomic && (
+					{driveType === Holonomic && (
 						<>
 							<InputGroup.Prepend>
 								<InputGroup.Text>Robot Angle</InputGroup.Text>
@@ -91,6 +91,7 @@ class Waypoint extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
+		driveType: state.driveType,
 		length: state.selected ? state.paths[state.selected].waypoints.length : 0,
 	};
 };

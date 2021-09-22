@@ -3,6 +3,7 @@ import { d2r } from 'path-generator/lib/util';
 
 export function drawOnCanvas(canvas, props) {
 	const ctx = canvas.getContext('2d');
+	ctx.lineWidth = 5;
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 	drawFieldBorders(ctx, props);
 
@@ -34,12 +35,12 @@ function drawWaypoints(ctx, props) {
 		const x = waypoint.x / props.fieldConfig.widthPixelToMeter + props.fieldConfig.topLeftXPixel;
 		const y = waypoint.y / props.fieldConfig.hightPixelToMeter + props.fieldConfig.topLeftYPixel;
 		ctx.beginPath();
-		ctx.arc(x, y, 2, 0, Math.PI * 2, false);
+		ctx.arc(x, y, 10, 0, Math.PI * 2, false);
 		if (props.selectedWaypoint === index) ctx.fillStyle = 'blue';
 		else ctx.fillStyle = 'red';
 		ctx.fill();
 		if (index === props.selectedWaypoint)
-			drawRobot(ctx, props, x, y, waypoint instanceof Holonomic.Waypoint ? waypoint.robotAngle : waypoint.angle);
+			drawRobot(ctx, props, x, y, props.driveType === Holonomic ? waypoint.robotAngle : waypoint.angle);
 	});
 }
 
@@ -91,7 +92,7 @@ function drawRobotShape(ctx, props, robotLength, robotCenter, x, y, angle) {
 }
 
 function drawRobotCenter(ctx) {
-	ctx.arc(0, 0, 1.5, 0, Math.PI * 2, false);
+	ctx.arc(0, 0, 5, 0, Math.PI * 2, false);
 	ctx.fillStyle = 'blue';
 	ctx.fill();
 }

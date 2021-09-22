@@ -7,7 +7,7 @@ import React from 'react';
 class FieldView extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = { index: undefined, newWaypoint: false, showInfo: false };
+		this.state = { index: undefined, ctrlKey: false, showInfo: false, width: 0, height: 0 };
 		this.canvas = React.createRef();
 		this.space = 0.5;
 	}
@@ -15,14 +15,26 @@ class FieldView extends React.Component {
 	componentDidMount() {
 		const canvas = this.canvas.current;
 		drawOnCanvas(canvas, this.props);
+		canvas.addEventListener('wheel', this.onWheel);
 		canvas.addEventListener('mousedown', this.onDown);
 		canvas.addEventListener('dblclick', this.ondblclick);
-
-		document.onkeydown = (e) => this.setState(() => ({ newWaypoint: e.ctrlKey }));
-		document.onkeyup = (e) => this.setState(() => ({ newWaypoint: e.ctrlKey }));
+		document.onkeyup = (e) => this.setState(() => ({ ctrlKey: e.ctrlKey }));
+		document.onkeydown = (e) => this.setState(() => ({ ctrlKey: e.ctrlKey }));
+		this.setState(() => ({ width: canvas.clientWidth, height: canvas.clientHeight }));
 	}
 
 	componentDidUpdate = () => drawOnCanvas(this.canvas.current, this.props);
+
+	onWheel = (event) => {
+		const { index, ctrlKey } = this.state;
+		if (index === undefined) return;
+		const { waypoints, setWaypoint } = this.props;
+		const newWaypoint = { ...waypoints[index] };
+		if (ctrlKey && waypoints[index].robotAngle !== undefined)
+			newWaypoint.robotAngle = waypoints[index].robotAngle + event.deltaY * 0.1;
+		else newWaypoint.angle = waypoints[index].angle + event.deltaY * 0.1;
+		setWaypoint(newWaypoint, index);
+	};
 
 	onDown = (event) => {
 		if (!this.props.path) return;
@@ -32,7 +44,7 @@ class FieldView extends React.Component {
 		this.props.setSelectedWaypoint(index);
 		this.setState(() => ({ index: index }));
 		if (index === undefined) return;
-		if (this.state.newWaypoint) {
+		if (this.state.ctrlKey) {
 			this.props.addWaypoint({ x: x, y: y }, index);
 			this.setState(() => ({ index: index + 1 }));
 			this.props.setSelectedWaypoint(index + 1);
@@ -42,8 +54,8 @@ class FieldView extends React.Component {
 	};
 
 	whileMove = (event) => {
-		const { setWaypoint, waypoints } = this.props;
 		const { index } = this.state;
+		const { setWaypoint, waypoints } = this.props;
 		setWaypoint({ ...waypoints[index], ...this.getMousePosition(event) }, index);
 	};
 
@@ -98,14 +110,16 @@ class FieldView extends React.Component {
 	};
 
 	render() {
-		const { index, showInfo } = this.state;
 		const { waypoints } = this.props;
+		const { index, showInfo, width, height } = this.state;
 		return (
 			<div className="FieldView">
 				<Waypoint show={showInfo} waypoint={waypoints[index]} index={index} close={this.onClose} />
 				<canvas
 					className="FieldImage"
 					ref={this.canvas}
+					height={height}
+					width={width}
 					style={{
 						backgroundPosition: 'center',
 						backgroundSize: 'contain',
@@ -121,6 +135,7 @@ class FieldView extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		path: state.path,
+		driveType: state.driveType,
 		isPathMode: state.isPathMode,
 		filedImageUrl: state.imageUrl,
 		fieldConfig: state.fieldConfig,

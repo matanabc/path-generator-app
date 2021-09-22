@@ -13,11 +13,10 @@ class PlayingBar extends React.Component {
 	componentDidMount() {
 		this.range.current.value = 0;
 		this.range.current.disabled = true;
-		document
-			.querySelector('canvas')
-			.addEventListener('wheel', (event) =>
-				this.changeRangePosition(this.props.rangePosition - Math.sign(event.deltaY))
-			);
+		document.querySelector('canvas').addEventListener('wheel', (event) => {
+			const { selectedWaypoint, rangePosition } = this.props;
+			if (selectedWaypoint === undefined) this.changeRangePosition(rangePosition - Math.sign(event.deltaY));
+		});
 	}
 
 	componentDidUpdate() {
@@ -69,6 +68,7 @@ const mapStateToProps = (state) => {
 	return {
 		path: state.path,
 		rangePosition: state.rangePosition,
+		selectedWaypoint: state.selectedWaypoint,
 		robotLoopTime: state.pathConfig.robotLoopTime,
 	};
 };
