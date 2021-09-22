@@ -109,10 +109,10 @@ class Waypoint extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const { selectedWaypoint, path } = state;
+	const { selectedWaypoint, paths, selected } = state;
 	return {
-		waypoint: selectedWaypoint !== undefined && path ? path.waypoints[selectedWaypoint] : {},
-		length: path ? path.waypoints.length : 0,
+		waypoint: selectedWaypoint !== undefined && selected ? paths[selected].waypoints[selectedWaypoint] : {},
+		length: selected ? paths[selected].length : 0,
 		driveType: state.driveType,
 		index: selectedWaypoint,
 	};

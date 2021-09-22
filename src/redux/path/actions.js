@@ -25,7 +25,7 @@ export function addWaypoint(waypoint, index) {
 		type: ADD_WAYPOINT,
 		payload: {
 			waypoint: waypoint,
-			index: index,
+			index: index + 1,
 		},
 	};
 }

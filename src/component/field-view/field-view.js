@@ -39,9 +39,8 @@ class FieldView extends React.Component {
 	};
 
 	whileMove = (event) => {
-		const { path, setWaypoint } = this.props;
+		const { setWaypoint, waypoints } = this.props;
 		const { index } = this.state;
-		const { waypoints } = path;
 		setWaypoint({ ...waypoints[index], ...this.getMousePosition(event) }, index);
 	};
 
@@ -57,7 +56,7 @@ class FieldView extends React.Component {
 			minX = x - this.space,
 			maxY = y + this.space,
 			minY = y - this.space;
-		const { waypoints } = this.props.path;
+		const { waypoints } = this.props;
 		let index = undefined;
 		const waypoint = waypoints.filter((waypoint, i) => {
 			if (maxX >= waypoint.x && minX <= waypoint.x && maxY >= waypoint.y && minY <= waypoint.y) {
@@ -114,6 +113,7 @@ const mapStateToProps = (state) => {
 		drawRobotInterval: state.drawRobotInterval,
 		listenToMouseClicks: state.listenToMouseClicks,
 		isPathInReverse: state.path ? state.path.isReverse() : false,
+		waypoints: state.selected ? state.paths[state.selected].waypoints : {},
 	};
 };
 
