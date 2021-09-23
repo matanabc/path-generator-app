@@ -1,6 +1,7 @@
 import { projectInit } from '../handlers/project-handler';
 import { appUpdaterInit } from '../handlers/app-handler';
 import FieldView from './field-view/field-view';
+import { CANCEL_SHORTCUT } from '../shortcut';
 import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
 import { connect } from 'react-redux';
@@ -14,7 +15,7 @@ class App extends React.Component {
 	componentDidMount() {
 		appUpdaterInit(this.props.dispatch);
 		projectInit(this.props.dispatch);
-		mousetrap.bindGlobal('esc', () => {
+		mousetrap.bindGlobal(CANCEL_SHORTCUT, () => {
 			if (document.activeElement) document.activeElement.blur();
 		});
 	}

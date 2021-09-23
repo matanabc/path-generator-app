@@ -2,6 +2,7 @@ import { changeSelectedGroup } from '../../redux/group/actions';
 import { changePopupsStatus } from '../../redux/view/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { CREATE_SHORTCUT } from '../../shortcut';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
@@ -15,7 +16,7 @@ class ToolsSelect extends React.Component {
 	}
 
 	componentDidMount() {
-		mousetrap.bindGlobal(['command+n', 'alt+n'], this.props.showCreateNewPopup);
+		mousetrap.bindGlobal(CREATE_SHORTCUT, this.props.showCreateNewPopup);
 	}
 
 	getItems() {

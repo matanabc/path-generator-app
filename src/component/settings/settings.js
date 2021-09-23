@@ -7,6 +7,7 @@ import SettingsRobotConfig from './settings-robot-config';
 import SettingsFiledConfig from './settings-filed-config';
 import SettingsPathConfig from './settings-path-config';
 import { updateApp } from '../../handlers/app-handler';
+import { CONFIRM_SHORTCUT } from '../../shortcut';
 import { Modal, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
@@ -25,7 +26,7 @@ class Settings extends React.Component {
 	}
 
 	componentDidUpdate() {
-		if (this.props.popupsStatus.settingsPopup) mousetrap.bindGlobal('enter', this.saveSettings);
+		if (this.props.popupsStatus.settingsPopup) mousetrap.bindGlobal(CONFIRM_SHORTCUT, this.saveSettings);
 		else mousetrap.unbind('enter');
 	}
 

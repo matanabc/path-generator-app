@@ -12,10 +12,6 @@ class ToolsChangeMode extends React.Component {
 		this.onClick = this.onClick.bind(this);
 	}
 
-	componentDidMount() {
-		mousetrap.bindGlobal(['command+m', 'alt+m'], this.onClick);
-	}
-
 	onClick() {
 		if (document.activeElement) document.activeElement.blur();
 		this.props.changeMode();

@@ -1,5 +1,6 @@
-import { FiCircle, FiCheckCircle } from 'react-icons/fi';
 import { changeDirection } from '../../redux/path/actions';
+import { FiCircle, FiCheckCircle } from 'react-icons/fi';
+import { DIRECTION_SHORTCUT } from '../../shortcut';
 import { Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
@@ -7,7 +8,7 @@ import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsPathDirection extends React.Component {
-	componentDidMount = () => mousetrap.bindGlobal(['command+f', 'alt+f'], this.onClick);
+	componentDidMount = () => mousetrap.bindGlobal(DIRECTION_SHORTCUT, this.onClick);
 
 	onClick = async () => {
 		const { changeDirection, path, paths, selected, isPathMode } = this.props;

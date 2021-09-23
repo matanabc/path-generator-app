@@ -1,3 +1,4 @@
+import { CONFIRM_SHORTCUT } from '../../shortcut';
 import { Modal, Button } from 'react-bootstrap';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
@@ -17,7 +18,7 @@ class Popup extends React.Component {
 			}, 100);
 		else if (this.cancelButtonRef.current !== null) this.cancelButtonRef.current.focus();
 		if (this.props.confirm)
-			mousetrap.bindGlobal(['return', 'enter'], () => {
+			mousetrap.bindGlobal(CONFIRM_SHORTCUT, () => {
 				if (document.activeElement === this.cancelButtonRef.current) return;
 				if (this.props.show) this.props.confirm();
 			});
