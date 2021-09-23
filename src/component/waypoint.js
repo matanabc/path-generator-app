@@ -6,20 +6,21 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 class Waypoint extends React.Component {
-	onChange = (value) => this.props.setWaypoint({ ...this.props.waypoint, ...value }, this.props.index);
+	onChange = (value) => this.props.setWaypoint({ ...this.props.waypoint, ...value }, this.props.globalState);
 	onRemove = () => {
-		this.props.removeWaypoint(this.props.index);
+		this.props.removeWaypoint(this.props.globalState);
 		this.props.close();
 	};
 
 	render() {
-		const { waypoint, show, index, close, length, driveType } = this.props;
+		const { waypoint, show, close, length } = this.props;
+		const { driveType, selectedWaypoint } = this.props.globalState;
 		if (!waypoint) return <></>;
 
 		return (
 			<Modal show={show} onHide={close} size={'xl'}>
 				<Modal.Header closeButton>
-					<Modal.Title>Waypoint {index + 1} info</Modal.Title>
+					<Modal.Title>Waypoint {selectedWaypoint + 1} info</Modal.Title>
 				</Modal.Header>
 				<Modal.Body style={{ display: 'flex', textAlignLast: 'center' }}>
 					<InputGroup.Prepend>
@@ -91,15 +92,15 @@ class Waypoint extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		driveType: state.driveType,
+		globalState: state,
 		length: state.selected ? state.paths[state.selected].waypoints.length : 0,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
-		removeWaypoint: (index) => dispatch(removeWaypoint(index)),
+		setWaypoint: async (waypoint, state) => dispatch(await setWaypoint(waypoint, state)),
+		removeWaypoint: async (state) => dispatch(await removeWaypoint(state)),
 	};
 };
 

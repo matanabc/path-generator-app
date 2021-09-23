@@ -1,6 +1,6 @@
 import { setRobotDrawConfig, setFieldConfig, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
-import { setPathConfig, addPath } from '../redux/path/actions';
+import { setPathConfig, loadPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
 import { Holonomic, Tank } from 'path-generator';
 import * as JSZip from 'jszip';
@@ -56,22 +56,22 @@ export default class LocalStorageHandler {
 			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'Tank';
 			const driveType = this.jsonProject.driveType === 'Holonomic' ? Holonomic : Tank;
 			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
-			this.dispatch(setPathConfig(pathConfig, driveType));
+			this.dispatch(await setPathConfig(pathConfig, driveType));
 		} catch (error) {
-			this.dispatch(setPathConfig(new Tank.PathConfig(), Tank));
+			this.dispatch(await setPathConfig(new Tank.PathConfig(), Tank));
 		}
 	}
 
 	async loadPaths() {
 		Object.keys(localStorage).forEach((key) => {
-			if (key.startsWith('path/')) this.loadPath(key);
+			if (key.startsWith('path/')) this.loadJsonPath(key);
 		});
 	}
 
-	async loadPath(key) {
+	async loadJsonPath(key) {
 		try {
 			const path = JSON.parse(localStorage.getItem(key));
-			this.dispatch(addPath(key.replace('path/', ''), path.waypoints, path.isInReverse));
+			this.dispatch(loadPath(key.replace('path/', ''), path.waypoints, path.isInReverse));
 		} catch (error) {}
 	}
 

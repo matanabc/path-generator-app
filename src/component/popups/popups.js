@@ -10,34 +10,33 @@ class Popups extends React.Component {
 		super(props);
 		this.newPathRef = React.createRef();
 		this.renamePathRef = React.createRef();
-		this.createNew = this.createNew.bind(this);
-		this.renamePath = this.renamePath.bind(this);
-		this.deleteAction = this.deleteAction.bind(this);
 	}
 
 	componentDidUpdate() {
 		if (this.props.popupsStatus.renamePopup) this.renamePathRef.current.defaultValue = this.props.pathName;
 	}
 
-	deleteAction() {
+	deleteAction = async () => {
+		await this.props.deleteAction(this.props.globalState);
 		this.props.closePopups();
-		this.props.deleteAction(this.props.isPathMode);
-	}
+	};
 
-	renamePath() {
+	renamePath = async () => {
+		const { selected, paths, renameAction, closePopups } = this.props;
 		if (this.renamePathRef.current.value) {
-			this.props.renameAction(this.props.isPathMode, this.renamePathRef.current.value);
-			this.props.closePopups();
+			await renameAction(isPathMode, paths, selected, this.renamePathRef.current.value);
+			closePopups();
 		}
-	}
+	};
 
-	createNew() {
-		if (this.newPathRef.current.value && !this.props.pathsName.includes(this.newPathRef.current.value)) {
-			this.props.createNewAction(this.props.isPathMode, this.newPathRef.current.value);
+	createNew = async () => {
+		const { isPathMode, paths, pathConfig, driveType, pathsName } = this.props;
+		if (this.newPathRef.current.value && !pathsName.includes(this.newPathRef.current.value)) {
+			await this.props.createNewAction(isPathMode, paths, pathConfig, driveType, this.newPathRef.current.value);
 			this.props.resetRangePosition();
 			this.props.closePopups();
 		}
-	}
+	};
 
 	render() {
 		const type = this.props.isPathMode ? 'path' : 'group';
@@ -127,17 +126,24 @@ const mapStateToProps = (state) => {
 		popupsStatus: state.popupsStatus,
 		newVersion: state.newVersion,
 		isPathMode: state.isPathMode,
+		pathConfig: state.pathConfig,
+		driveType: state.driveType,
 		saveCSVTo: state.saveCSVTo,
+		selected: state.selected,
 		isWeb: state.isWeb,
+		globalState: state,
+		paths: state.paths,
 		path: state.path,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		createNewAction: (isPathMode, name) => dispatch(createNewAction(isPathMode, name)),
-		renameAction: (isPathMode, name) => dispatch(renameAction(isPathMode, name)),
-		deleteAction: (isPathMode) => dispatch(deleteAction(isPathMode)),
+		createNewAction: async (isPathMode, paths, pathConfig, driveType, name) =>
+			dispatch(await createNewAction(isPathMode, paths, pathConfig, driveType, name)),
+		renameAction: async (isPathMode, paths, oldName, newName) =>
+			dispatch(await renameAction(isPathMode, paths, oldName, newName)),
+		deleteAction: async (state) => dispatch(await deleteAction(state)),
 		resetRangePosition: () => dispatch(changeRangePosition(0)),
 		closePopups: () => dispatch(changePopupsStatus()),
 	};

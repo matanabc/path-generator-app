@@ -7,26 +7,19 @@ import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsPathDirection extends React.Component {
-	constructor(props) {
-		super(props);
-		this.onClick = this.onClick.bind(this);
-		this.getButtonIcon = this.getButtonIcon.bind(this);
-	}
+	componentDidMount = () => mousetrap.bindGlobal(['command+f', 'alt+f'], this.onClick);
 
-	componentDidMount() {
-		mousetrap.bindGlobal(['command+f', 'alt+f'], this.onClick);
-	}
-
-	onClick() {
+	onClick = async () => {
+		const { changeDirection, path, paths, selected, isPathMode } = this.props;
 		if (document.activeElement) document.activeElement.blur();
-		if (!this.props.isPathMode) return;
-		if (this.props.path) this.props.changeDirection();
-	}
+		if (!isPathMode) return;
+		if (path) await changeDirection(path, paths, selected);
+	};
 
-	getButtonIcon() {
+	getButtonIcon = () => {
 		if (this.props.path && this.props.isPathReverse) return <FiCheckCircle className="mr-2" />;
 		return <FiCircle className="mr-2" />;
-	}
+	};
 
 	render() {
 		return (
@@ -46,6 +39,8 @@ class ToolsPathDirection extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		path: state.path,
+		paths: state.paths,
+		selected: state.selected,
 		isPathMode: state.isPathMode,
 		isPathReverse: state.selected ? state.paths[state.selected].isInReverse : false,
 	};
@@ -53,7 +48,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		changeDirection: () => dispatch(changeDirection()),
+		changeDirection: async (path, paths, selected) => dispatch(await changeDirection(path, paths, selected)),
 	};
 };
 

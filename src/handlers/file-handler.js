@@ -1,6 +1,6 @@
 import { setRobotDrawConfig, setProjectPath, setFieldConfig, setCSVPath, setImage } from '../redux/project/actions';
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
-import { setPathConfig, addPath } from '../redux/path/actions';
+import { setPathConfig, loadPath } from '../redux/path/actions';
 import { getCoordsCSV, getSetpointsCSV } from './csv-handler';
 import { addGroup } from '../redux/group/actions';
 import { Holonomic, Tank } from 'path-generator';
@@ -90,9 +90,9 @@ export default class FileHandler {
 			this.jsonProject.driveType = this.jsonProject.driveType ? this.jsonProject.driveType : 'Tank';
 			const driveType = this.jsonProject.driveType === 'Holonomic' ? Holonomic : Tank;
 			const pathConfig = this.jsonProject.pathConfig ? this.jsonProject.pathConfig : {};
-			this.dispatch(setPathConfig(pathConfig, driveType));
+			this.dispatch(await setPathConfig(pathConfig, driveType));
 		} catch (error) {
-			this.dispatch(setPathConfig(new Tank.PathConfig(), Tank));
+			this.dispatch(await setPathConfig(new Tank.PathConfig(), Tank));
 		}
 	}
 
@@ -117,16 +117,16 @@ export default class FileHandler {
 		try {
 			const files = this.fs.readdirSync(`${this.projectPath}/paths`);
 			files.forEach(async (fileName) => {
-				if (fileName.endsWith('.json')) this.loadPath(fileName);
+				if (fileName.endsWith('.json')) this.loadJsonPath(fileName);
 			});
 		} catch (error) {}
 	}
 
-	async loadPath(fileName) {
+	async loadJsonPath(fileName) {
 		try {
 			const data = this.fs.readFileSync(`${this.projectPath}/paths/${fileName}`);
 			const path = JSON.parse(data);
-			this.dispatch(addPath(fileName.replace('.json', ''), path.waypoints, path.isInReverse));
+			this.dispatch(loadPath(fileName.replace('.json', ''), path.waypoints, path.isInReverse));
 		} catch (error) {}
 	}
 

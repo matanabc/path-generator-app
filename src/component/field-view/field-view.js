@@ -14,7 +14,7 @@ class FieldView extends React.Component {
 
 	componentDidMount() {
 		const canvas = this.canvas.current;
-		drawOnCanvas(canvas, this.props);
+		drawOnCanvas(canvas, { ...this.props, ...this.props.globalState });
 		canvas.addEventListener('wheel', this.onWheel);
 		canvas.addEventListener('mousedown', this.onDown);
 		canvas.addEventListener('dblclick', this.ondblclick);
@@ -23,21 +23,22 @@ class FieldView extends React.Component {
 		this.setState(() => ({ width: canvas.clientWidth, height: canvas.clientHeight }));
 	}
 
-	componentDidUpdate = () => drawOnCanvas(this.canvas.current, this.props);
+	componentDidUpdate = () => drawOnCanvas(this.canvas.current, { ...this.props, ...this.props.globalState });
 
 	onWheel = (event) => {
 		const { index, ctrlKey } = this.state;
 		if (index === undefined) return;
-		const { waypoints, setWaypoint } = this.props;
+		const { waypoints, setWaypoint, globalState } = this.props;
 		const newWaypoint = { ...waypoints[index] };
 		if (ctrlKey && waypoints[index].robotAngle !== undefined)
 			newWaypoint.robotAngle = waypoints[index].robotAngle + event.deltaY * 0.1;
 		else newWaypoint.angle = waypoints[index].angle + event.deltaY * 0.1;
-		setWaypoint(newWaypoint, index);
+		setWaypoint(newWaypoint, globalState);
 	};
 
-	onDown = (event) => {
-		if (!this.props.path) return;
+	onDown = async (event) => {
+		const { globalState, addWaypoint, setSelectedWaypoint } = this.props;
+		if (!this.props.globalState.path) return;
 		const { x, y } = this.getMousePosition(event);
 		const index = this.getWaypointIndex(x, y);
 		const canvas = this.canvas.current;
@@ -45,9 +46,9 @@ class FieldView extends React.Component {
 		this.setState(() => ({ index: index }));
 		if (index === undefined) return;
 		if (this.state.ctrlKey) {
-			this.props.addWaypoint({ x: x, y: y }, index);
+			await addWaypoint({ x: x, y: y }, index, globalState);
 			this.setState(() => ({ index: index + 1 }));
-			this.props.setSelectedWaypoint(index + 1);
+			setSelectedWaypoint(index + 1);
 		}
 		canvas.addEventListener('mousemove', this.whileMove);
 		canvas.addEventListener('mouseup', this.onUp);
@@ -55,8 +56,8 @@ class FieldView extends React.Component {
 
 	whileMove = (event) => {
 		const { index } = this.state;
-		const { setWaypoint, waypoints } = this.props;
-		setWaypoint({ ...waypoints[index], ...this.getMousePosition(event) }, index);
+		const { setWaypoint, waypoints, globalState } = this.props;
+		setWaypoint({ ...waypoints[index], ...this.getMousePosition(event) }, globalState);
 	};
 
 	onUp = () => {
@@ -66,7 +67,7 @@ class FieldView extends React.Component {
 	};
 
 	ondblclick = (event) => {
-		if (!this.props.path) return;
+		if (!this.props.globalState.path) return;
 		const { x, y } = this.getMousePosition(event);
 		const index = this.getWaypointIndex(x, y);
 		if (index === undefined) return;
@@ -100,17 +101,15 @@ class FieldView extends React.Component {
 		const rect = canvas.getBoundingClientRect();
 		const scaleX = canvas.width / rect.width;
 		const scaleY = canvas.height / rect.height;
-		const x =
-			((event.clientX - rect.left) * scaleX - this.props.fieldConfig.topLeftXPixel) *
-			this.props.fieldConfig.widthPixelToMeter;
-		const y =
-			((event.clientY - rect.top) * scaleY - this.props.fieldConfig.topLeftYPixel) *
-			this.props.fieldConfig.hightPixelToMeter;
+		const { fieldConfig } = this.props.globalState;
+		const x = ((event.clientX - rect.left) * scaleX - fieldConfig.topLeftXPixel) * fieldConfig.widthPixelToMeter;
+		const y = ((event.clientY - rect.top) * scaleY - fieldConfig.topLeftYPixel) * fieldConfig.hightPixelToMeter;
 		return { x: Number(x.toFixed(3)), y: Number(y.toFixed(3)) };
 	};
 
 	render() {
-		const { waypoints } = this.props;
+		const { waypoints, globalState } = this.props;
+		const { imageUrl } = globalState;
 		const { index, showInfo, width, height } = this.state;
 		return (
 			<div className="FieldView">
@@ -124,7 +123,7 @@ class FieldView extends React.Component {
 						backgroundPosition: 'center',
 						backgroundSize: 'contain',
 						backgroundRepeat: 'no-repeat',
-						backgroundImage: 'url(' + this.props.filedImageUrl + ')',
+						backgroundImage: 'url(' + imageUrl + ')',
 					}}
 				/>
 			</div>
@@ -133,27 +132,19 @@ class FieldView extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	const { path, paths, selected } = state;
 	return {
-		path: state.path,
-		driveType: state.driveType,
-		isPathMode: state.isPathMode,
-		filedImageUrl: state.imageUrl,
-		fieldConfig: state.fieldConfig,
-		rangePosition: state.rangePosition,
-		robotDrawConfig: state.robotDrawConfig,
-		selectedWaypoint: state.selectedWaypoint,
-		drawRobotInterval: state.drawRobotInterval,
-		listenToMouseClicks: state.listenToMouseClicks,
-		isPathInReverse: state.path ? state.path.isReverse() : false,
-		waypoints: state.selected ? state.paths[state.selected].waypoints : {},
+		globalState: state,
+		isPathInReverse: path ? path.isReverse() : false,
+		waypoints: selected ? paths[selected].waypoints : {},
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		addWaypoint: (waypoint, index) => dispatch(addWaypoint(waypoint, index)),
+		setWaypoint: async (waypoint, state) => dispatch(await setWaypoint(waypoint, state)),
+		addWaypoint: async (waypoint, index, state) => dispatch(await addWaypoint(waypoint, index, state)),
 		setSelectedWaypoint: (index) => dispatch(setSelectedWaypoint(index)),
-		setWaypoint: (waypoint, index) => dispatch(setWaypoint(waypoint, index)),
 	};
 };
 

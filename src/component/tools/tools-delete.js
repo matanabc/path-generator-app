@@ -7,30 +7,17 @@ import 'mousetrap-global-bind';
 import React from 'react';
 
 class ToolsDelete extends React.Component {
-	constructor(props) {
-		super(props);
-		this.onClick = this.onClick.bind(this);
-	}
-
-	componentDidMount() {
-		mousetrap.bindGlobal(['command+d', 'alt+d'], this.onClick);
-	}
-
-	onClick() {
+	componentDidMount = () => mousetrap.bindGlobal(['command+d', 'alt+d'], this.onClick);
+	onClick = () => {
+		const { path, showDeletePopup } = this.props;
 		if (document.activeElement) document.activeElement.blur();
-		if (this.props.path) this.props.showDeletePopup();
-	}
+		if (path) showDeletePopup();
+	};
 
 	render() {
+		const { path } = this.props;
 		return (
-			<Button
-				size="lg"
-				variant="danger"
-				className="mr-3"
-				title="Delete"
-				onClick={this.onClick}
-				disabled={!this.props.path}
-			>
+			<Button size="lg" variant="danger" className="mr-3" title="Delete" onClick={this.onClick} disabled={!path}>
 				<MdDelete />
 			</Button>
 		);
