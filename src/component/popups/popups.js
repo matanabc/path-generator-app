@@ -22,7 +22,7 @@ class Popups extends React.Component {
 	};
 
 	renamePath = async () => {
-		const { selected, paths, renameAction, closePopups } = this.props;
+		const { selected, paths, renameAction, closePopups, isPathMode } = this.props;
 		if (this.renamePathRef.current.value) {
 			await renameAction(isPathMode, paths, selected, this.renamePathRef.current.value);
 			closePopups();

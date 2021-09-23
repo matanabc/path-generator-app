@@ -49,7 +49,7 @@ class ToolsSelect extends React.Component {
 		const { isPathMode, selected } = globalState;
 		const selectDropdownText = selected ? selected : isPathMode ? 'Select Path' : 'Select Group';
 		return (
-			<DropdownButton size="lg" drop="up" title={selectDropdownText}>
+			<DropdownButton className="ml-3 mr-2" size="lg" drop="up" title={selectDropdownText}>
 				{this.getItems()}
 				<Dropdown.Divider />
 				<Dropdown.Item as="button" onClick={showCreateNewPopup}>

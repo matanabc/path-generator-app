@@ -1,4 +1,4 @@
-import { saveJsonPath, deleteJsonPath } from '../../handlers/project-handler';
+import { saveJsonPath, deleteJsonPath, renameJsonPath } from '../../handlers/project-handler';
 import { UPDATE_PATH_REDUCER, LOAD_PATH } from './action-types';
 
 export const setSelectedWaypoint = (index) => ({ type: UPDATE_PATH_REDUCER, payload: { selectedWaypoint: index } });
@@ -49,10 +49,9 @@ export async function deletePath(state) {
 }
 
 export async function renamePath(paths, oldName, newName) {
-	const newState = { ...state, selected: payload.name };
 	if (oldName !== newName) {
 		paths[newName] = paths[oldName];
-		delete newState.paths[oldName];
+		delete paths[oldName];
 		renameJsonPath(oldName, newName);
 	}
 	return actionReturn({ selected: newName });
