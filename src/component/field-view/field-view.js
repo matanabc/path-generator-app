@@ -18,6 +18,8 @@ class FieldView extends React.Component {
 		canvas.addEventListener('wheel', this.onWheel);
 		canvas.addEventListener('mousedown', this.onDown);
 		canvas.addEventListener('dblclick', this.ondblclick);
+		document.oncopy = this.onCopy;
+		document.onpaste = this.onPaste;
 		document.onkeyup = (e) => this.setState(() => ({ ctrlKey: e.ctrlKey }));
 		document.onkeydown = (e) => this.setState(() => ({ ctrlKey: e.ctrlKey }));
 		this.setState(() => ({ width: canvas.clientWidth, height: canvas.clientHeight }));
@@ -76,6 +78,22 @@ class FieldView extends React.Component {
 
 	onClose = () => {
 		this.setState(() => ({ showInfo: false }));
+	};
+
+	onCopy = async () => {
+		const { index } = this.state;
+		const { waypoints } = this.props;
+		if (index === undefined) return;
+		await navigator.clipboard.writeText(JSON.stringify(waypoints[index]));
+	};
+
+	onPaste = async () => {
+		try {
+			const { index } = this.state;
+			if (index === undefined) return;
+			const waypoint = JSON.parse(await navigator.clipboard.readText());
+			await this.props.addWaypoint(waypoint, index, this.props);
+		} catch (error) {}
 	};
 
 	getWaypointIndex = (x, y) => {
