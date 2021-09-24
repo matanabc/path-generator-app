@@ -17,7 +17,7 @@ class Popups extends React.Component {
 	}
 
 	deleteAction = async () => {
-		await this.props.deleteAction(this.props.globalState);
+		await this.props.deleteAction(this.props);
 		this.props.closePopups();
 	};
 
@@ -131,7 +131,6 @@ const mapStateToProps = (state) => {
 		saveCSVTo: state.saveCSVTo,
 		selected: state.selected,
 		isWeb: state.isWeb,
-		globalState: state,
 		paths: state.paths,
 		path: state.path,
 	};

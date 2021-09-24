@@ -20,8 +20,7 @@ class ToolsSelect extends React.Component {
 	}
 
 	getItems() {
-		const { pathsName, groups, globalState } = this.props;
-		const { isPathMode, selected } = globalState;
+		const { pathsName, groups, isPathMode, selected } = this.props;
 		const list = isPathMode ? pathsName : groups;
 		return list.map((element, index) => {
 			return (
@@ -38,16 +37,14 @@ class ToolsSelect extends React.Component {
 	}
 
 	async setSelected(selected) {
-		const { changeSelectedGroup, changeSelectedPath, globalState } = this.props;
-		const { isPathMode } = globalState;
+		const { changeSelectedGroup, changeSelectedPath, isPathMode } = this.props;
 		if (document.activeElement) document.activeElement.blur();
-		if (isPathMode) await changeSelectedPath(selected, globalState);
-		else changeSelectedGroup(selected, globalState);
+		if (isPathMode) await changeSelectedPath(selected, this.props);
+		else changeSelectedGroup(selected, this.props);
 	}
 
 	render() {
-		const { showCreateNewPopup, globalState } = this.props;
-		const { isPathMode, selected } = globalState;
+		const { showCreateNewPopup, isPathMode, selected } = this.props;
 		const selectDropdownText = selected ? selected : isPathMode ? 'Select Path' : 'Select Group';
 		return (
 			<DropdownButton className="ml-3 mr-2" size="lg" drop="up" title={selectDropdownText}>
@@ -65,7 +62,11 @@ const mapStateToProps = (state) => {
 	return {
 		pathsName: Object.keys(state.paths),
 		groups: Object.keys(state.groups),
-		globalState: state,
+		isPathMode: state.isPathMode,
+		pathConfig: state.pathConfig,
+		driveType: state.driveType,
+		selected: state.selected,
+		paths: state.paths,
 	};
 };
 

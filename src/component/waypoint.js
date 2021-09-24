@@ -6,15 +6,14 @@ import { connect } from 'react-redux';
 import React from 'react';
 
 class Waypoint extends React.Component {
-	onChange = (value) => this.props.setWaypoint({ ...this.props.waypoint, ...value }, this.props.globalState);
+	onChange = (value) => this.props.setWaypoint({ ...this.props.waypoint, ...value }, this.props);
 	onRemove = () => {
-		this.props.removeWaypoint(this.props.globalState);
+		this.props.removeWaypoint(this.props);
 		this.props.close();
 	};
 
 	render() {
-		const { waypoint, show, close, length } = this.props;
-		const { driveType, selectedWaypoint } = this.props.globalState;
+		const { waypoint, show, close, length, driveType, selectedWaypoint } = this.props;
 		if (!waypoint) return <></>;
 
 		return (
@@ -92,7 +91,12 @@ class Waypoint extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		globalState: state,
+		paths: state.paths,
+		selected: state.selected,
+		driveType: state.driveType,
+		pathConfig: state.pathConfig,
+		fieldConfig: state.fieldConfig,
+		selectedWaypoint: state.selectedWaypoint,
 		length: state.selected ? state.paths[state.selected].waypoints.length : 0,
 	};
 };
