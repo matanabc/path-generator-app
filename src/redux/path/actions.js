@@ -8,12 +8,12 @@ export async function addWaypoint(waypoint, index, state) {
 	const { vMax } = state.pathConfig;
 	const { waypoints } = paths[selected];
 	waypoint = Object.assign(new driveType.Waypoint(), { ...waypoint, v: vMax, vMax: vMax });
-	waypoints.splice(index + 1, 0, waypoint);
-	if (index === waypoints.length - 1) {
+	if (index === waypoints.length) {
 		if (waypoints[index - 1].v === 0) waypoints[index - 1].v = vMax;
 		waypoints[index - 1].vMax = vMax;
-		waypoints[index].v = 0;
+		waypoint.v = 0;
 	}
+	waypoints.splice(index, 0, waypoint);
 	return actionReturn({ path: getNewPath(waypoints, state) });
 }
 

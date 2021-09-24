@@ -9,7 +9,7 @@ class FieldView extends React.Component {
 		super(props);
 		this.state = { index: undefined, ctrlKey: false, showInfo: false, width: 0, height: 0 };
 		this.canvas = React.createRef();
-		this.space = 0.5;
+		this.space = 0.15;
 	}
 
 	componentDidMount() {
@@ -143,7 +143,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setWaypoint: async (waypoint, state) => dispatch(await setWaypoint(waypoint, state)),
-		addWaypoint: async (waypoint, index, state) => dispatch(await addWaypoint(waypoint, index, state)),
+		addWaypoint: async (waypoint, index, state) => dispatch(await addWaypoint(waypoint, index + 1, state)),
 		setSelectedWaypoint: (index) => dispatch(setSelectedWaypoint(index)),
 	};
 };
