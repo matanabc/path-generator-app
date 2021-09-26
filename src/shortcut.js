@@ -4,6 +4,7 @@ export const SETTINGS_SHORTCUT = ['command+p', 'alt+p'];
 export const DELETE_SHORTCUT = ['command+d', 'alt+d'];
 export const RENAME_SHORTCUT = ['command+r', 'alt+r'];
 export const CREATE_SHORTCUT = ['command+n', 'alt+n'];
+export const MODE_SHORTCUT = ['command+m', 'alt+m'];
 export const CONFIRM_SHORTCUT = ['return', 'enter'];
 export const PLAY_SHORTCUT = ['space'];
 export const CANCEL_SHORTCUT = ['esc'];

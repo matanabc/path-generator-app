@@ -7,5 +7,6 @@ export class PopupsConfig {
 		this.settingsPopup = false;
 		this.renamePopup = false;
 		this.deletePopup = false;
+		this.groupPopup = false;
 	}
 }

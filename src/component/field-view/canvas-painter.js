@@ -15,7 +15,8 @@ export function drawOnCanvas(canvas, props) {
 
 	drawCoords(ctx, props);
 	if (props.isPathMode) drawWaypoints(ctx, props);
-	if (props.drawRobotInterval !== undefined || props.rangePosition > 0) drawRobotFromCoord(ctx, props);
+	if (props.drawRobotInterval !== undefined || props.rangePosition > 0 || !props.isPathMode)
+		drawRobotFromCoord(ctx, props);
 }
 
 function drawFieldBorders(ctx, props) {

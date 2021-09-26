@@ -1,38 +1,9 @@
-import {
-	CHANGE_SELECTED_PATHS_GROUP,
-	CHANGE_ORDER,
-	REMOVE_PATH,
-	DELETE_GROUP,
-	RENAME_GROUP,
-	ADD_GROUP,
-	ADD_PATH,
-} from './action-types';
+import { CHANGE_SELECTED_PATHS_GROUP, DELETE_GROUP, RENAME_GROUP, ADD_GROUP, UPDATE_GROUP } from './action-types';
 
 export function changeSelectedGroup(groupName) {
 	return {
 		type: CHANGE_SELECTED_PATHS_GROUP,
-		payload: {
-			groupName: groupName,
-		},
-	};
-}
-
-export function changeOrder(source, destination) {
-	return {
-		type: CHANGE_ORDER,
-		payload: {
-			source: source,
-			destination: destination,
-		},
-	};
-}
-
-export function removePath(pathName) {
-	return {
-		type: REMOVE_PATH,
-		payload: {
-			pathName: pathName,
-		},
+		payload: { groupName: groupName },
 	};
 }
 
@@ -46,27 +17,20 @@ export function deleteGroup() {
 export function renameGroup(name) {
 	return {
 		type: RENAME_GROUP,
-		payload: {
-			name: name,
-		},
+		payload: { name: name },
 	};
 }
 
 export function addGroup(name, paths) {
 	return {
 		type: ADD_GROUP,
-		payload: {
-			name: name,
-			paths: paths,
-		},
+		payload: { name: name, paths: paths },
 	};
 }
 
-export function addPathToGroup(name) {
+export function updateGroup(group) {
 	return {
-		type: ADD_PATH,
-		payload: {
-			name: name,
-		},
+		type: UPDATE_GROUP,
+		payload: { group: group },
 	};
 }

@@ -29,8 +29,8 @@ class FieldView extends React.Component {
 
 	onWheel = (event) => {
 		const { index, ctrlKey } = this.state;
-		if (index === undefined) return;
-		const { waypoints, setWaypoint } = this.props;
+		const { waypoints, setWaypoint, isPathMode } = this.props;
+		if (index === undefined || !isPathMode) return;
 		const newWaypoint = { ...waypoints[index] };
 		if (ctrlKey && waypoints[index].robotAngle !== undefined)
 			newWaypoint.robotAngle = waypoints[index].robotAngle + event.deltaY * 0.1;
@@ -39,8 +39,8 @@ class FieldView extends React.Component {
 	};
 
 	onDown = async (event) => {
-		const { path, addWaypoint, setSelectedWaypoint } = this.props;
-		if (!path) return;
+		const { path, addWaypoint, setSelectedWaypoint, isPathMode } = this.props;
+		if (!path || !isPathMode) return;
 		const { x, y } = this.getMousePosition(event);
 		const index = this.getWaypointIndex(x, y);
 		const canvas = this.canvas.current;
@@ -69,21 +69,19 @@ class FieldView extends React.Component {
 	};
 
 	ondblclick = (event) => {
-		if (!this.props.path) return;
+		const { path, isPathMode } = this.props;
+		if (!path || !isPathMode) return;
 		const { x, y } = this.getMousePosition(event);
 		const index = this.getWaypointIndex(x, y);
 		if (index === undefined) return;
 		this.setState(() => ({ index: index, showInfo: true }));
 	};
 
-	onClose = () => {
-		this.setState(() => ({ showInfo: false }));
-	};
-
+	onClose = () => this.setState(() => ({ showInfo: false }));
 	onCopy = async () => {
 		const { index } = this.state;
-		const { waypoints } = this.props;
 		if (index === undefined) return;
+		const { waypoints } = this.props;
 		await navigator.clipboard.writeText(JSON.stringify(waypoints[index]));
 	};
 
@@ -163,7 +161,7 @@ const mapStateToProps = (state) => ({
 	drawRobotInterval: state.drawRobotInterval,
 	listenToMouseClicks: state.listenToMouseClicks,
 	isPathInReverse: state.path ? state.path.isReverse() : false,
-	waypoints: state.selected ? state.paths[state.selected].waypoints : {},
+	waypoints: state.selected && state.isPathMode ? state.paths[state.selected].waypoints : {},
 });
 
 const mapDispatchToProps = (dispatch) => {

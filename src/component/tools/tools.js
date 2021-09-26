@@ -1,10 +1,12 @@
-import { DOWNLOAD_SHORTCUT, SETTINGS_SHORTCUT, PLAY_SHORTCUT, DELETE_SHORTCUT, RENAME_SHORTCUT } from '../../shortcut';
-import { FiDownload, MdError, MdBuild, MdPause, MdReplay, MdPlayArrow, MdDelete, MdEdit } from 'react-icons/all';
-import { onDownloadClick, onSettingsClick, onPlayClick, onDeleteClick, onRenameClick } from './tools-events';
-import { changePopupsStatus, setDrawRobotInterval, changeRangePosition } from '../../redux/view/actions';
+import { changePopupsStatus, setDrawRobotInterval, changeRangePosition, changeMode } from '../../redux/view/actions';
+import { MdError, MdBuild, MdPause, MdReplay, MdPlayArrow, MdDelete, MdEdit } from 'react-icons/all';
+import { onDownloadClick, onPlayClick, onDeleteClick, onRenameClick } from './tools-events';
+import { onSettingsClick, onChangeModeClick, onGroupEditClick } from './tools-events';
+import { DOWNLOAD_SHORTCUT, SETTINGS_SHORTCUT, PLAY_SHORTCUT } from '../../shortcut';
+import { DELETE_SHORTCUT, RENAME_SHORTCUT, MODE_SHORTCUT } from '../../shortcut';
+import { FiDownload, BiMovie, BiEdit, BsFileEarmarkPlus } from 'react-icons/all';
 import ToolsPathDirection from './tools-path-direction';
 import { Container, Row } from 'react-bootstrap';
-import ToolsAddPath from './tools-add-path';
 import { Holonomic } from 'path-generator';
 import ToolsSelect from './tools-select';
 import ToolsButton from './tools-button';
@@ -28,8 +30,9 @@ class Tools extends React.Component {
 	};
 
 	render() {
-		const { driveType, isPathMode, path, newVersion } = this.props;
+		const { driveType, isPathMode, path, newVersion, pathName } = this.props;
 		const isPathIllegal = path && path.isIllegal();
+
 		return (
 			<Container>
 				<Row>
@@ -37,8 +40,14 @@ class Tools extends React.Component {
 						title="Settings"
 						body={<MdBuild />}
 						shortcut={SETTINGS_SHORTCUT}
-						onClick={() => onSettingsClick(this.props)}
+						onClick={(event) => onSettingsClick(this.props, event)}
 						variant={newVersion ? 'success' : 'primary'}
+					/>
+					<ToolsButton
+						shortcut={MODE_SHORTCUT}
+						body={isPathMode ? <BiMovie /> : <BiEdit />}
+						onClick={(event) => onChangeModeClick(this.props, event)}
+						title={`Change to ${isPathMode ? 'group' : 'path'} mode`}
 					/>
 					<ToolsSelect />
 					<ToolsButton
@@ -46,21 +55,21 @@ class Tools extends React.Component {
 						disabled={!path}
 						body={<MdEdit />}
 						shortcut={RENAME_SHORTCUT}
-						onClick={() => onRenameClick(this.props)}
+						onClick={(event) => onRenameClick(this.props, event)}
 					/>
 					<ToolsButton
 						disabled={!path}
 						title="Save csv path"
 						shortcut={DOWNLOAD_SHORTCUT}
-						onClick={() => onDownloadClick(this.props)}
 						variant={isPathIllegal ? 'danger' : 'primary'}
+						onClick={(event) => onDownloadClick(this.props, event)}
 						body={isPathIllegal ? <MdError /> : <FiDownload />}
 					/>
 					<ToolsButton
 						shortcut={PLAY_SHORTCUT}
 						body={this.getPlayButtonIcon()}
-						onClick={() => onPlayClick(this.props, this.updateRangePosition)}
 						disabled={!path || path.waypoints.length <= 1 || path.isIllegal()}
+						onClick={(event) => onPlayClick(this.props, this.updateRangePosition, event)}
 					/>
 					<ToolsButton
 						title="Delete"
@@ -68,9 +77,15 @@ class Tools extends React.Component {
 						disabled={!path}
 						body={<MdDelete />}
 						shortcut={DELETE_SHORTCUT}
-						onClick={() => onDeleteClick(this.props)}
+						onClick={(event) => onDeleteClick(this.props, event)}
 					/>
-					{!isPathMode && <ToolsAddPath />}
+					{!isPathMode && (
+						<ToolsButton
+							disabled={pathName === undefined}
+							body={<BsFileEarmarkPlus />}
+							onClick={() => onGroupEditClick(this.props)}
+						/>
+					)}
 					{isPathMode && driveType !== Holonomic && <ToolsPathDirection />}
 				</Row>
 			</Container>
@@ -106,7 +121,9 @@ const mapDispatchToProps = (dispatch) => {
 		showRenamePopup: () => dispatch(changePopupsStatus('renamePopup')),
 		showDeletePopup: () => dispatch(changePopupsStatus('deletePopup')),
 		showSettings: () => dispatch(changePopupsStatus('settingsPopup')),
+		showGroupPopup: () => dispatch(changePopupsStatus('groupPopup')),
 		closeSettings: () => dispatch(changePopupsStatus()),
+		changeMode: () => dispatch(changeMode()),
 	};
 };
 

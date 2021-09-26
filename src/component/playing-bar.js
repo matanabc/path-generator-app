@@ -15,7 +15,9 @@ class PlayingBar extends React.Component {
 		this.range.current.disabled = true;
 		document.querySelector('canvas').addEventListener('wheel', (event) => {
 			const { selectedWaypoint, rangePosition } = this.props;
-			if (selectedWaypoint === undefined) this.changeRangePosition(rangePosition - Math.sign(event.deltaY));
+			if (selectedWaypoint === undefined) {
+				this.changeRangePosition(rangePosition - Math.sign(event.deltaY));
+			}
 		});
 	}
 

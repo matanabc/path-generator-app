@@ -18,12 +18,14 @@ export async function onDownloadClick(props) {
 	}
 }
 
-export async function onSettingsClick(props) {
+export async function onSettingsClick(props, event) {
+	event.preventDefault();
 	if (document.activeElement) document.activeElement.blur();
 	props.showSettings();
 }
 
-export async function onPlayClick(props, updateRangePosition) {
+export async function onPlayClick(props, updateRangePosition, event) {
+	event.preventDefault();
 	const { path, drawRobotInterval, popupsStatus, rangePosition, robotLoopTime } = props;
 	const { setDrawRobotInterval, changeRangePosition } = props;
 	const canCreateInterval = () => path && !drawRobotInterval && path.coords.length > 0 && !popupsStatus.settingsPopup;
@@ -39,14 +41,27 @@ export async function onPlayClick(props, updateRangePosition) {
 	setDrawRobotInterval(interval);
 }
 
-export async function onDeleteClick(props) {
+export async function onDeleteClick(props, event) {
+	event.preventDefault();
 	const { path, showDeletePopup } = props;
 	if (document.activeElement) document.activeElement.blur();
 	if (path) showDeletePopup();
 }
 
-export async function onRenameClick(props) {
+export async function onRenameClick(props, event) {
+	event.preventDefault();
 	const { path, showRenamePopup } = props;
 	if (document.activeElement) document.activeElement.blur();
 	if (path) showRenamePopup();
+}
+
+export async function onChangeModeClick(props, event) {
+	event.preventDefault();
+	if (document.activeElement) document.activeElement.blur();
+	props.changeMode();
+}
+
+export async function onGroupEditClick(props) {
+	if (document.activeElement) document.activeElement.blur();
+	props.showGroupPopup();
 }

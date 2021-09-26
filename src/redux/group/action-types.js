@@ -1,7 +1,5 @@
 export const CHANGE_SELECTED_PATHS_GROUP = 'CHANGE_SELECTED_PATHS_GROUP';
-export const ADD_PATH = 'ADD_PATH_TO_GROUP';
-export const CHANGE_ORDER = 'CHANGE_ORDER';
 export const RENAME_GROUP = 'RENAME_GROUP';
 export const DELETE_GROUP = 'DELETE_GROUP';
-export const REMOVE_PATH = 'REMOVE_PATH';
+export const UPDATE_GROUP = 'UPDATE_GROUP';
 export const ADD_GROUP = 'ADD_GROUP';

@@ -4,6 +4,7 @@ import FieldView from './field-view/field-view';
 import { CANCEL_SHORTCUT } from '../shortcut';
 import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
+import GroupInfo from './group-info';
 import { connect } from 'react-redux';
 import Popups from './popups/popups';
 import Tools from './tools/tools';
@@ -23,6 +24,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
+				<GroupInfo />
 				<Popups />
 				<Settings />
 				<FieldView />

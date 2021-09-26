@@ -97,7 +97,7 @@ const mapStateToProps = (state) => {
 		pathConfig: state.pathConfig,
 		fieldConfig: state.fieldConfig,
 		selectedWaypoint: state.selectedWaypoint,
-		length: state.selected ? state.paths[state.selected].waypoints.length : 0,
+		length: state.selected && state.isPathMode ? state.paths[state.selected].waypoints.length : 0,
 	};
 };
 

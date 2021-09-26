@@ -1,35 +1,16 @@
+import { CHANGE_SELECTED_PATHS_GROUP, DELETE_GROUP, RENAME_GROUP, ADD_GROUP, UPDATE_GROUP } from './action-types';
 import { saveJsonGroup, deleteGroup, renameJsonGroup } from '../../handlers/project-handler';
-import { getGroup, reorder } from './util';
-import {
-	CHANGE_SELECTED_PATHS_GROUP,
-	CHANGE_ORDER,
-	REMOVE_PATH,
-	DELETE_GROUP,
-	RENAME_GROUP,
-	ADD_GROUP,
-	ADD_PATH,
-} from './action-types';
+import { getGroup } from './util';
 
 function changeSelectedGroup(state, payload) {
-	const newState = { ...state, selected: payload.groupName };
-	newState.path = getGroup(newState);
-	return newState;
+	return getGroup({ ...state, selected: payload.groupName });
 }
 
-function changeOrder(state, payload) {
+function updateGroup(state, payload) {
 	const newState = { ...state };
-	newState.groups[state.selected] = reorder(state.groups[state.selected], payload.source, payload.destination);
-	newState.path = getGroup(newState);
-	saveJsonGroup(state.selected, newState.groups[state.selected]);
-	return newState;
-}
-
-function removePath(state, payload) {
-	const newState = { ...state };
-	newState.groups[state.selected] = state.groups[state.selected].filter((pathName) => pathName !== payload.pathName);
-	newState.path = getGroup(newState);
-	saveJsonGroup(state.selected, newState.groups[state.selected]);
-	return newState;
+	newState.groups[newState.selected] = payload.group;
+	saveJsonGroup(newState.selected, newState.groups[newState.selected]);
+	return getGroup(newState);
 }
 
 function removeGroup(state, payload) {
@@ -61,21 +42,11 @@ function addGroup(state, payload) {
 	return newState;
 }
 
-function addPath(state, payload) {
-	const newState = { ...state };
-	newState.groups[state.selected].push(payload.name);
-	newState.path = getGroup(newState);
-	saveJsonGroup(state.selected, newState.groups[state.selected]);
-	return newState;
-}
-
 export default function group(state, action) {
 	if (action.type === CHANGE_SELECTED_PATHS_GROUP) return changeSelectedGroup(state, action.payload);
-	if (action.type === CHANGE_ORDER) return changeOrder(state, action.payload);
+	if (action.type === UPDATE_GROUP) return updateGroup(state, action.payload);
 	if (action.type === RENAME_GROUP) return renameGroup(state, action.payload);
 	if (action.type === DELETE_GROUP) return removeGroup(state, action.payload);
-	if (action.type === REMOVE_PATH) return removePath(state, action.payload);
 	if (action.type === ADD_GROUP) return addGroup(state, action.payload);
-	if (action.type === ADD_PATH) return addPath(state, action.payload);
 	return state;
 }
