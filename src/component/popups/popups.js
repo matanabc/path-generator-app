@@ -1,96 +1,82 @@
 import { changePopupsStatus, changeRangePosition } from '../../redux/view/actions';
 import { deleteAction, renameAction, createNewAction } from './util';
-import { FormControl } from 'react-bootstrap';
+import ConfirmPopup from './confirm-popup';
+import PromptPopup from './prompt-popup';
+import AlertPopup from './alert-popup';
 import { connect } from 'react-redux';
-import Popup from './popup';
 import React from 'react';
 
 class Popups extends React.Component {
-	constructor(props) {
-		super(props);
-		this.newPathRef = React.createRef();
-		this.renamePathRef = React.createRef();
-	}
-
-	componentDidUpdate() {
-		if (this.props.popupsStatus.renamePopup) this.renamePathRef.current.defaultValue = this.props.pathName;
-	}
-
 	deleteAction = async () => {
 		await this.props.deleteAction(this.props);
 		this.props.closePopups();
 	};
 
-	renamePath = async () => {
-		const { selected, paths, renameAction, closePopups, isPathMode } = this.props;
-		if (this.renamePathRef.current.value) {
-			await renameAction(isPathMode, paths, selected, this.renamePathRef.current.value);
-			closePopups();
+	renamePath = async (value) => {
+		const { selected, paths, isPathMode } = this.props;
+		if (value !== undefined) {
+			await this.props.renameAction(isPathMode, paths, selected, value);
+			this.props.closePopups();
 		}
 	};
 
-	createNew = async () => {
+	createNew = async (value) => {
 		const { isPathMode, paths, pathConfig, driveType, pathsName } = this.props;
-		if (this.newPathRef.current.value && !pathsName.includes(this.newPathRef.current.value)) {
-			await this.props.createNewAction(isPathMode, paths, pathConfig, driveType, this.newPathRef.current.value);
+		if (value && !pathsName.includes(value)) {
+			await this.props.createNewAction(isPathMode, paths, pathConfig, driveType, value);
 			this.props.resetRangePosition();
 			this.props.closePopups();
 		}
 	};
 
 	render() {
+		const { popupsStatus, pathName, path, newVersion, saveCSVTo, isWeb, closePopups } = this.props;
+		const { pathIsIllegalPopup, newVersionPopup, savePathToCSVPopup } = popupsStatus;
+		const { deletePopup, renamePopup, createNewPopup } = popupsStatus;
 		const type = this.props.isPathMode ? 'path' : 'group';
 		return (
 			<div>
-				<Popup
-					show={this.props.popupsStatus.deletePopup}
+				<ConfirmPopup
 					body={`Are you sure you want to delete ${type}?`}
-					close={this.props.closePopups}
-					confirm={this.deleteAction}
+					onConfirm={this.deleteAction}
 					title={`Delete ${type}`}
+					onCancel={closePopups}
+					show={deletePopup}
 				/>
 
-				<Popup
-					show={this.props.popupsStatus.renamePopup}
-					body={<FormControl ref={this.renamePathRef} />}
-					close={this.props.closePopups}
-					refToUse={this.renamePathRef}
-					confirm={this.renamePath}
+				<PromptPopup
+					onConfirm={this.renamePath}
 					title={`Rename ${type}`}
+					defaultValue={pathName}
+					onCancel={closePopups}
+					show={renamePopup}
 				/>
 
-				<Popup
-					body={<FormControl ref={this.newPathRef} placeholder={`${type} name`} />}
-					show={this.props.popupsStatus.createNewPopup}
-					close={this.props.closePopups}
-					confirm={this.createNew}
-					refToUse={this.newPathRef}
+				<PromptPopup
 					title={`Create a new ${type}`}
+					placeholder={`${type} name`}
+					onConfirm={this.createNew}
+					onCancel={closePopups}
+					show={createNewPopup}
 				/>
 
-				<Popup
-					show={this.props.popupsStatus.pathIsIllegalPopup}
-					title={this.props.path && this.props.path.isIllegal() && this.props.path.error.message}
+				<AlertPopup
+					title={path && path.isIllegal() && path.error.message}
+					show={pathIsIllegalPopup}
+					onClose={closePopups}
 					body={
 						<div>
-							{this.props.path &&
-								this.props.path.isIllegal() &&
-								this.props.path.error.position &&
-								`${this.props.path.error.position}\n\n`}
-							{this.props.path &&
-								this.props.path.isIllegal() &&
-								this.props.path.error.problem &&
-								`${this.props.path.error.problem}\n\n`}
-							{this.props.path && this.props.path.isIllegal() && `${this.props.path.error.solution}!`}
+							{path && path.isIllegal() && path.error.position && `${path.error.position}\n\n`}
+							{path && path.isIllegal() && path.error.problem && `${path.error.problem}\n\n`}
+							{path && path.isIllegal() && `${path.error.solution}!`}
 						</div>
 					}
-					close={this.props.closePopups}
 				/>
 
-				<Popup
-					title={`v${this.props.newVersion} is available`}
-					show={this.props.popupsStatus.newVersionPopup}
-					close={this.props.closePopups}
+				<AlertPopup
+					title={`v${newVersion} is available`}
+					show={newVersionPopup}
+					onClose={closePopups}
 					body={
 						<div>
 							{'There is a new version waiting for you to update to!\n' +
@@ -99,20 +85,18 @@ class Popups extends React.Component {
 					}
 				/>
 
-				<Popup
-					show={
-						this.props.popupsStatus.savePathToCSVPopup && this.props.saveCSVTo === '' && !this.props.isWeb
-					}
-					title="Save path CSV"
-					body="Can't save path CSV, you need to set CSV folder path in settings!"
-					close={this.props.closePopups}
+				<AlertPopup
+					body="Can't save path, you need to set save folder path in settings!"
+					show={savePathToCSVPopup && saveCSVTo === '' && !isWeb}
+					onClose={closePopups}
+					title="Save path"
 				/>
 
-				<Popup
-					show={this.props.popupsStatus.savePathToCSVPopup && this.props.saveCSVTo !== ''}
-					title="Save path CSV"
-					body="Path CSV saved!"
-					close={this.props.closePopups}
+				<AlertPopup
+					show={savePathToCSVPopup && saveCSVTo !== ''}
+					onClose={closePopups}
+					body="Path saved!"
+					title="Save path"
 				/>
 			</div>
 		);

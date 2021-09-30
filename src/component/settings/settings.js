@@ -63,7 +63,7 @@ class Settings extends React.Component {
 
 	render() {
 		return (
-			<Modal show={this.props.popupsStatus.settingsPopup} onHide={this.closeSettings} backdrop="static">
+			<Modal centered show={this.props.popupsStatus.settingsPopup} onHide={this.closeSettings} backdrop="static">
 				<Modal.Header>
 					<Modal.Title>Settings</Modal.Title>
 				</Modal.Header>
