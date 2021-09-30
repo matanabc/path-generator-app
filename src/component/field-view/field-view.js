@@ -79,16 +79,16 @@ class FieldView extends React.Component {
 
 	onClose = () => this.setState(() => ({ showInfo: false }));
 	onCopy = async () => {
-		const { index } = this.state;
-		if (index === undefined) return;
+		const { index, showInfo } = this.state;
+		if (index === undefined || showInfo) return;
 		const { waypoints } = this.props;
 		await navigator.clipboard.writeText(JSON.stringify(waypoints[index]));
 	};
 
 	onPaste = async () => {
 		try {
-			const { index } = this.state;
-			if (index === undefined) return;
+			const { index, showInfo } = this.state;
+			if (index === undefined || showInfo) return;
 			const waypoint = JSON.parse(await navigator.clipboard.readText());
 			await this.props.addWaypoint(waypoint, index, this.props);
 		} catch (error) {}

@@ -49,12 +49,13 @@ export async function deletePath(state) {
 }
 
 export async function renamePath(paths, oldName, newName) {
+	const newPaths = { ...paths };
 	if (oldName !== newName) {
-		paths[newName] = paths[oldName];
-		delete paths[oldName];
+		newPaths[newName] = newPaths[oldName];
+		delete newPaths[oldName];
 		renameJsonPath(oldName, newName);
 	}
-	return actionReturn({ selected: newName });
+	return actionReturn({ selected: newName, paths: newPaths });
 }
 
 export async function addPath(paths, pathConfig, driveType, name) {

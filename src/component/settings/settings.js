@@ -15,27 +15,17 @@ import 'mousetrap-global-bind';
 import React from 'react';
 
 class Settings extends React.Component {
-	constructor(props) {
-		super(props);
-		this.saveSettings = this.saveSettings.bind(this);
-		this.closeSettings = this.closeSettings.bind(this);
-		this.getAppVersion = this.getAppVersion.bind(this);
-		this.setElementData = this.setElementData.bind(this);
-		this.getUpdateButton = this.getUpdateButton.bind(this);
-		this.getFoldersConfig = this.getFoldersConfig.bind(this);
-	}
-
 	componentDidUpdate() {
 		if (this.props.popupsStatus.settingsPopup) mousetrap.bindGlobal(CONFIRM_SHORTCUT, this.saveSettings);
-		else mousetrap.unbind('enter');
+		else mousetrap.unbind(CONFIRM_SHORTCUT);
 	}
 
-	setElementData(key, func) {
+	setElementData = (key, func) => {
 		this[key] = func;
-	}
+	};
 
-	saveSettings() {
-		var settings = {
+	saveSettings = () => {
+		let settings = {
 			...this.driveType(),
 			...this.pathConfig(),
 			...this.filedConfig(),
@@ -45,31 +35,31 @@ class Settings extends React.Component {
 		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
 		this.props.setSettings(settings);
 		this.props.closePopups();
-	}
+	};
 
-	getUpdateButton() {
+	getUpdateButton = () => {
 		if (this.props.newVersion !== undefined) {
 			return (
 				<Button variant="outline-success" onClick={updateApp}>{`Update to v${this.props.newVersion}`}</Button>
 			);
 		}
 		return <span />;
-	}
+	};
 
-	getAppVersion() {
+	getAppVersion = () => {
 		if (this.props.isWeb) return <span />;
 		return <div style={{ fontSize: 10 }}>v{this.props.version}</div>;
-	}
+	};
 
-	getFoldersConfig() {
+	getFoldersConfig = () => {
 		if (this.props.isWeb) return <span />;
 		return <SettingsFoldersConfig setElementData={this.setElementData} />;
-	}
+	};
 
-	closeSettings() {
+	closeSettings = () => {
 		if (this.resetProjectPath) this.resetProjectPath();
 		this.props.closePopups();
-	}
+	};
 
 	render() {
 		return (
