@@ -1,19 +1,43 @@
-import { changePopupsStatus, setDrawRobotInterval, changeRangePosition, changeMode } from '../../redux/view/actions';
-import { MdError, MdBuild, MdPause, MdReplay, MdPlayArrow, MdDelete, MdEdit } from 'react-icons/all';
-import { onDownloadClick, onPlayClick, onDeleteClick, onRenameClick } from './tools-events';
-import { onSettingsClick, onChangeModeClick, onGroupEditClick } from './tools-events';
-import { DOWNLOAD_SHORTCUT, SETTINGS_SHORTCUT, PLAY_SHORTCUT } from '../../shortcut';
-import { DELETE_SHORTCUT, RENAME_SHORTCUT, MODE_SHORTCUT } from '../../shortcut';
-import { FiDownload, BiMovie, BiEdit, BsFileEarmarkPlus } from 'react-icons/all';
-import ToolsPathDirection from './tools-path-direction';
+import { MdPause, MdReplay, MdPlayArrow } from 'react-icons/md';
 import { Container, Row } from 'react-bootstrap';
 import { Holonomic } from 'path-generator';
-import ToolsSelect from './tools-select';
-import ToolsButton from './tools-button';
 import { connect } from 'react-redux';
 import React from 'react';
 
+import { setDrawRobotInterval, changeRangePosition, changeMode } from '../../redux/view/actions';
+import { saveCSVPath } from '../../handlers/project-handler';
+import ToolsPathDirection from './tools-path-direction';
+import { deleteAction, renameAction } from './util';
+import GroupEditButton from './group-edit-button';
+import SettingsButton from './settings-button';
+import RenameButton from './rename-button';
+import DeleteButton from './delete-button';
+import ExportButton from './export-button';
+import ToolsSelect from './tools-select';
+import ModeButton from './mode-button';
+import PlayButton from './play-button';
+
 class Tools extends React.Component {
+	onRename = (newName) => {
+		const { isPathMode, pathName, paths } = this.props;
+		this.props.onRename(isPathMode, paths, pathName, newName);
+	};
+
+	onExport = (setShowExportPopup, setShowIllegalPopup) => {
+		const { driveType, paths, path, saveCSVTo, isWeb, isPathMode, pathName, group, pathConfig } = this.props;
+		if (!path) return;
+		if (saveCSVTo === '' && !isWeb) setShowExportPopup(true);
+		else if (path.isIllegal()) setShowIllegalPopup(true);
+		else {
+			const pathsToDownload = isPathMode ? [pathName] : group;
+			pathsToDownload.forEach((pathName) => {
+				const path = new driveType.Path(paths[pathName].waypoints, pathConfig);
+				saveCSVPath(path, pathName, saveCSVTo);
+			});
+			setShowExportPopup(true);
+		}
+	};
+
 	getPlayButtonIcon = () => {
 		const { drawRobotInterval, path, rangePosition } = this.props;
 		if (drawRobotInterval) return <MdPause />;
@@ -21,71 +45,65 @@ class Tools extends React.Component {
 		else return <MdPlayArrow />;
 	};
 
-	updateRangePosition = () => {
-		const { path, rangePosition } = this.props;
+	onPlay = async () => {
+		const { path, drawRobotInterval, rangePosition, robotLoopTime } = this.props;
 		const { setDrawRobotInterval, changeRangePosition } = this.props;
+		const canCreateInterval = () => path && !drawRobotInterval && path.coords.length > 0;
 		const isRangePositionInTheEnd = () => path && path.coords.length - 1 === rangePosition;
-		if (isRangePositionInTheEnd()) setDrawRobotInterval();
-		else changeRangePosition(rangePosition + 1);
+		const updateRangePosition = () => {
+			const { path, rangePosition } = this.props;
+			const { setDrawRobotInterval, changeRangePosition } = this.props;
+			const isRangePositionInTheEnd = () => path && path.coords.length - 1 === rangePosition;
+			if (isRangePositionInTheEnd()) setDrawRobotInterval();
+			else changeRangePosition(rangePosition + 1);
+		};
+		let interval = undefined;
+		if (canCreateInterval()) {
+			if (isRangePositionInTheEnd()) changeRangePosition(0);
+			interval = setInterval(updateRangePosition, robotLoopTime * 1000);
+		}
+		setDrawRobotInterval(interval);
+	};
+
+	onDelete = async () => {
+		const { paths, pathName, saveCSVTo, isPathMode } = this.props;
+		this.props.deleteAction(isPathMode, paths, pathName, saveCSVTo);
 	};
 
 	render() {
-		const { driveType, isPathMode, path, newVersion, pathName } = this.props;
-		const isPathIllegal = path && path.isIllegal();
+		const { driveType, isPathMode, path, newVersion, pathName, isWeb, saveCSVTo } = this.props;
+		const { changeMode } = this.props;
+		const isDisable = !path;
 
 		return (
 			<Container>
 				<Row>
-					<ToolsButton
-						title="Settings"
-						body={<MdBuild />}
-						shortcut={SETTINGS_SHORTCUT}
-						onClick={(event) => onSettingsClick(this.props, event)}
-						variant={newVersion ? 'success' : 'primary'}
-					/>
-					<ToolsButton
-						shortcut={MODE_SHORTCUT}
-						body={isPathMode ? <BiMovie /> : <BiEdit />}
-						onClick={(event) => onChangeModeClick(this.props, event)}
-						title={`Change to ${isPathMode ? 'group' : 'path'} mode`}
-					/>
+					<SettingsButton newVersion={newVersion} />
+					<ModeButton isPathMode={isPathMode} onChangeMode={changeMode} />
 					<ToolsSelect />
-					<ToolsButton
-						title="Rename"
-						disabled={!path}
-						body={<MdEdit />}
-						shortcut={RENAME_SHORTCUT}
-						onClick={(event) => onRenameClick(this.props, event)}
+					<RenameButton
+						pathName={pathName}
+						disabled={isDisable}
+						isPathMode={isPathMode}
+						onRename={this.onRename}
 					/>
-					<ToolsButton
-						disabled={!path}
-						title="Save csv path"
-						shortcut={DOWNLOAD_SHORTCUT}
-						variant={isPathIllegal ? 'danger' : 'primary'}
-						onClick={(event) => onDownloadClick(this.props, event)}
-						body={isPathIllegal ? <MdError /> : <FiDownload />}
+					<ExportButton
+						path={path}
+						isWeb={isWeb}
+						pathName={pathName}
+						disabled={isDisable}
+						saveCSVTo={saveCSVTo}
+						onExport={this.onExport}
 					/>
-					<ToolsButton
-						shortcut={PLAY_SHORTCUT}
-						body={this.getPlayButtonIcon()}
-						disabled={!path || path.waypoints.length <= 1 || path.isIllegal()}
-						onClick={(event) => onPlayClick(this.props, this.updateRangePosition, event)}
+					<PlayButton body={this.getPlayButtonIcon()} path={path} onPlay={this.onPlay} />
+					<DeleteButton
+						disabled={isDisable}
+						pathName={pathName}
+						isPathMode={isPathMode}
+						onDelete={this.onDelete}
 					/>
-					<ToolsButton
-						title="Delete"
-						variant="danger"
-						disabled={!path}
-						body={<MdDelete />}
-						shortcut={DELETE_SHORTCUT}
-						onClick={(event) => onDeleteClick(this.props, event)}
-					/>
-					{!isPathMode && (
-						<ToolsButton
-							disabled={pathName === undefined}
-							body={<BsFileEarmarkPlus />}
-							onClick={() => onGroupEditClick(this.props)}
-						/>
-					)}
+
+					{!isPathMode && <GroupEditButton disabled={pathName === undefined} />}
 					{isPathMode && driveType !== Holonomic && <ToolsPathDirection />}
 				</Row>
 			</Container>
@@ -104,7 +122,6 @@ const mapStateToProps = (state) => {
 		newVersion: state.newVersion,
 		pathConfig: state.pathConfig,
 		isPathMode: state.isPathMode,
-		popupsStatus: state.popupsStatus,
 		rangePosition: state.rangePosition,
 		group: state.groups[state.selected],
 		drawRobotInterval: state.drawRobotInterval,
@@ -114,16 +131,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		showIllegalPathPopup: () => dispatch(changePopupsStatus('pathIsIllegalPopup')),
 		setDrawRobotInterval: (interval) => dispatch(setDrawRobotInterval(interval)),
 		changeRangePosition: (position) => dispatch(changeRangePosition(position)),
-		showCSVSavePopup: () => dispatch(changePopupsStatus('savePathToCSVPopup')),
-		showRenamePopup: () => dispatch(changePopupsStatus('renamePopup')),
-		showDeletePopup: () => dispatch(changePopupsStatus('deletePopup')),
-		showSettings: () => dispatch(changePopupsStatus('settingsPopup')),
-		showGroupPopup: () => dispatch(changePopupsStatus('groupPopup')),
-		closeSettings: () => dispatch(changePopupsStatus()),
 		changeMode: () => dispatch(changeMode()),
+		deleteAction: async (isPathMode, paths, selected, saveCSVTo) =>
+			dispatch(await deleteAction(isPathMode, paths, selected, saveCSVTo)),
+		onRename: async (isPathMode, paths, oldName, newName) =>
+			dispatch(await renameAction(isPathMode, paths, oldName, newName)),
 	};
 };
 

@@ -1,8 +1,8 @@
 import { deleteGroup, renameGroup, addGroup } from '../../redux/group/actions';
 import { deletePath, renamePath, addPath } from '../../redux/path/actions';
 
-export function deleteAction(state) {
-	if (state.isPathMode) return deletePath(state);
+export function deleteAction(isPathMode, paths, selected, saveCSVTo) {
+	if (isPathMode) return deletePath(paths, selected, saveCSVTo);
 	return deleteGroup();
 }
 

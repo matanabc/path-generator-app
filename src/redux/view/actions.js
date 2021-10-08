@@ -2,7 +2,6 @@ import {
 	CHANGE_LISTEN_TO_MOUSE_STATUS,
 	SET_DRAW_ROBOT_INTERVAL,
 	CHANGE_RANGE_POSITION,
-	CHANGE_POPUPS_STATUS,
 	CHANGE_MODE,
 } from './action-types';
 
@@ -20,15 +19,6 @@ export function setDrawRobotInterval(interval) {
 		type: SET_DRAW_ROBOT_INTERVAL,
 		payload: {
 			interval: interval,
-		},
-	};
-}
-
-export function changePopupsStatus(popup) {
-	return {
-		type: CHANGE_POPUPS_STATUS,
-		payload: {
-			popup: popup,
 		},
 	};
 }

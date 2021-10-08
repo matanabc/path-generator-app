@@ -1,6 +1,11 @@
+import { Modal, Button } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
+import React from 'react';
+
 import SettingsDriveTypeConfig from './settings-drive-type-config';
 import { loadFieldImage } from '../../handlers/project-handler';
-import { changePopupsStatus } from '../../redux/view/actions';
 import SettingsFoldersConfig from './settings-folders-config';
 import { setSettings } from '../../redux/project/actions';
 import SettingsRobotConfig from './settings-robot-config';
@@ -8,15 +13,10 @@ import SettingsFiledConfig from './settings-filed-config';
 import SettingsPathConfig from './settings-path-config';
 import { updateApp } from '../../handlers/app-handler';
 import { CONFIRM_SHORTCUT } from '../../shortcut';
-import { Modal, Button } from 'react-bootstrap';
-import { connect } from 'react-redux';
-import mousetrap from 'mousetrap';
-import 'mousetrap-global-bind';
-import React from 'react';
 
 class Settings extends React.Component {
 	componentDidUpdate() {
-		if (this.props.popupsStatus.settingsPopup) mousetrap.bindGlobal(CONFIRM_SHORTCUT, this.saveSettings);
+		if (this.props.show) mousetrap.bindGlobal(CONFIRM_SHORTCUT, this.saveSettings);
 		else mousetrap.unbind(CONFIRM_SHORTCUT);
 	}
 
@@ -34,7 +34,7 @@ class Settings extends React.Component {
 		if (this.foldersConfig) settings = Object.assign(settings, this.foldersConfig());
 		if (settings.image !== this.props.filedImageUrl) loadFieldImage(settings.image);
 		this.props.setSettings(settings);
-		this.props.closePopups();
+		this.props.onClose();
 	};
 
 	getUpdateButton = () => {
@@ -56,14 +56,9 @@ class Settings extends React.Component {
 		return <SettingsFoldersConfig setElementData={this.setElementData} />;
 	};
 
-	closeSettings = () => {
-		if (this.resetProjectPath) this.resetProjectPath();
-		this.props.closePopups();
-	};
-
 	render() {
 		return (
-			<Modal centered show={this.props.popupsStatus.settingsPopup} onHide={this.closeSettings} backdrop="static">
+			<Modal centered show={this.props.show} onHide={this.props.onClose} backdrop="static">
 				<Modal.Header>
 					<Modal.Title>Settings</Modal.Title>
 				</Modal.Header>
@@ -79,7 +74,7 @@ class Settings extends React.Component {
 				</Modal.Body>
 				<Modal.Footer>
 					{this.getUpdateButton()}
-					<Button variant="outline-primary" onClick={this.closeSettings}>
+					<Button variant="outline-primary" onClick={this.props.onClose}>
 						cancel
 					</Button>
 					<Button onClick={this.saveSettings}>save</Button>
@@ -91,7 +86,6 @@ class Settings extends React.Component {
 
 const mapStateToProps = (state) => {
 	return {
-		popupsStatus: state.popupsStatus,
 		projectPath: state.projectPath,
 		newVersion: state.newVersion,
 		filedImageUrl: state.image,
@@ -103,7 +97,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		setSettings: (settings) => dispatch(setSettings(settings)),
-		closePopups: () => dispatch(changePopupsStatus()),
 	};
 };
 

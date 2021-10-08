@@ -1,10 +1,11 @@
-import { CONFIRM_SHORTCUT } from '../../shortcut';
 import React, { useEffect, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 
-export default function alertPopup({ title, body, onClose, show }) {
+import { CONFIRM_SHORTCUT } from '../../shortcut';
+
+export default function AlertPopup({ title, body, onClose, show }) {
 	const okButtonRef = useRef();
 	useEffect(() => {
 		okButtonRef.current && okButtonRef.current.focus();

@@ -1,12 +1,12 @@
-import { changePopupsStatus } from '../redux/view/actions';
-import { updateGroup } from '../redux/group/actions';
 import { DragDropContext } from 'react-beautiful-dnd';
-import DragAndDropList from './drag-and-drop-list';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import React from 'react';
 
-class PathsList extends React.Component {
+import { updateGroup } from '../redux/group/actions';
+import DragAndDropList from './drag-and-drop-list';
+
+class GroupInfo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = { items: [], selected: [] };
@@ -46,9 +46,8 @@ class PathsList extends React.Component {
 	};
 
 	onClose = (group) => {
-		const { close, updateGroup } = this.props;
-		close();
-		updateGroup(group);
+		this.props.onClose();
+		this.props.updateGroup(group);
 	};
 
 	render() {
@@ -79,16 +78,14 @@ const mapStateToProps = (state) => {
 	return {
 		selected: state.selected,
 		paths: Object.keys(state.paths),
-		show: state.popupsStatus.groupPopup,
 		groupPaths: state.groups[state.selected] ? state.groups[state.selected] : [],
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		close: () => dispatch(changePopupsStatus()),
 		updateGroup: (group) => dispatch(updateGroup(group)),
 	};
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(PathsList);
+export default connect(mapStateToProps, mapDispatchToProps)(GroupInfo);

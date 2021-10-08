@@ -1,16 +1,16 @@
+import { connect } from 'react-redux';
+import mousetrap from 'mousetrap';
+import 'mousetrap-global-bind';
+import React from 'react';
+
 import { projectInit } from '../handlers/project-handler';
 import { appUpdaterInit } from '../handlers/app-handler';
+import NewVersionPopup from './popups/new-version-popup';
 import FieldView from './field-view/field-view';
 import { CANCEL_SHORTCUT } from '../shortcut';
 import Settings from './settings/settings';
 import PlayingBar from './playing-bar';
-import GroupInfo from './group-info';
-import { connect } from 'react-redux';
-import Popups from './popups/popups';
 import Tools from './tools/tools';
-import mousetrap from 'mousetrap';
-import 'mousetrap-global-bind';
-import React from 'react';
 
 class App extends React.Component {
 	componentDidMount() {
@@ -24,8 +24,7 @@ class App extends React.Component {
 	render() {
 		return (
 			<div className="App">
-				<GroupInfo />
-				<Popups />
+				<NewVersionPopup newVersion={this.props.newVersion} />
 				<Settings />
 				<FieldView />
 				<div id="bottom">
@@ -40,6 +39,7 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
 	return {
 		isPathMode: state.isPathMode,
+		newVersion: state.newVersion,
 	};
 };
 
@@ -49,5 +49,4 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-const app = connect(mapStateToProps, mapDispatchToProps)(App);
-export default app;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

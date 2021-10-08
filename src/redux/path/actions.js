@@ -41,8 +41,7 @@ export async function changeSelectedPath(pathName, state) {
 	});
 }
 
-export async function deletePath(state) {
-	const { paths, selected, saveCSVTo } = state;
+export async function deletePath(paths, selected, saveCSVTo) {
 	deleteJsonPath(selected, saveCSVTo);
 	delete paths[selected];
 	return actionReturn({ listenToMouseClicks: false, selected: undefined, path: undefined });

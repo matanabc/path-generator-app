@@ -5,7 +5,6 @@ function illegalGroup(group, state) {
 	group.waypoints = [];
 	group.sourceSetpoints = [];
 	group.isIllegal = () => true;
-	state.popupsStatus.pathIsIllegalPopup = true;
 }
 
 function illegalPathInGroup(group, state) {

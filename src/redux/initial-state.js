@@ -1,10 +1,8 @@
 import { FieldConfig, RobotDrawConfig } from '../component/field-view/view-config';
-import { PopupsConfig } from '../component/popups/popups-config';
 import { Tank } from 'path-generator';
 
 export const initialState = {
 	//View
-	popupsStatus: new PopupsConfig(),
 	drawRobotInterval: undefined,
 	selected: undefined,
 	rangePosition: 0,

@@ -1,25 +1,17 @@
-import { changeSelectedGroup } from '../../redux/group/actions';
-import { changePopupsStatus } from '../../redux/view/actions';
-import { changeSelectedPath } from '../../redux/path/actions';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { CREATE_SHORTCUT } from '../../shortcut';
 import { connect } from 'react-redux';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 import React from 'react';
 
+import { changeSelectedGroup } from '../../redux/group/actions';
+import { changeSelectedPath } from '../../redux/path/actions';
+import { CREATE_SHORTCUT } from '../../shortcut';
+
 class ToolsSelect extends React.Component {
-	constructor(props) {
-		super(props);
-		this.getItems = this.getItems.bind(this);
-		this.setSelected = this.setSelected.bind(this);
-	}
+	componentDidMount = () => mousetrap.bindGlobal(CREATE_SHORTCUT, this.props.showCreateNewPopup);
 
-	componentDidMount() {
-		mousetrap.bindGlobal(CREATE_SHORTCUT, this.props.showCreateNewPopup);
-	}
-
-	getItems() {
+	getItems = () => {
 		const { pathsName, groups, isPathMode, selected } = this.props;
 		const list = isPathMode ? pathsName : groups;
 		return list.map((element, index) => {
@@ -34,14 +26,14 @@ class ToolsSelect extends React.Component {
 				</Dropdown.Item>
 			);
 		});
-	}
+	};
 
-	async setSelected(selected) {
+	setSelected = async (selected) => {
 		const { changeSelectedGroup, changeSelectedPath, isPathMode } = this.props;
 		if (document.activeElement) document.activeElement.blur();
 		if (isPathMode) await changeSelectedPath(selected, this.props);
 		else changeSelectedGroup(selected, this.props);
-	}
+	};
 
 	render() {
 		const { showCreateNewPopup, isPathMode, selected } = this.props;
@@ -72,7 +64,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		showCreateNewPopup: () => dispatch(changePopupsStatus('createNewPopup')),
 		changeSelectedGroup: (groupName) => dispatch(changeSelectedGroup(groupName)),
 		changeSelectedPath: async (pathName, state) => dispatch(await changeSelectedPath(pathName, state)),
 	};

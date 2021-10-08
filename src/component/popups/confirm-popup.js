@@ -1,15 +1,9 @@
-import { CONFIRM_SHORTCUT } from '../../shortcut';
 import React, { useEffect, useRef } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import mousetrap from 'mousetrap';
-import 'mousetrap-global-bind';
 
-export default function confirmPopup({ title, body, onCancel, onConfirm, show }) {
+export default function ConfirmPopup({ title, body, onCancel, onConfirm, show }) {
 	const cancelButtonRef = useRef();
-	useEffect(() => {
-		cancelButtonRef.current && cancelButtonRef.current.focus();
-		show ? mousetrap.bindGlobal(CONFIRM_SHORTCUT, onConfirm) : mousetrap.unbind(CONFIRM_SHORTCUT, onConfirm);
-	});
+	useEffect(() => cancelButtonRef.current && cancelButtonRef.current.focus());
 
 	return (
 		<Modal centered show={show} onHide={onCancel}>

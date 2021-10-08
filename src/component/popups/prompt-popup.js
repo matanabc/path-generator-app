@@ -1,10 +1,11 @@
 import { Modal, Button, FormControl } from 'react-bootstrap';
-import { CONFIRM_SHORTCUT } from '../../shortcut';
 import React, { useEffect, useRef } from 'react';
 import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 
-export default function promptPopup({ title, placeholder, defaultValue, onCancel, onConfirm, show }) {
+import { CONFIRM_SHORTCUT } from '../../shortcut';
+
+export default function PromptPopup({ title, placeholder, defaultValue, onCancel, onConfirm, show }) {
 	const textRef = useRef();
 	const onClick = () => onConfirm(textRef.current ? textRef.current.value : undefined);
 	useEffect(() => {

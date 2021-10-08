@@ -1,5 +1,4 @@
 import { SET_APP_VERSION, SET_NEW_VERSION, SET_PLATFORM } from './action-types';
-import { PopupsConfig } from '../../component/popups/popups-config';
 
 function setPlatform(state, payload) {
 	return { ...state, isWeb: payload.isWeb };
@@ -10,9 +9,7 @@ function setAppVersion(state, payload) {
 }
 
 function setNewVersion(state, payload) {
-	const newState = { ...state, newVersion: payload.version, popupsStatus: new PopupsConfig() };
-	newState.popupsStatus.newVersionPopup = true;
-	return newState;
+	return { ...state, newVersion: payload.version };
 }
 
 export default function app(state, action) {
