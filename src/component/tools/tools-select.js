@@ -7,9 +7,16 @@ import React from 'react';
 import { changeSelectedGroup } from '../../redux/group/actions';
 import { changeSelectedPath } from '../../redux/path/actions';
 import { CREATE_SHORTCUT } from '../../shortcut';
+import PromptPopup from '../popups/prompt-popup';
+import { createNewAction } from './util';
 
 class ToolsSelect extends React.Component {
-	componentDidMount = () => mousetrap.bindGlobal(CREATE_SHORTCUT, this.props.showCreateNewPopup);
+	constructor(props) {
+		super(props);
+		this.state = { showPopup: false };
+	}
+
+	componentDidMount = () => mousetrap.bindGlobal(CREATE_SHORTCUT, this.changePopupStatus);
 
 	getItems = () => {
 		const { pathsName, groups, isPathMode, selected } = this.props;
@@ -35,17 +42,34 @@ class ToolsSelect extends React.Component {
 		else changeSelectedGroup(selected, this.props);
 	};
 
+	changePopupStatus = () => this.setState((state) => ({ showPopup: !state.showPopup }));
+	createPath = (pathName) => {
+		const { isPathMode, paths, pathConfig, driveType } = this.props;
+		this.props.createNewAction(isPathMode, paths, pathConfig, driveType, pathName);
+		this.setState({ showPopup: false });
+	};
+
 	render() {
 		const { showCreateNewPopup, isPathMode, selected } = this.props;
 		const selectDropdownText = selected ? selected : isPathMode ? 'Select Path' : 'Select Group';
 		return (
-			<DropdownButton className="ml-3 mr-2" size="lg" drop="up" title={selectDropdownText}>
-				{this.getItems()}
-				<Dropdown.Divider />
-				<Dropdown.Item as="button" onClick={showCreateNewPopup}>
-					{isPathMode ? 'New Path' : 'New Group'}
-				</Dropdown.Item>
-			</DropdownButton>
+			<>
+				<PromptPopup
+					show={this.state.showPopup}
+					onCancel={this.changePopupStatus}
+					onConfirm={this.createPath}
+					placeholder={`${isPathMode ? 'path' : 'group'} name`}
+					title={`Create new ${isPathMode ? 'path' : 'group'}`}
+				/>
+
+				<DropdownButton className="ml-3 mr-2" size="lg" drop="up" title={selectDropdownText}>
+					{this.getItems()}
+					<Dropdown.Divider />
+					<Dropdown.Item as="button" onClick={this.changePopupStatus}>
+						{isPathMode ? 'New Path' : 'New Group'}
+					</Dropdown.Item>
+				</DropdownButton>
+			</>
 		);
 	}
 }
@@ -66,6 +90,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		changeSelectedGroup: (groupName) => dispatch(changeSelectedGroup(groupName)),
 		changeSelectedPath: async (pathName, state) => dispatch(await changeSelectedPath(pathName, state)),
+		createNewAction: async (isPathMode, paths, pathConfig, driveType, pathName) =>
+			dispatch(await createNewAction(isPathMode, paths, pathConfig, driveType, pathName)),
 	};
 };
 
