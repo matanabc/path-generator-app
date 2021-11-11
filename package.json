@@ -54,7 +54,9 @@
 		"electron-store": "^8.0.1",
 		"electron-updater": "^4.3.9",
 		"cross-env": "^7.0.3",
-		"os": "^0.1.2"
+		"os": "^0.1.2",
+		"react-rnd": "^10.3.5",
+		"react-draggable": "^4.4.4"
 	},
 	"browserslist": {
 		"production": [

@@ -1,5 +1,10 @@
-import React from 'react';
+import { SimulationView } from './simulation';
+import './app.css';
 
 export default function App() {
-	return <></>;
+	return (
+		<div className='App'>
+			<SimulationView filedImageUrl={''} />
+		</div>
+	);
 }
