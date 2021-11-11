@@ -3,7 +3,39 @@
 	"version": "3.0.0",
 	"description": "A easy motion profile generator",
 	"author": "Matan Steinmetz <matanabc@gamil.com>",
-	"private": true,
+	"main": "public/electron/index.js",
+	"repository": "https://github.com/matanabc/path-generator-app.git",
+	"homepage": "./",
+	"scripts": {
+		"start-app": "concurrently \"cross-env BROWSER=none npm run start-web\" \"wait-on http://localhost:3000 && electron .\"",
+		"start-web": "react-scripts start",
+		"build-app": "npm run build-web && electron-builder",
+		"build-web": "react-scripts build",
+		"format": "prettier --write ."
+	},
+	"build": {
+		"productName": "PathGenerator",
+		"appId": "com.example.PathGenerator",
+		"artifactName": "PathGenerator_${os}_${version}.${ext}",
+		"extraMetadata": {
+			"main": "build/electron/index.js"
+		},
+		"win": {
+			"target": "nsis"
+		},
+		"linux": {
+			"target": "tar.gz"
+		},
+		"mac": {
+			"target": "zip"
+		}
+	},
+	"devDependencies": {
+		"concurrently": "^6.3.0",
+		"electron": "^15.3.0",
+		"electron-builder": "^22.13.1",
+		"wait-on": "^6.0.0"
+	},
 	"dependencies": {
 		"@testing-library/jest-dom": "^5.15.0",
 		"@testing-library/react": "^11.2.7",
@@ -16,19 +48,13 @@
 		"react-dom": "^17.0.2",
 		"react-scripts": "4.0.3",
 		"typescript": "^4.4.4",
-		"web-vitals": "^1.1.2"
-	},
-	"scripts": {
-		"start": "react-scripts start",
-		"build": "react-scripts build",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject"
-	},
-	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+		"web-vitals": "^1.1.2",
+		"electron-cookies": "^1.1.0",
+		"electron-is-dev": "^2.0.0",
+		"electron-store": "^8.0.1",
+		"electron-updater": "^4.3.9",
+		"cross-env": "^7.0.3",
+		"os": "^0.1.2"
 	},
 	"browserslist": {
 		"production": [
