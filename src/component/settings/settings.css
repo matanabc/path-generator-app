@@ -1,0 +1,11 @@
+.modal-content {
+	color: black;
+}
+
+.Config {
+	margin: 0 1em 1em 1em;
+}
+
+.Config > .hstack {
+	margin-left: 1em;
+}

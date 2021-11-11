@@ -1,8 +1,9 @@
 import { ExtendedKeyboardEvent } from 'mousetrap';
-import { ButtonProps, FormControlProps, OverlayTriggerProps, StackProps } from 'react-bootstrap';
+import { ButtonProps, FormControlProps, StackProps } from 'react-bootstrap';
 
 export type TRowProps = StackProps & {};
-export type TInputProps = FormControlProps & OverlayTriggerProps & { tooltip?: string };
+export type TInputProps = FormControlProps & { tooltip?: string };
+
 export type TButtonProps = ButtonProps & {
 	title?: string;
 	shortcut?: string[];
