@@ -1,3 +1,1 @@
-import Loader from './project-loader';
-
-export { Loader };
+export { default as Loader } from './project-loader';

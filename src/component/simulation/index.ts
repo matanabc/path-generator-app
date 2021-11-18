@@ -1,3 +1,1 @@
-import SimulationView from './view';
-
-export { SimulationView };
+export { default as SimulationView } from './view';
