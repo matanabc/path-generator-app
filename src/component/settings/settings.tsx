@@ -1,6 +1,7 @@
 import { Modal } from 'react-bootstrap';
 
 import { TSettingsProps } from './types';
+import { saveProject } from '../../handler/project';
 import RobotDrawConfig from './robot-draw-config';
 import ProjectConfig from './project-config';
 import ExportTypeConfig from './export-type';
@@ -10,8 +11,13 @@ import PathConfig from './path-config';
 import './settings.css';
 
 export default function Settings({ show, onClose }: TSettingsProps) {
+	const onHide = async () => {
+		onClose();
+		await saveProject();
+	};
+
 	return (
-		<Modal centered scrollable show={show} onHide={onClose} size={'xl'}>
+		<Modal centered scrollable show={show} onHide={onHide} size={'xl'}>
 			<Modal.Header closeButton>
 				<Modal.Title>Settings</Modal.Title>
 			</Modal.Header>
