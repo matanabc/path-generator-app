@@ -1,8 +1,9 @@
-import { DEFAULT_EXPORT_FOLDER_PATH, DEFAULT_PROJECT_FOLDER_PATH, PROJECT_FILE_NAME } from '../consts';
 import { useFieldStore, useFilesStore, usePathConfigStore } from '../store';
+import { PROJECT_FILE_NAME, ExportOption, StoreOption } from '../consts';
+import { initialPathConfigState } from '../store/path-config-store';
 import { Holonomic, PathConfig, Tank } from 'path-generator';
 import { initialFieldState } from '../store/field-store';
-import { ExportOption, StoreOption } from '../consts';
+import { initialFileState } from '../store/files-store';
 import { loadFromStore, saveInStore } from './ipc';
 import { loadFile, saveFile } from './fs';
 
@@ -15,13 +16,12 @@ type TProjectFile = {
 
 export async function loadProject() {
 	const { Folders, Filed } = StoreOption;
+	const { projectFolder, exportFolder } = await loadFromStore(Folders, initialFileState);
 	const { widthInPixel, heightInPixel, topLeftX, topLeftY } = await loadFromStore(Filed, initialFieldState);
-	const { projectFolder = DEFAULT_PROJECT_FOLDER_PATH, exportFolder = DEFAULT_EXPORT_FOLDER_PATH } =
-		await loadFromStore(Folders, {});
 
 	const projectFile: TProjectFile = await loadFile(`${projectFolder}/${PROJECT_FILE_NAME}`);
+	const { pathConfig = new PathConfig(), exportType } = { ...initialPathConfigState, ...projectFile };
 	const driveType = projectFile.driveType === 'Holonomic' ? Holonomic : Tank;
-	const { pathConfig = new PathConfig(), exportType } = projectFile;
 	const { widthInMeter, heightInMeter, image } = projectFile.filed;
 
 	usePathConfigStore.setState({ driveType, pathConfig });
