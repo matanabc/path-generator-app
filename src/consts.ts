@@ -7,6 +7,7 @@ export enum ExportOption {
 
 export enum StoreOption {
 	Folders = 'folders',
+	Filed = 'Filed',
 }
 
 export const PROJECT_FILE_NAME = 'PathGenerator.json';
