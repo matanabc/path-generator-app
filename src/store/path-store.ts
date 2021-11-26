@@ -12,6 +12,6 @@ export default create(
 			setDriveType: (driveType: string) => set({ driveType }),
 			setPathConfig: (value: any) => set((state) => ({ ...state, ...value })),
 		}),
-		{ name: 'path-config-store', getStorage: () => ipc.sessionStorage }
+		{ name: 'path-store', getStorage: () => ipc.sessionStorage }
 	)
 );

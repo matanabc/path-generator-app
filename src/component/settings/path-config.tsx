@@ -1,21 +1,19 @@
-import { Tank, Holonomic } from 'path-generator';
-import { usePathConfigStore } from '../../store';
-
 import { Input, Row, Button } from '../common';
 import SettingsConfig from './settings-config';
+import { DriveTypeOption } from '../../consts';
+import { usePathStore } from '../../store';
 
 export default function PathConfig({}) {
-	const { driveType, robotLoopTime, acc, vMax, length, width, setDriveType, setPathConfig } = usePathConfigStore();
+	const { driveType, robotLoopTime, acc, vMax, length, width, setDriveType, setPathConfig } = usePathStore();
 
 	return (
 		<SettingsConfig title='Path Configuration'>
 			<Row className='mb-2'>
-				<Button className={'col'} active={'Tank' === driveType} onClick={() => setDriveType('Tank')}>
-					Tank
-				</Button>
-				<Button className={'col'} active={'Holonomic' === driveType} onClick={() => setDriveType('Holonomic')}>
-					Holonomic
-				</Button>
+				{Object.keys(DriveTypeOption).map((type) => (
+					<Button key={type} className={'col'} active={type === driveType} onClick={() => setDriveType(type)}>
+						{type}
+					</Button>
+				))}
 			</Row>
 
 			<Row className='mb-2'>
