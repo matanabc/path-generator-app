@@ -5,15 +5,15 @@ import { Input, Row, Button } from '../common';
 import SettingsConfig from './settings-config';
 
 export default function PathConfig({}) {
-	const { driveType, pathConfig, setDriveType, setPathConfig } = usePathConfigStore();
+	const { driveType, robotLoopTime, acc, vMax, length, width, setDriveType, setPathConfig } = usePathConfigStore();
 
 	return (
 		<SettingsConfig title='Path Configuration'>
 			<Row className='mb-2'>
-				<Button className={'col'} active={Tank === driveType} onClick={() => setDriveType(Tank)}>
+				<Button className={'col'} active={'Tank' === driveType} onClick={() => setDriveType('Tank')}>
 					Tank
 				</Button>
-				<Button className={'col'} active={Holonomic === driveType} onClick={() => setDriveType(Holonomic)}>
+				<Button className={'col'} active={'Holonomic' === driveType} onClick={() => setDriveType('Holonomic')}>
 					Holonomic
 				</Button>
 			</Row>
@@ -23,14 +23,14 @@ export default function PathConfig({}) {
 					type='number'
 					title='Width'
 					tooltip='in meters'
-					value={pathConfig.width}
+					value={width}
 					onChange={({ target }) => setPathConfig({ width: Number(target.value) })}
 				/>
 				<Input
 					type='number'
 					title='Length'
 					tooltip='in meters'
-					value={pathConfig.length}
+					value={length}
 					onChange={({ target }) => setPathConfig({ length: Number(target.value) })}
 				/>
 			</Row>
@@ -40,21 +40,21 @@ export default function PathConfig({}) {
 					type='number'
 					title='Max V'
 					tooltip='in meters'
-					value={pathConfig.vMax}
+					value={vMax}
 					onChange={({ target }) => setPathConfig({ vMax: Number(target.value) })}
 				/>
 				<Input
 					title='Acc'
 					type='number'
 					tooltip='in meters'
-					value={pathConfig.acc}
+					value={acc}
 					onChange={({ target }) => setPathConfig({ acc: Number(target.value) })}
 				/>
 				<Input
 					type='number'
 					tooltip='in sec'
 					title='Loop Time'
-					value={pathConfig.robotLoopTime}
+					value={robotLoopTime}
 					onChange={({ target }) => setPathConfig({ robotLoopTime: Number(target.value) })}
 				/>
 			</Row>

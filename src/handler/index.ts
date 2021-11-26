@@ -6,4 +6,5 @@ declare global {
 	}
 }
 
-export * as Project from './project';
+export * as fs from './fs';
+export * as ipc from './ipc';

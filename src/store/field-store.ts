@@ -1,20 +1,17 @@
 import create from 'zustand';
-import { combine } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
-export const initialFieldState = {
-	image: '',
-	topLeftX: 0,
-	topLeftY: 0,
-	widthInMeter: 0,
-	heightInMeter: 0,
-	widthInPixel: 100,
-	heightInPixel: 100,
-};
+import { ipc } from '../handler';
 
 export default create(
-	combine(initialFieldState, (set) => ({
-		setField: (value: any) => set({ ...value }),
-		updateFiledInPixel: (heightInPixel: number, widthInPixel: number, topLeftX: number, topLeftY: number) =>
-			set({ heightInPixel, widthInPixel, topLeftX, topLeftY }),
-	}))
+	persist(
+		(set) => ({
+			image: '',
+			...{ topLeftX: 0, topLeftY: 0 },
+			...{ widthInMeter: 0, heightInMeter: 0 },
+			...{ widthInPixel: 100, heightInPixel: 100 },
+			updateFieldStore: (value: any) => set({ ...value }),
+		}),
+		{ name: 'field-store', getStorage: () => ipc.sessionStorage }
+	)
 );

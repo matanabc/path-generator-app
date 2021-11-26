@@ -1,15 +1,17 @@
-import { Holonomic, PathConfig, Tank } from 'path-generator';
-import { combine } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
+import { PathConfig } from 'path-generator';
 import create from 'zustand';
 
-type TDriveType = typeof Tank | typeof Holonomic;
-type TPathConfigState = { driveType: TDriveType; pathConfig: PathConfig };
-
-export const initialPathConfigState: TPathConfigState = { driveType: Tank, pathConfig: new PathConfig() };
+import { ipc } from '../handler';
 
 export default create(
-	combine(initialPathConfigState, (set) => ({
-		setDriveType: (driveType: TDriveType) => set({ driveType }),
-		setPathConfig: (value: any) => set(({ pathConfig }) => ({ pathConfig: { ...pathConfig, ...value } })),
-	}))
+	persist(
+		(set) => ({
+			driveType: 'Tank',
+			...new PathConfig(),
+			setDriveType: (driveType: string) => set({ driveType }),
+			setPathConfig: (value: any) => set((state) => ({ ...state, ...value })),
+		}),
+		{ name: 'path-config-store', getStorage: () => ipc.sessionStorage }
+	)
 );

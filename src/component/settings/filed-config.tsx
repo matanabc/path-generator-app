@@ -3,7 +3,7 @@ import { useFieldStore } from '../../store';
 import { Input, Row } from '../common';
 
 export default function FiledConfig({}) {
-	const { widthInMeter, heightInMeter, image, setField } = useFieldStore();
+	const { widthInMeter, heightInMeter, image, updateFieldStore } = useFieldStore();
 
 	return (
 		<SettingsConfig title='Filed Configuration'>
@@ -13,19 +13,23 @@ export default function FiledConfig({}) {
 					title='Width'
 					tooltip='in meters'
 					value={widthInMeter}
-					onChange={({ target }) => setField({ widthInMeter: Number(target.value) })}
+					onChange={({ target }) => updateFieldStore({ widthInMeter: Number(target.value) })}
 				/>
 				<Input
 					type='number'
 					title='Height'
 					tooltip='in meters'
 					value={heightInMeter}
-					onChange={({ target }) => setField({ heightInMeter: Number(target.value) })}
+					onChange={({ target }) => updateFieldStore({ heightInMeter: Number(target.value) })}
 				/>
 			</Row>
 
 			<Row>
-				<Input title='Image' value={image} onChange={({ target }) => setField({ image: target.value })} />
+				<Input
+					title='Image'
+					value={image}
+					onChange={({ target }) => updateFieldStore({ image: target.value })}
+				/>
 			</Row>
 		</SettingsConfig>
 	);
