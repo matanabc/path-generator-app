@@ -9,14 +9,16 @@ import Path from './path';
 import './view.css';
 
 export default function View({ filedImageUrl }: TSimulationViewProps) {
+	const waypoints = usePathStore((state) => state.paths[state.selected]) || [];
+	const setWaypoint = usePathStore((state) => state.setWaypoint);
 	const path = usePathStore(createPathSelector, shallow);
 
 	return (
 		<>
 			<Field filedImageUrl={filedImageUrl} />
 			<Path coords={path.coords} />
-			{path.waypoints.map((waypoint, index) => (
-				<Waypoint key={waypoint.getInfo()} index={index + 1} waypoint={waypoint} />
+			{waypoints.map((waypoint: any, index: number) => (
+				<Waypoint key={index} index={index} waypoint={waypoint} setWaypoint={setWaypoint} />
 			))}
 		</>
 	);

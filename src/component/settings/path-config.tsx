@@ -4,7 +4,8 @@ import { DriveTypeOption } from '../../consts';
 import { usePathStore } from '../../store';
 
 export default function PathConfig({}) {
-	const { driveType, robotLoopTime, acc, vMax, length, width, setDriveType, setPathConfig } = usePathStore();
+	const { driveType, pathConfig, setDriveType, setPathConfig } = usePathStore();
+	const { robotLoopTime, acc, vMax, length, width } = pathConfig;
 
 	return (
 		<SettingsConfig title='Path Configuration'>
