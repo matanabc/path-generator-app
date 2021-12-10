@@ -8,5 +8,4 @@ export type TPathProps = { coords: Coord[] };
 export type TWaypointProps = {
 	index: number;
 	waypoint: Waypoint | HolonomicWaypoint;
-	setWaypoint: (index: number, value: any) => void;
 };

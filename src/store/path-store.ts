@@ -23,6 +23,17 @@ export default create(
 					Object.assign(paths[selected][index], value);
 					set({ paths });
 				},
+				addWaypoint: (index: number) => {
+					const { paths, selected } = get();
+					const waypoint = paths[selected][index];
+					paths[selected].splice(index, 0, { ...waypoint });
+					set({ paths });
+				},
+				removeWaypoint: (index: number) => {
+					const { paths, selected } = get();
+					if (paths[selected].length > 2) paths[selected].splice(index, 1);
+					set({ paths });
+				},
 			})
 		),
 		{ name: 'path-store', getStorage: () => ipc.sessionStorage }
