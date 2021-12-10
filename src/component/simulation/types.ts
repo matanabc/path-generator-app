@@ -9,3 +9,9 @@ export type TWaypointProps = {
 	index: number;
 	waypoint: Waypoint | HolonomicWaypoint;
 };
+
+export type TWaypointInfoProps = TWaypointProps & {
+	show: boolean;
+	onClose: () => void;
+	setWaypoint: (index: number, value: any) => void;
+};
