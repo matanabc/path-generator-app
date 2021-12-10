@@ -7,6 +7,7 @@ import { useFieldStore, usePathStore } from '../../store';
 import { materToPixel, pixelToMater } from '../../util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
+import Robot from './robot';
 
 const minOffset = WAYPOINT_SIZE / 2 - BORDER_SIZE / 2;
 const maxOffset = WAYPOINT_SIZE / 2 + BORDER_SIZE / 2;
@@ -19,10 +20,14 @@ const waypointSelector = ({ setWaypoint, addWaypoint, removeWaypoint }: any) => 
 
 export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	const [showInfo, setShowInfo] = useState(false);
+	const [showRobot, setShowRobot] = useState(false);
+
 	const waypointRef = useRef<HTMLDivElement>(null);
-	const { x, y } = materToPixel(waypoint.x, waypoint.y);
-	const { setWaypoint, addWaypoint, removeWaypoint } = usePathStore(waypointSelector, shallow);
+
 	const { topLeftX, topLeftY, widthInPixel, heightInPixel } = useFieldStore();
+	const { setWaypoint, addWaypoint, removeWaypoint } = usePathStore(waypointSelector, shallow);
+
+	const { x, y } = materToPixel(waypoint.x, waypoint.y);
 	const position = { x: x + topLeftX - minOffset, y: y + topLeftY - minOffset };
 	const bounds = {
 		...{ top: topLeftY - minOffset, left: topLeftX - minOffset },
@@ -47,11 +52,14 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 		const waypoint = waypointRef.current;
 		if (waypoint === null) return;
 		waypoint.onwheel = onWheel;
+		waypoint.onmouseenter = () => setShowRobot(true);
+		waypoint.onmouseleave = () => setShowRobot(false);
 		waypoint.addEventListener('dblclick', onDoubleClick);
 	});
 
 	return (
 		<>
+			{showRobot && <Robot position={{ ...position, angle: waypoint.angle }} />}
 			<WaypointInfo
 				index={index}
 				show={showInfo}
