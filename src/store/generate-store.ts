@@ -1,5 +1,4 @@
 import { persist, combine } from 'zustand/middleware';
-import { PathConfig } from 'path-generator';
 import create from 'zustand';
 
 import { ipc } from '../handler';
@@ -10,14 +9,10 @@ export default create(
 	persist(
 		combine(
 			{
-				pathConfig: new PathConfig(),
 				paths: {} as TPaths,
-				driveType: 'Tank',
 				selected: '',
 			},
 			(set, get) => ({
-				setDriveType: (driveType: string) => set({ driveType }),
-				setPathConfig: (value: any) => set(({ pathConfig }) => ({ pathConfig: { ...pathConfig, ...value } })),
 				setWaypoint: (index: number, value: any) => {
 					const { paths, selected } = get();
 					Object.assign(paths[selected][index], value);

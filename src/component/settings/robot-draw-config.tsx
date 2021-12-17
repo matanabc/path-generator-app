@@ -1,13 +1,35 @@
-import { Input, Row } from '../common';
 import SettingsConfig from './settings-config';
+import { useRobotStore } from '../../store';
+import { Input, Row } from '../common';
 
 export default function RobotDrawConfig({}) {
+	const { drawConfig, setDrawConfig } = useRobotStore();
+	const { width, length, center } = drawConfig;
+
 	return (
 		<SettingsConfig title='Robot Draw Configuration'>
 			<Row>
-				<Input type='number' title='Width' tooltip='in meters' value={''} onChange={() => {}} />
-				<Input type='number' title='Length' tooltip='in meters' value={''} onChange={() => {}} />
-				<Input type='number' title='Center' tooltip='with bumper' value={''} onChange={() => {}} />
+				<Input
+					type='number'
+					title='Width'
+					value={width}
+					tooltip='in meters'
+					onChange={({ target }) => setDrawConfig({ width: Number(target.value) })}
+				/>
+				<Input
+					type='number'
+					title='Length'
+					value={length}
+					tooltip='in meters'
+					onChange={({ target }) => setDrawConfig({ length: Number(target.value) })}
+				/>
+				<Input
+					type='number'
+					title='Center'
+					value={center}
+					tooltip='with bumper'
+					onChange={({ target }) => setDrawConfig({ center: Number(target.value) })}
+				/>
 			</Row>
 		</SettingsConfig>
 	);

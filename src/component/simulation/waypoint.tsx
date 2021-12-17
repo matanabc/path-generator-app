@@ -1,9 +1,8 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
-import shallow from 'zustand/shallow';
 
+import { useFieldStore, useGenerateStore } from '../../store';
 import { BORDER_SIZE, WAYPOINT_SIZE } from '../../consts';
-import { useFieldStore, usePathStore } from '../../store';
 import { materToPixel, pixelToMater } from '../../util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
@@ -12,20 +11,12 @@ import Robot from './robot';
 const minOffset = WAYPOINT_SIZE / 2 - BORDER_SIZE / 2;
 const maxOffset = WAYPOINT_SIZE / 2 + BORDER_SIZE / 2;
 
-const waypointSelector = ({ setWaypoint, addWaypoint, removeWaypoint }: any) => ({
-	setWaypoint,
-	addWaypoint,
-	removeWaypoint,
-});
-
 export default function Waypoint({ index, waypoint }: TWaypointProps) {
+	const waypointRef = useRef<HTMLDivElement>(null);
 	const [showInfo, setShowInfo] = useState(false);
 	const [showRobot, setShowRobot] = useState(false);
-
-	const waypointRef = useRef<HTMLDivElement>(null);
-
+	const { setWaypoint, addWaypoint, removeWaypoint } = useGenerateStore();
 	const { topLeftX, topLeftY, widthInPixel, heightInPixel } = useFieldStore();
-	const { setWaypoint, addWaypoint, removeWaypoint } = usePathStore(waypointSelector, shallow);
 
 	const { x, y } = materToPixel(waypoint.x, waypoint.y);
 	const position = { x: x + topLeftX - minOffset, y: y + topLeftY - minOffset };

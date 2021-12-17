@@ -3,10 +3,11 @@ import { Holonomic, Tank } from 'path-generator';
 import { DriveTypeOption, BORDER_SIZE } from './consts';
 import { useFieldStore } from './store';
 
-export const createPathSelector = (state: any) => {
-	const waypoints = state.paths[state.selected] || [];
-	if (DriveTypeOption.Holonomic === state.driveType) return new Holonomic.Path(waypoints, state.pathConfig);
-	return new Tank.Path(waypoints, state.pathConfig);
+export const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: any) => {
+	const waypoints = paths[selected] || [];
+	if (waypoints.length === 0) return { coords: [] };
+	if (DriveTypeOption.Holonomic === driveType) return new Holonomic.Path(waypoints, pathConfig);
+	return new Tank.Path(waypoints, pathConfig);
 };
 
 export const materToPixel = (x: number, y: number) => {

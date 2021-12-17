@@ -1,17 +1,15 @@
-import shallow from 'zustand/shallow';
-
-import { createPathSelector } from '../../util';
+import { useGenerateStore, useRobotStore } from '../../store';
 import { TSimulationViewProps } from './types';
-import { usePathStore } from '../../store';
+import { createPath } from '../../util';
 import Waypoint from './waypoint';
 import Field from './field';
 import Path from './path';
 import './view.css';
 
 export default function View({ filedImageUrl }: TSimulationViewProps) {
-	const path = usePathStore(createPathSelector, shallow);
-	const selected = usePathStore((state) => state.selected) || '';
-	const waypoints = usePathStore((state) => state.paths[selected]) || [];
+	const path = createPath(useGenerateStore(), useRobotStore());
+	const selected = useGenerateStore((state) => state.selected) || '';
+	const waypoints = useGenerateStore((state) => state.paths[selected]) || [];
 
 	return (
 		<>

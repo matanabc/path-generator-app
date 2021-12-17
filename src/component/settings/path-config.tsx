@@ -1,10 +1,10 @@
 import { Input, Row, Button } from '../common';
 import SettingsConfig from './settings-config';
 import { DriveTypeOption } from '../../consts';
-import { usePathStore } from '../../store';
+import { useRobotStore } from '../../store';
 
 export default function PathConfig({}) {
-	const { driveType, pathConfig, setDriveType, setPathConfig } = usePathStore();
+	const { driveType, pathConfig, setDriveType, setPathConfig } = useRobotStore();
 	const { robotLoopTime, acc, vMax, length, width } = pathConfig;
 
 	return (
