@@ -27,6 +27,8 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 
 	const onClose = () => setShowInfo(false);
 	const onDoubleClick = () => setShowInfo(true);
+	const onCopy = async () => showRobot && (await navigator.clipboard.writeText(JSON.stringify(waypoint)));
+	const onPaste = async () => showRobot && addWaypoint(index + 1, JSON.parse(await navigator.clipboard.readText()));
 	const onWheel = (e: WheelEvent) =>
 		setWaypoint(index, { angle: Number((waypoint.angle + e.deltaY * 0.1).toFixed(3)) });
 	const onDrag = (e: DraggableEvent, { x, y }: DraggableData) =>
@@ -42,6 +44,8 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	useEffect(() => {
 		const waypoint = waypointRef.current;
 		if (waypoint === null) return;
+		document.oncopy = onCopy;
+		document.onpaste = onPaste;
 		waypoint.onwheel = onWheel;
 		waypoint.onmouseenter = () => setShowRobot(true);
 		waypoint.onmouseleave = () => setShowRobot(false);

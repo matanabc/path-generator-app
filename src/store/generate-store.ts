@@ -18,9 +18,9 @@ export default create(
 					Object.assign(paths[selected][index], value);
 					set({ paths });
 				},
-				addWaypoint: (index: number) => {
+				addWaypoint: (index: number, waypoint?: Object) => {
 					const { paths, selected } = get();
-					const waypoint = paths[selected][index];
+					if (waypoint === undefined) waypoint = paths[selected][index];
 					paths[selected].splice(index, 0, { ...waypoint });
 					set({ paths });
 				},
