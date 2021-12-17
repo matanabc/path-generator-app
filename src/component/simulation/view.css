@@ -28,3 +28,7 @@
 	border-left: 5px dashed red;
 	border-right: 5px dashed blue;
 }
+
+#Time {
+	width: 2%;
+}

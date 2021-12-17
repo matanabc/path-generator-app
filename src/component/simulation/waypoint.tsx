@@ -2,14 +2,11 @@ import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
 
 import { useFieldStore, useGenerateStore } from '../../store';
-import { BORDER_SIZE, WAYPOINT_SIZE } from '../../consts';
+import { BORDER_SIZE, OFFSET_SIZE } from '../../consts';
 import { materToPixel, pixelToMater } from '../../util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
 import Robot from './robot';
-
-const minOffset = WAYPOINT_SIZE / 2 - BORDER_SIZE / 2;
-const maxOffset = WAYPOINT_SIZE / 2 + BORDER_SIZE / 2;
 
 export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	const waypointRef = useRef<HTMLDivElement>(null);
@@ -19,10 +16,12 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	const { topLeftX, topLeftY, widthInPixel, heightInPixel } = useFieldStore();
 
 	const { x, y } = materToPixel(waypoint.x, waypoint.y);
-	const position = { x: x + topLeftX - minOffset, y: y + topLeftY - minOffset };
+	const position = { x: x + topLeftX, y: y + topLeftY };
 	const bounds = {
-		...{ top: topLeftY - minOffset, left: topLeftX - minOffset },
-		...{ right: topLeftX + widthInPixel - maxOffset, bottom: topLeftY + heightInPixel - maxOffset },
+		top: topLeftY - OFFSET_SIZE,
+		left: topLeftX - OFFSET_SIZE,
+		right: topLeftX + widthInPixel - OFFSET_SIZE - BORDER_SIZE,
+		bottom: topLeftY + heightInPixel - OFFSET_SIZE - BORDER_SIZE,
 	};
 
 	const onClose = () => setShowInfo(false);
@@ -32,7 +31,7 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	const onWheel = (e: WheelEvent) =>
 		setWaypoint(index, { angle: Number((waypoint.angle + e.deltaY * 0.1).toFixed(3)) });
 	const onDrag = (e: DraggableEvent, { x, y }: DraggableData) =>
-		setWaypoint(index, pixelToMater(x - topLeftX + minOffset, y - topLeftY + minOffset));
+		setWaypoint(index, pixelToMater(x - topLeftX, y - topLeftY));
 	const onStart = (e: DraggableEvent, data: DraggableData) => {
 		if (e.ctrlKey) addWaypoint(index);
 		if (e.shiftKey) {

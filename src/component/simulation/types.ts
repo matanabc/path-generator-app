@@ -3,9 +3,11 @@ import { ControlPosition } from 'react-draggable';
 import Coord from 'path-generator/lib/motionProfiling/coord';
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 
-export type TRobotProps = { position: ControlPosition & { angle: number } };
+export type TPosition = ControlPosition & { angle: number };
 export type TFiledProps = { filedImageUrl: string };
 export type TSimulationViewProps = TFiledProps & {};
+export type TRobotProps = { position: TPosition };
+export type TPlayingBarProps = TPathProps & {};
 export type TPathProps = { coords: Coord[] };
 
 export type TWaypointProps = {
