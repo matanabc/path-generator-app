@@ -20,7 +20,7 @@ export default function App() {
 
 	return (
 		<div className='App'>
-			<Field filedImageUrl={''} />
+			<Field />
 			<Path coords={path.coords} />
 			<PlayingBar coords={path.coords} />
 			{getWaypointsElements(waypoints, selected)}
