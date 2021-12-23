@@ -1,7 +1,8 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { DEFAULT_EXPORT_FOLDER_PATH, DEFAULT_PROJECT_FOLDER_PATH, ExportOption } from '../consts';
+import { DEFAULT_EXPORT_FOLDER_PATH, DEFAULT_PROJECT_FOLDER_PATH } from '../consts';
+import { ExportOption, StoreStorageName } from '../consts';
 import { ipc } from '../handler';
 
 export default create(
@@ -14,6 +15,6 @@ export default create(
 			setExportFolder: (exportFolder: string) => set({ exportFolder }),
 			setProjectFolder: (projectFolder: string) => set({ projectFolder }),
 		}),
-		{ name: 'files-store', getStorage: () => ipc.sessionStorage }
+		{ name: StoreStorageName.Files, getStorage: () => ipc.stateStorage }
 	)
 );

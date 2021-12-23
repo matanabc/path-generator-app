@@ -15,6 +15,13 @@ export enum DriveTypeOption {
 	Holonomic = 'Holonomic',
 }
 
+export enum StoreStorageName {
+	Generate = 'generate-store',
+	Robot = 'robot-store',
+	Field = 'field-store',
+	Files = 'files-store',
+}
+
 export const BORDER_SIZE = 5;
 export const WAYPOINT_SIZE = 30;
 export const OFFSET_SIZE = WAYPOINT_SIZE / 2 - BORDER_SIZE / 2;

@@ -1,6 +1,7 @@
-import create from 'zustand';
 import { persist } from 'zustand/middleware';
+import create from 'zustand';
 
+import { StoreStorageName } from '../consts';
 import { ipc } from '../handler';
 
 export default create(
@@ -12,6 +13,6 @@ export default create(
 			...{ widthInPixel: 100, heightInPixel: 100 },
 			updateFieldStore: (value: any) => set({ ...value }),
 		}),
-		{ name: 'field-store', getStorage: () => ipc.sessionStorage }
+		{ name: StoreStorageName.Field, getStorage: () => ipc.stateStorage }
 	)
 );

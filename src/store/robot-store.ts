@@ -2,6 +2,7 @@ import { persist, combine } from 'zustand/middleware';
 import { PathConfig } from 'path-generator';
 import create from 'zustand';
 
+import { StoreStorageName } from '../consts';
 import { ipc } from '../handler';
 
 export default create(
@@ -18,6 +19,6 @@ export default create(
 				setDrawConfig: (value: any) => set(({ drawConfig }) => ({ drawConfig: { ...drawConfig, ...value } })),
 			})
 		),
-		{ name: 'robot-store', getStorage: () => ipc.sessionStorage }
+		{ name: StoreStorageName.Robot, getStorage: () => ipc.stateStorage }
 	)
 );

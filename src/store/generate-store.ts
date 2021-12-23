@@ -1,7 +1,8 @@
 import { persist, combine } from 'zustand/middleware';
 import create from 'zustand';
 
-import { ipc } from '../handler';
+import { StoreStorageName } from '../consts';
+import { fs } from '../handler';
 
 type TPaths = { [key: string]: any };
 
@@ -31,6 +32,6 @@ export default create(
 				},
 			})
 		),
-		{ name: 'path-store', getStorage: () => ipc.sessionStorage }
+		{ name: StoreStorageName.Generate, getStorage: () => fs.stateStorage }
 	)
 );
