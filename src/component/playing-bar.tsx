@@ -2,11 +2,11 @@ import Coord from 'path-generator/lib/motionProfiling/coord';
 import { Container, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-import { useFieldStore, useRobotStore } from '../../store';
-import { TPlayingBarProps } from './types';
-import { materToPixel } from '../../util';
-import { Row } from '../common';
-import Robot from './robot';
+import { useFieldStore, useRobotStore } from '../store';
+import { TPlayingBarProps } from './simulation/types';
+import { materToPixel } from '../util';
+import Robot from './simulation/robot';
+import { Row } from './common';
 
 export default function PlayingBar({ coords }: TPlayingBarProps) {
 	const [rangePosition, setRangePosition] = useState(0);
