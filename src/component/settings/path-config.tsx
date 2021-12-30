@@ -1,9 +1,9 @@
+import { DriveTypeOption } from '../../common/enums';
 import { Input, Row, Button } from '../common';
 import SettingsConfig from './settings-config';
-import { DriveTypeOption } from '../../consts';
 import { useRobotStore } from '../../store';
 
-export default function PathConfig({}) {
+export default function PathConfig() {
 	const { driveType, pathConfig, setDriveType, setPathConfig } = useRobotStore();
 	const { robotLoopTime, acc, vMax, length, width } = pathConfig;
 

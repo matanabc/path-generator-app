@@ -1,8 +1,8 @@
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 import { Modal } from 'react-bootstrap';
 
-import { Input, Row } from '../common';
 import { TWaypointInfoProps } from './types';
+import { Input, Row } from '../common';
 
 export default function WaypointInfo({ show, index, waypoint, onClose, setWaypoint }: TWaypointInfoProps) {
 	const { x, y, v, vMax, angle } = waypoint;

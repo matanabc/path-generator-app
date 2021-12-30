@@ -2,7 +2,7 @@ import SettingsConfig from './settings-config';
 import { useFieldStore } from '../../store';
 import { Input, Row } from '../common';
 
-export default function FiledConfig({}) {
+export default function FiledConfig() {
 	const { widthInMeter, heightInMeter, image, updateFieldStore } = useFieldStore();
 
 	return (

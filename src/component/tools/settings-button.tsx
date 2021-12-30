@@ -1,11 +1,11 @@
 import { MdBuild } from 'react-icons/md';
 import { useState } from 'react';
 
-import Button from '../common/button';
+import { SETTINGS_SHORTCUT } from '../../common/shortcut';
 import { Settings } from '../settings';
-import { SETTINGS_SHORTCUT } from '../../shortcut';
+import Button from '../common/button';
 
-export default function SettingsButton({}) {
+export default function SettingsButton() {
 	const [show, setShow] = useState(false);
 
 	return (

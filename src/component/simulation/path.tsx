@@ -1,8 +1,8 @@
 import { Rnd, RndResizeCallback } from 'react-rnd';
 import { useEffect, useRef } from 'react';
 
+import { drawCoords } from '../../common/draw';
 import { useFieldStore } from '../../store';
-import { drawCoords } from '../../draw';
 import { TPathProps } from './types';
 
 const styleToNumber = (value: string) => Number(value.replace('px', ''));

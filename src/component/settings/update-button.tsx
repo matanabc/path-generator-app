@@ -1,6 +1,6 @@
 import { Button } from '../common';
 
-export default function UpdateButton({}) {
+export default function UpdateButton() {
 	if (false)
 		return (
 			<Button className={'col'} variant={'success'} onClick={() => {}}>

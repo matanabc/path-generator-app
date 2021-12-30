@@ -1,9 +1,9 @@
 import { Row, Button } from '../common';
 import { useFilesStore } from '../../store';
-import { ExportOption } from '../../consts';
 import SettingsConfig from './settings-config';
+import { ExportOption } from '../../common/enums';
 
-export default function ExportTypeConfig({}) {
+export default function ExportTypeConfig() {
 	const exportType = useFilesStore((state) => state.exportType);
 	const setExportType = useFilesStore((state) => state.setExportType);
 

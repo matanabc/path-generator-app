@@ -1,6 +1,6 @@
 import { Rnd } from 'react-rnd';
-import { BORDER_SIZE } from '../../consts';
 
+import { BORDER_SIZE } from '../../common/consts';
 import { TRobotProps } from './types';
 
 const offset = BORDER_SIZE * 2;

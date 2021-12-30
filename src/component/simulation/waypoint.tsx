@@ -1,9 +1,9 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
 
+import { BORDER_SIZE, OFFSET_SIZE } from '../../common/consts';
+import { materToPixel, pixelToMater } from '../../common/util';
 import { useFieldStore, useGenerateStore } from '../../store';
-import { BORDER_SIZE, OFFSET_SIZE } from '../../consts';
-import { materToPixel, pixelToMater } from '../../util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
 import Robot from './robot';

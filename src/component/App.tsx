@@ -1,7 +1,7 @@
 import { useGenerateStore, useRobotStore } from '../store';
 import { Field, Path, Waypoint } from './simulation';
+import { createPath } from '../common/util';
 import PlayingBar from './playing-bar';
-import { createPath } from '../util';
 import { Loader } from './loader';
 import { Tools } from './tools';
 import './app.css';

@@ -2,7 +2,7 @@ import { Input, Row } from '../common';
 import { useFilesStore } from '../../store';
 import SettingsConfig from './settings-config';
 
-export default function ProjectConfig({}) {
+export default function ProjectConfig() {
 	const exportFolder = useFilesStore((state) => state.exportFolder);
 	const projectFolder = useFilesStore((state) => state.projectFolder);
 	const setExportFolder = useFilesStore((state) => state.setExportFolder);

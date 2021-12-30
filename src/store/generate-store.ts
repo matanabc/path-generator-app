@@ -1,7 +1,7 @@
 import { persist, combine } from 'zustand/middleware';
 import create from 'zustand';
 
-import { StoreStorageName } from '../consts';
+import { StoreStorageName } from '../common/enums';
 import { fs } from '../handler';
 
 type TPaths = { [key: string]: any };

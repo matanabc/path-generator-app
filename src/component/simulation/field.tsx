@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 
 import { useFieldStore, useFilesStore } from '../../store';
-import { TFiledProps } from './types';
 import { fs } from '../../handler';
 
 const getImageUrl = async (image: string, projectFolder: string) => {
@@ -12,7 +11,7 @@ const getImageUrl = async (image: string, projectFolder: string) => {
 	return URL.createObjectURL(new Blob([data]));
 };
 
-export default function Field({}: TFiledProps) {
+export default function Field() {
 	const [imageUrl, setImageUrl] = useState('');
 	const style = { backgroundImage: `url('${imageUrl}')` };
 	const image = useFieldStore((state) => state.image);

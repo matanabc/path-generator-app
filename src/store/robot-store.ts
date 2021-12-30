@@ -2,7 +2,7 @@ import { persist, combine } from 'zustand/middleware';
 import { PathConfig } from 'path-generator';
 import create from 'zustand';
 
-import { StoreStorageName } from '../consts';
+import { StoreStorageName } from '../common/enums';
 import { ipc } from '../handler';
 
 export default create(

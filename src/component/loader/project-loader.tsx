@@ -3,7 +3,7 @@ import { Spinner } from 'react-bootstrap';
 
 import './project-loader.css';
 
-export default function ProjectLoader({}) {
+export default function ProjectLoader() {
 	const [show, setShow] = useState(true);
 
 	useEffect(() => {

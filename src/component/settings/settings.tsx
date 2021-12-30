@@ -1,10 +1,10 @@
 import { Modal } from 'react-bootstrap';
 
-import { TSettingsProps } from './types';
 import RobotDrawConfig from './robot-draw-config';
 import ProjectConfig from './project-config';
 import ExportTypeConfig from './export-type';
 import UpdateButton from './update-button';
+import { TSettingsProps } from './types';
 import FiledConfig from './filed-config';
 import PathConfig from './path-config';
 import './settings.css';

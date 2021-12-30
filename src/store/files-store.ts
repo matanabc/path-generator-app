@@ -1,8 +1,8 @@
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
-import { DEFAULT_EXPORT_FOLDER_PATH, DEFAULT_PROJECT_FOLDER_PATH } from '../consts';
-import { ExportOption, StoreStorageName } from '../consts';
+import { DEFAULT_EXPORT_FOLDER_PATH, DEFAULT_PROJECT_FOLDER_PATH } from '../common/consts';
+import { ExportOption, StoreStorageName } from '../common/enums';
 import { ipc } from '../handler';
 
 export default create(

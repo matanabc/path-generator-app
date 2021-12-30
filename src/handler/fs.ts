@@ -1,5 +1,5 @@
-import { DEFAULT_PROJECT_FOLDER_PATH, PROJECT_FILE_NAME } from '../consts';
-import { StoreStorageName } from '../consts';
+import { DEFAULT_PROJECT_FOLDER_PATH, PROJECT_FILE_NAME } from '../common/consts';
+import { StoreStorageName } from '../common/enums';
 import { loadFromStore } from './ipc';
 
 const { writeFileSync, readFileSync } = window.fs;

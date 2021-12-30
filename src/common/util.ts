@@ -1,7 +1,8 @@
 import { Holonomic, PathConfig, Tank } from 'path-generator';
 
-import { DriveTypeOption, BORDER_SIZE } from './consts';
-import { useFieldStore } from './store';
+import { DriveTypeOption } from './enums';
+import { useFieldStore } from '../store';
+import { BORDER_SIZE } from './consts';
 
 export const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: any) => {
 	const { vMax, acc, width, length, robotLoopTime } = pathConfig;

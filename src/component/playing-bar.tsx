@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useFieldStore, useRobotStore } from '../store';
 import { TPlayingBarProps } from './simulation/types';
-import { materToPixel } from '../util';
+import { materToPixel } from '../common/util';
 import Robot from './simulation/robot';
 import { Row } from './common';
 

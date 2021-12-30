@@ -2,7 +2,7 @@ import SettingsConfig from './settings-config';
 import { useRobotStore } from '../../store';
 import { Input, Row } from '../common';
 
-export default function RobotDrawConfig({}) {
+export default function RobotDrawConfig() {
 	const { drawConfig, setDrawConfig } = useRobotStore();
 	const { width, length, center } = drawConfig;
 
