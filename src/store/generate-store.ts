@@ -14,6 +14,7 @@ export default create(
 				selected: '',
 			},
 			(set, get) => ({
+				setSelectedPath: (selected: string) => set({ selected }),
 				setWaypoint: (index: number, value: any) => {
 					const { paths, selected } = get();
 					Object.assign(paths[selected][index], value);
