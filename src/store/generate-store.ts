@@ -1,4 +1,5 @@
 import { persist, combine } from 'zustand/middleware';
+import { Holonomic } from 'path-generator';
 import create from 'zustand';
 
 import { StoreStorageName } from '../common/enums';
@@ -15,6 +16,15 @@ export default create(
 			},
 			(set, get) => ({
 				setSelectedPath: (selected: string) => set({ selected }),
+				addPath: (pathName: string) => {
+					let { paths, selected } = get();
+					selected = pathName;
+					paths[pathName] = [
+						new Holonomic.Waypoint(1, 1, 0, 0, 0, 1),
+						new Holonomic.Waypoint(2, 1, 0, 0, 0, 1),
+					];
+					set({ paths, selected });
+				},
 				setWaypoint: (index: number, value: any) => {
 					const { paths, selected } = get();
 					Object.assign(paths[selected][index], value);
