@@ -53,7 +53,9 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 
 	return (
 		<>
-			{showRobot && <Robot position={{ ...position, angle: waypoint.angle }} />}
+			{position.x !== Infinity && position.y !== Infinity && (
+				<Robot position={{ ...position, angle: waypoint.angle }} />
+			)}
 			<WaypointInfo
 				index={index}
 				show={showInfo}

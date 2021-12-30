@@ -1,6 +1,6 @@
 import Coord from 'path-generator/lib/motionProfiling/coord';
 import { Container, Form } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFieldStore, useRobotStore } from '../store';
 import { TPlayingBarProps } from './simulation/types';
@@ -20,8 +20,11 @@ export default function PlayingBar({ coords }: TPlayingBarProps) {
 
 	const onWheel = (e: React.WheelEvent) => setRangePosition(Number((rangePosition + e.deltaY).toFixed(0)));
 
-	if (maxRange < rangePosition) setRangePosition(maxRange);
-	else if (0 > rangePosition) setRangePosition(0);
+	useEffect(() => setRangePosition(0), [coords]);
+	useEffect(() => {
+		if (maxRange < rangePosition) setRangePosition(maxRange);
+		else if (0 > rangePosition) setRangePosition(0);
+	}, [maxRange, rangePosition]);
 
 	return (
 		<>
