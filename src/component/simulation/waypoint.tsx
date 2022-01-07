@@ -1,17 +1,17 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
 
+import { useFieldStore, useGenerateStore, useRobotStore } from '../../store';
 import { BORDER_SIZE, OFFSET_SIZE } from '../../common/consts';
 import { materToPixel, pixelToMater } from '../../common/util';
-import { useFieldStore, useGenerateStore } from '../../store';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
-import Robot from './robot';
 
 export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	const waypointRef = useRef<HTMLDivElement>(null);
 	const [showInfo, setShowInfo] = useState(false);
 	const [showRobot, setShowRobot] = useState(false);
+	const { setRobotPosition } = useRobotStore();
 	const { setWaypoint, addWaypoint, removeWaypoint } = useGenerateStore();
 	const { topLeftX, topLeftY, widthInPixel, heightInPixel } = useFieldStore();
 
@@ -51,11 +51,13 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 		waypoint.addEventListener('dblclick', onDoubleClick);
 	});
 
+	useEffect(() => {
+		if (showRobot) setRobotPosition(waypoint);
+		else setRobotPosition(undefined);
+	}, [showRobot]);
+
 	return (
 		<>
-			{position.x !== Infinity && position.y !== Infinity && (
-				<Robot position={{ ...position, angle: waypoint.angle }} />
-			)}
 			<WaypointInfo
 				index={index}
 				show={showInfo}

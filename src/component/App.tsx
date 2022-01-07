@@ -1,7 +1,7 @@
 import { useGenerateStore, useRobotStore } from '../store';
 import { Field, Path, Waypoint } from './simulation';
 import { createPath } from '../common/util';
-import PlayingBar from './playing-bar';
+import Robot from './simulation/robot';
 import { Loader } from './loader';
 import { Tools } from './tools';
 import './app.css';
@@ -22,8 +22,9 @@ export default function App() {
 		<div className='App'>
 			<Field />
 			<Path coords={path.coords} />
-			<PlayingBar coords={path.coords} />
+			<Robot />
 			{getWaypointsElements(waypoints, selected)}
+
 			<Tools />
 			<Loader />
 		</div>
