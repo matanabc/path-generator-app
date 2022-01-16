@@ -16,3 +16,5 @@ export const pixelToMater = (x: number, y: number) => {
 		y: Number((y * (heightInMeter / (heightInPixel - BORDER_SIZE))).toFixed(3)),
 	};
 };
+
+export const fixNumber = (min: number, value: number, max: number) => (min > value ? min : max < value ? max : value);

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import { useFieldStore, useRobotStore } from '../../store';
 import { drawCoords } from '../../common/draw';
+import { fixNumber } from '../../common/util';
 import { TPathProps } from './types';
 
 const styleToNumber = (value: string) => Number(value.replace('px', ''));
@@ -31,8 +32,8 @@ export default function Path({ coords }: TPathProps) {
 	const [rangePosition, setRangePosition] = useState(0);
 
 	const updateRobotPosition = (index: number) => {
+		index = fixNumber(0, index, coords.length - 1);
 		const coord = coords[index];
-		if (!coord) return;
 		setRobotPosition(coord);
 		setRangePosition(index);
 	};

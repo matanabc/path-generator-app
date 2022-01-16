@@ -1,11 +1,15 @@
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 import { Modal } from 'react-bootstrap';
 
+import { useFieldStore, useRobotStore } from '../../store';
+import { fixNumber } from '../../common/util';
 import { TWaypointInfoProps } from './types';
 import { Input, Row } from '../common';
 
 export default function WaypointInfo({ show, index, waypoint, onClose, setWaypoint }: TWaypointInfoProps) {
 	const { x, y, v, vMax, angle } = waypoint;
+	const robotVMax = useRobotStore().pathConfig.vMax;
+	const { widthInMeter, heightInMeter } = useFieldStore();
 
 	return (
 		<Modal centered scrollable show={show} onHide={onClose}>
@@ -16,30 +20,38 @@ export default function WaypointInfo({ show, index, waypoint, onClose, setWaypoi
 				<Row className='mb-4' gap={4}>
 					<Input
 						title='X'
-						value={x}
+						value={fixNumber(0, x, widthInMeter)}
 						type='number'
-						onChange={({ target }) => setWaypoint(index, { x: Number(target.value) })}
+						onChange={({ target }) =>
+							setWaypoint(index, { x: fixNumber(0, Number(target.value), widthInMeter) })
+						}
 					/>
 					<Input
 						title='Y'
-						value={y}
+						value={fixNumber(0, y, heightInMeter)}
 						type='number'
-						onChange={({ target }) => setWaypoint(index, { y: Number(target.value) })}
+						onChange={({ target }) =>
+							setWaypoint(index, { y: fixNumber(0, Number(target.value), heightInMeter) })
+						}
 					/>
 				</Row>
 
 				<Row className='mb-4' gap={4}>
 					<Input
 						title='V'
-						value={v}
+						value={fixNumber(0, v, robotVMax)}
 						type='number'
-						onChange={({ target }) => setWaypoint(index, { v: Number(target.value) })}
+						onChange={({ target }) =>
+							setWaypoint(index, { v: fixNumber(0, Number(target.value), robotVMax) })
+						}
 					/>
 					<Input
-						value={vMax}
+						value={fixNumber(0, vMax, robotVMax)}
 						type='number'
 						title='V Max'
-						onChange={({ target }) => setWaypoint(index, { vMax: Number(target.value) })}
+						onChange={({ target }) =>
+							setWaypoint(index, { vMax: fixNumber(0, Number(target.value), robotVMax) })
+						}
 					/>
 				</Row>
 
