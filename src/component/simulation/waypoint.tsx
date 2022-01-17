@@ -52,8 +52,8 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 	});
 
 	useEffect(() => {
-		if (showRobot) setRobotPosition(waypoint);
-		else setRobotPosition(undefined);
+		if (showRobot) setRobotPosition(-1 - index);
+		else setRobotPosition(0);
 	}, [showRobot]);
 
 	return (

@@ -1,17 +1,27 @@
 import { Rnd } from 'react-rnd';
 
+import { fixNumber, materToPixel } from '../../common/util';
 import { useFieldStore, useRobotStore } from '../../store';
 import { BORDER_SIZE } from '../../common/consts';
-import { materToPixel } from '../../common/util';
+import { TRobotProps } from './types';
 
 const offset = BORDER_SIZE * 2;
 
-export default function Robot() {
-	const { robotPosition } = useRobotStore();
+export default function Robot({ coords, waypoints }: TRobotProps) {
+	const { robotPosition, setRobotPosition } = useRobotStore();
 	const { topLeftX, topLeftY } = useFieldStore();
-	if (!robotPosition || JSON.stringify(robotPosition) === JSON.stringify({})) return <></>;
 
-	const { x, y } = materToPixel(robotPosition.x, robotPosition.y);
+	document.onwheel = (e: WheelEvent) => {
+		if (robotPosition < 0) return;
+		setRobotPosition(fixNumber(0, robotPosition + Math.sign(e.deltaY), coords.length - 1));
+	};
+
+	let point;
+	if (robotPosition < 0) point = waypoints[-1 - robotPosition];
+	else if (robotPosition > 0) point = coords[robotPosition];
+	else return <></>;
+
+	const { x, y } = materToPixel(point.x, point.y);
 	const width = 50;
 	const height = 50;
 	const position = {
@@ -22,7 +32,7 @@ export default function Robot() {
 	return (
 		<>
 			<Rnd position={position} enableResizing={false} disableDragging>
-				<canvas id='Robot' style={{ width, height, transform: `rotate(${robotPosition.angle}deg)` }} />
+				<canvas id='Robot' style={{ width, height, transform: `rotate(${point.angle}deg)` }} />
 			</Rnd>
 		</>
 	);

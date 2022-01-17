@@ -29,7 +29,7 @@ export default function View() {
 		<>
 			<Field />
 			<Path coords={coords} />
-			<Robot />
+			<Robot coords={coords} waypoints={waypoints} />
 			{getWaypointsElements(waypoints, selected)}
 		</>
 	);
