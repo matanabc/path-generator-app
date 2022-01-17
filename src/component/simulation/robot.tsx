@@ -1,16 +1,12 @@
 import { Rnd } from 'react-rnd';
 
 import { fixNumber, materToPixel } from '../../common/util';
-import { useFieldStore, useRobotStore } from '../../store';
 import { BORDER_SIZE } from '../../common/consts';
 import { TRobotProps } from './types';
 
 const offset = BORDER_SIZE * 2;
 
-export default function Robot({ coords, waypoints }: TRobotProps) {
-	const { robotPosition, setRobotPosition } = useRobotStore();
-	const { topLeftX, topLeftY } = useFieldStore();
-
+export default function Robot({ coords, waypoints, topLeftX, topLeftY, robotPosition, setRobotPosition }: TRobotProps) {
 	document.onwheel = (e: WheelEvent) => {
 		if (robotPosition < 0) return;
 		setRobotPosition(fixNumber(0, robotPosition + Math.sign(e.deltaY), coords.length - 1));

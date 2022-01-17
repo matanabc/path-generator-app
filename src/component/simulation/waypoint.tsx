@@ -1,19 +1,29 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
 
-import { useFieldStore, useGenerateStore, useRobotStore } from '../../store';
 import { BORDER_SIZE, OFFSET_SIZE } from '../../common/consts';
 import { materToPixel, pixelToMater } from '../../common/util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
 
-export default function Waypoint({ index, waypoint }: TWaypointProps) {
+export default function Waypoint({
+	index,
+	waypoint,
+	topLeftX,
+	topLeftY,
+	robotVMax,
+	widthInPixel,
+	widthInMeter,
+	heightInPixel,
+	heightInMeter,
+	setWaypoint,
+	addWaypoint,
+	removeWaypoint,
+	setRobotPosition,
+}: TWaypointProps) {
 	const waypointRef = useRef<HTMLDivElement>(null);
 	const [showInfo, setShowInfo] = useState(false);
 	const [showRobot, setShowRobot] = useState(false);
-	const { setRobotPosition } = useRobotStore();
-	const { setWaypoint, addWaypoint, removeWaypoint } = useGenerateStore();
-	const { topLeftX, topLeftY, widthInPixel, heightInPixel } = useFieldStore();
 
 	const { x, y } = materToPixel(waypoint.x, waypoint.y);
 	const position = { x: x + topLeftX, y: y + topLeftY };
@@ -24,10 +34,10 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 		bottom: topLeftY + heightInPixel - OFFSET_SIZE - BORDER_SIZE,
 	};
 
-	const onClose = () => setShowInfo(false);
-	const onDoubleClick = () => setShowInfo(true);
-	const onCopy = async () => showRobot && (await navigator.clipboard.writeText(JSON.stringify(waypoint)));
 	const onPaste = async () => showRobot && addWaypoint(index + 1, JSON.parse(await navigator.clipboard.readText()));
+	const onCopy = async () => showRobot && (await navigator.clipboard.writeText(JSON.stringify(waypoint)));
+	const onDoubleClick = () => setShowInfo(true);
+	const onClose = () => setShowInfo(false);
 	const onWheel = (e: WheelEvent) =>
 		setWaypoint(index, { angle: Number((waypoint.angle + e.deltaY * 0.1).toFixed(3)) });
 	const onDrag = (e: DraggableEvent, { x, y }: DraggableData) =>
@@ -63,7 +73,10 @@ export default function Waypoint({ index, waypoint }: TWaypointProps) {
 				show={showInfo}
 				onClose={onClose}
 				waypoint={waypoint}
+				robotVMax={robotVMax}
 				setWaypoint={setWaypoint}
+				widthInMeter={widthInMeter}
+				heightInMeter={heightInMeter}
 			/>
 			<Draggable position={position} bounds={bounds} onStart={onStart} onDrag={onDrag}>
 				<div id='Waypoint' ref={waypointRef}>

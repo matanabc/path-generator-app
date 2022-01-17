@@ -1,7 +1,7 @@
 import { Rnd, RndResizeCallback } from 'react-rnd';
 import { useEffect, useState } from 'react';
 
-import { useFieldStore, useFilesStore } from '../../store';
+import { TFiledProps } from './types';
 import { fs } from '../../handler';
 
 const styleToNumber = (value: string) => Number(value.replace('px', ''));
@@ -13,27 +13,31 @@ const getImageUrl = async (image: string, projectFolder: string) => {
 	return URL.createObjectURL(new Blob([data]));
 };
 
-export default function Field() {
+export default function Field({
+	image,
+	topLeftX,
+	topLeftY,
+	widthInPixel,
+	heightInPixel,
+	projectFolder,
+	updateFieldStore,
+}: TFiledProps) {
 	const [imageUrl, setImageUrl] = useState('');
-	const style = { backgroundImage: `url('${imageUrl}')` };
-	const image = useFieldStore((state) => state.image);
-	const projectFolder = useFilesStore((state) => state.projectFolder);
-
-	useEffect(() => {
-		getImageUrl(image, projectFolder)
-			.then(setImageUrl)
-			.catch(() => setImageUrl(''));
-	}, [image, projectFolder]);
-
-	const { topLeftX, topLeftY, widthInPixel, heightInPixel, updateFieldStore } = useFieldStore();
-	const size = { width: widthInPixel, height: heightInPixel };
 	const position = { x: topLeftX, y: topLeftY };
+	const style = { backgroundImage: `url('${imageUrl}')` };
+	const size = { width: widthInPixel, height: heightInPixel };
 
 	const onResize: RndResizeCallback = async (e, dir, { style }, delta, { x, y }) =>
 		updateFieldStore({
 			...{ heightInPixel: styleToNumber(style.height), widthInPixel: styleToNumber(style.width) },
 			...{ topLeftX: x, topLeftY: y },
 		});
+
+	useEffect(() => {
+		getImageUrl(image, projectFolder)
+			.then(setImageUrl)
+			.catch(() => setImageUrl(''));
+	}, [image, projectFolder]);
 
 	return (
 		<>

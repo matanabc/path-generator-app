@@ -1,10 +1,10 @@
 import { Holonomic, PathConfig, Tank } from 'path-generator';
 
-import { useGenerateStore, useRobotStore } from '../../store';
+import { useFieldStore, useFilesStore, useGenerateStore, useRobotStore } from '../../store';
 import { DriveTypeOption } from '../../common/enums';
 import { Field, Path, Robot, Waypoint } from '.';
 
-export const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: any) => {
+const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: any) => {
 	const { vMax, acc, width, length, robotLoopTime } = pathConfig;
 	const _pathConfig = new PathConfig(vMax, acc, width, length, robotLoopTime);
 	const waypoints = paths[selected] || [];
@@ -13,24 +13,58 @@ export const createPath = ({ paths, selected = '' }: any, { pathConfig, driveTyp
 	return new Tank.Path(waypoints, _pathConfig);
 };
 
-const getWaypointsElements = (waypoints: [], selected: string) =>
-	[...waypoints]
-		.reverse()
-		.map((waypoint: any, index: number) => (
-			<Waypoint key={`${selected}-${index}`} index={waypoints.length - 1 - index} waypoint={waypoint} />
-		));
-
 export default function View() {
-	const { coords } = createPath(useGenerateStore(), useRobotStore());
-	const selected = useGenerateStore((state) => state.selected) || '';
-	const waypoints = useGenerateStore((state) => state.paths[selected]) || [];
+	const fieldStore = useFieldStore();
+	const robotStore = useRobotStore();
+	const generateStore = useGenerateStore();
+	const { projectFolder } = useFilesStore();
+
+	const { updateFieldStore } = fieldStore;
+	const selected = generateStore.selected || '';
+	const waypoints = generateStore.paths[selected] || [];
+	const { coords } = createPath(generateStore, robotStore);
+	const { robotPosition, pathConfig, setRobotPosition } = robotStore;
+	const { setWaypoint, addWaypoint, removeWaypoint } = generateStore;
+	const { image, topLeftX, topLeftY, widthInPixel, heightInPixel, widthInMeter, heightInMeter } = fieldStore;
 
 	return (
 		<>
-			<Field />
-			<Path coords={coords} />
-			<Robot coords={coords} waypoints={waypoints} />
-			{getWaypointsElements(waypoints, selected)}
+			<Field
+				image={image}
+				topLeftX={topLeftX}
+				topLeftY={topLeftY}
+				widthInPixel={widthInPixel}
+				heightInPixel={heightInPixel}
+				projectFolder={projectFolder}
+				updateFieldStore={updateFieldStore}
+			/>
+			<Path coords={coords} topLeftX={topLeftX} topLeftY={topLeftY} />
+			<Robot
+				coords={coords}
+				topLeftX={topLeftX}
+				topLeftY={topLeftY}
+				waypoints={waypoints}
+				robotPosition={robotPosition}
+				setRobotPosition={setRobotPosition}
+			/>
+			{[...waypoints].reverse().map((waypoint: any, index: number) => (
+				<Waypoint
+					waypoint={waypoint}
+					topLeftX={topLeftX}
+					topLeftY={topLeftY}
+					setWaypoint={setWaypoint}
+					addWaypoint={addWaypoint}
+					widthInPixel={widthInPixel}
+					robotVMax={pathConfig.vMax}
+					widthInMeter={widthInMeter}
+					key={`${selected}-${index}`}
+					heightInMeter={heightInMeter}
+					heightInPixel={heightInPixel}
+					removeWaypoint={removeWaypoint}
+					setRobotPosition={setRobotPosition}
+					index={waypoints.length - 1 - index}
+				/>
+			))}
 		</>
 	);
 }

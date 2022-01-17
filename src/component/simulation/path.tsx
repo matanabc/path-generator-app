@@ -1,12 +1,9 @@
 import Draggable from 'react-draggable';
 
 import { TPathProps } from './types';
-import { useFieldStore } from '../../store';
 import { materToPixel } from '../../common/util';
 
-export default function Path({ coords }: TPathProps) {
-	const { topLeftX, topLeftY } = useFieldStore();
-
+export default function Path({ coords, topLeftX, topLeftY }: TPathProps) {
 	return (
 		<>
 			{coords.map((coord) => {

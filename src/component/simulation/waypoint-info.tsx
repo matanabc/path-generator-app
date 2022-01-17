@@ -1,15 +1,21 @@
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 import { Modal } from 'react-bootstrap';
 
-import { useFieldStore, useRobotStore } from '../../store';
 import { fixNumber } from '../../common/util';
 import { TWaypointInfoProps } from './types';
 import { Input, Row } from '../common';
 
-export default function WaypointInfo({ show, index, waypoint, onClose, setWaypoint }: TWaypointInfoProps) {
+export default function WaypointInfo({
+	show,
+	index,
+	waypoint,
+	robotVMax,
+	widthInMeter,
+	heightInMeter,
+	onClose,
+	setWaypoint,
+}: TWaypointInfoProps) {
 	const { x, y, v, vMax, angle } = waypoint;
-	const robotVMax = useRobotStore().pathConfig.vMax;
-	const { widthInMeter, heightInMeter } = useFieldStore();
 
 	return (
 		<Modal centered scrollable show={show} onHide={onClose}>
