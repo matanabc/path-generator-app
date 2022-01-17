@@ -29,6 +29,11 @@
 	border-right: 5px dashed blue;
 }
 
-#Time {
-	width: 2%;
+#Coord {
+	width: 6px;
+	height: 6px;
+	background: yellowgreen;
+	position: absolute;
+	text-align: center;
+	border-radius: 3px;
 }

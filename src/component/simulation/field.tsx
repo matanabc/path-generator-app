@@ -1,8 +1,10 @@
+import { Rnd, RndResizeCallback } from 'react-rnd';
 import { useEffect, useState } from 'react';
 
 import { useFieldStore, useFilesStore } from '../../store';
 import { fs } from '../../handler';
 
+const styleToNumber = (value: string) => Number(value.replace('px', ''));
 const getImageUrl = async (image: string, projectFolder: string) => {
 	if (image === '') return image;
 	if (image.startsWith('http')) return image;
@@ -23,5 +25,22 @@ export default function Field() {
 			.catch(() => setImageUrl(''));
 	}, [image, projectFolder]);
 
-	return <canvas id='Field' style={style} />;
+	const { topLeftX, topLeftY, widthInPixel, heightInPixel, updateFieldStore } = useFieldStore();
+	const size = { width: widthInPixel, height: heightInPixel };
+	const position = { x: topLeftX, y: topLeftY };
+
+	const onResize: RndResizeCallback = async (e, dir, { style }, delta, { x, y }) =>
+		updateFieldStore({
+			...{ heightInPixel: styleToNumber(style.height), widthInPixel: styleToNumber(style.width) },
+			...{ topLeftX: x, topLeftY: y },
+		});
+
+	return (
+		<>
+			<canvas id='Field' style={style} />;
+			<Rnd position={position} size={size} bounds='#Field' disableDragging onResize={onResize}>
+				<canvas id='Path' width={size.width} height={size.height} />
+			</Rnd>
+		</>
+	);
 }

@@ -1,52 +1,22 @@
-import { Rnd, RndResizeCallback } from 'react-rnd';
-import { useEffect, useRef, useState } from 'react';
+import Draggable from 'react-draggable';
 
-import { useFieldStore, useRobotStore } from '../../store';
-import { drawCoords } from '../../common/draw';
-import { fixNumber } from '../../common/util';
 import { TPathProps } from './types';
-
-const styleToNumber = (value: string) => Number(value.replace('px', ''));
+import { useFieldStore } from '../../store';
+import { materToPixel } from '../../common/util';
 
 export default function Path({ coords }: TPathProps) {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const { topLeftX, topLeftY, widthInPixel, heightInPixel, updateFieldStore } = useFieldStore();
-	const size = { width: widthInPixel, height: heightInPixel };
-	const position = { x: topLeftX, y: topLeftY };
-
-	const onResize: RndResizeCallback = async (e, dir, { style }, delta, { x, y }) =>
-		updateFieldStore({
-			...{ heightInPixel: styleToNumber(style.height), widthInPixel: styleToNumber(style.width) },
-			...{ topLeftX: x, topLeftY: y },
-		});
-
-	useEffect(() => {
-		const canvas = canvasRef.current;
-		if (canvas === null) return;
-		const ctx = canvas.getContext('2d');
-		if (ctx === null) return;
-		drawCoords(canvas, ctx, coords);
-	});
-
-	const { robotPosition, setRobotPosition } = useRobotStore();
-	const [rangePosition, setRangePosition] = useState(0);
-
-	const updateRobotPosition = (index: number) => {
-		index = fixNumber(0, index, coords.length - 1);
-		const coord = coords[index];
-		setRobotPosition(coord);
-		setRangePosition(index);
-	};
-
-	const onWheel = (e: React.WheelEvent) => updateRobotPosition(Number((rangePosition + e.deltaY * 0.25).toFixed(0)));
-
-	useEffect(() => {
-		if (!robotPosition) setRangePosition(0);
-	}, [robotPosition]);
+	const { topLeftX, topLeftY } = useFieldStore();
 
 	return (
-		<Rnd position={position} size={size} bounds='#Field' disableDragging onResize={onResize}>
-			<canvas ref={canvasRef} id='Path' width={size.width} height={size.height} onWheel={onWheel} />
-		</Rnd>
+		<>
+			{coords.map((coord) => {
+				const { x, y } = materToPixel(coord.x, coord.y);
+				return (
+					<Draggable position={{ x: x + topLeftX + 10, y: y + topLeftY + 10 }}>
+						<div id='Coord' />
+					</Draggable>
+				);
+			})}
+		</>
 	);
 }
