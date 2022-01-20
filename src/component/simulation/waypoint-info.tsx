@@ -1,11 +1,12 @@
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 import { Modal } from 'react-bootstrap';
+import { memo } from 'react';
 
 import { fixNumber } from '../../common/util';
 import { TWaypointInfoProps } from './types';
 import { Input, Row } from '../common';
 
-export default function WaypointInfo({
+export default memo(function WaypointInfo({
 	show,
 	index,
 	waypoint,
@@ -80,4 +81,4 @@ export default function WaypointInfo({
 			</Modal.Body>
 		</Modal>
 	);
-}
+});

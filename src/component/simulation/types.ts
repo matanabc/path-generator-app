@@ -21,6 +21,7 @@ type TWaypoint = TFiledInMeter & {
 	waypoint: Waypoint | HolonomicWaypoint;
 };
 
+export type TViewProps = TCoords;
 export type TPathProps = TTopLeft & TCoords;
 export type TRobotProps = TTopLeft &
 	TCoords & {

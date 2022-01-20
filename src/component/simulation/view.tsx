@@ -1,19 +1,10 @@
-import { Holonomic, PathConfig, Tank } from 'path-generator';
+import { memo } from 'react';
 
 import { useFieldStore, useFilesStore, useGenerateStore, useRobotStore } from '../../store';
-import { DriveTypeOption } from '../../common/enums';
 import { Field, Path, Robot, Waypoint } from '.';
+import { TViewProps } from './types';
 
-const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: any) => {
-	const { vMax, acc, width, length, robotLoopTime } = pathConfig;
-	const _pathConfig = new PathConfig(vMax, acc, width, length, robotLoopTime);
-	const waypoints = paths[selected] || [];
-	if (waypoints.length === 0) return { coords: [] };
-	if (DriveTypeOption.Holonomic === driveType) return new Holonomic.Path(waypoints, _pathConfig);
-	return new Tank.Path(waypoints, _pathConfig);
-};
-
-export default function View() {
+export default memo(function View({ coords }: TViewProps) {
 	const fieldStore = useFieldStore();
 	const robotStore = useRobotStore();
 	const generateStore = useGenerateStore();
@@ -22,7 +13,6 @@ export default function View() {
 	const { updateFieldStore } = fieldStore;
 	const selected = generateStore.selected || '';
 	const waypoints = generateStore.paths[selected] || [];
-	const { coords } = createPath(generateStore, robotStore);
 	const { robotPosition, pathConfig, setRobotPosition } = robotStore;
 	const { setWaypoint, addWaypoint, removeWaypoint } = generateStore;
 	const { image, topLeftX, topLeftY, widthInPixel, heightInPixel, widthInMeter, heightInMeter } = fieldStore;
@@ -67,4 +57,4 @@ export default function View() {
 			))}
 		</>
 	);
-}
+});

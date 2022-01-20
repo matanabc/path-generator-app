@@ -1,5 +1,5 @@
 import { Rnd, RndResizeCallback } from 'react-rnd';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 
 import { TFiledProps } from './types';
 import { fs } from '../../handler';
@@ -13,7 +13,7 @@ const getImageUrl = async (image: string, projectFolder: string) => {
 	return URL.createObjectURL(new Blob([data]));
 };
 
-export default function Field({
+export default memo(function Field({
 	image,
 	topLeftX,
 	topLeftY,
@@ -47,4 +47,4 @@ export default function Field({
 			</Rnd>
 		</>
 	);
-}
+});

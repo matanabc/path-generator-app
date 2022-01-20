@@ -1,9 +1,10 @@
 import Draggable from 'react-draggable';
+import { memo } from 'react';
 
 import { TPathProps } from './types';
 import { materToPixel } from '../../common/util';
 
-export default function Path({ coords, topLeftX, topLeftY }: TPathProps) {
+export default memo(function Path({ coords, topLeftX, topLeftY }: TPathProps) {
 	return (
 		<>
 			{coords.map((coord, index) => {
@@ -16,4 +17,4 @@ export default function Path({ coords, topLeftX, topLeftY }: TPathProps) {
 			})}
 		</>
 	);
-}
+});
