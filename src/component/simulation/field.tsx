@@ -41,7 +41,7 @@ export default function Field({
 
 	return (
 		<>
-			<canvas id='Field' style={style} />;
+			<canvas id='Field' style={style} />
 			<Rnd position={position} size={size} bounds='#Field' disableDragging onResize={onResize}>
 				<canvas id='Path' width={size.width} height={size.height} />
 			</Rnd>

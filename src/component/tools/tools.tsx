@@ -1,5 +1,6 @@
 import { Container, Row } from 'react-bootstrap';
 
+import RenameButton from './rename-button';
 import { HorizontalStack } from '../common';
 import SelectDropdown from './select-dropdown';
 import SettingsButton from './settings-button';
@@ -14,6 +15,7 @@ export default function Tools() {
 
 				<HorizontalStack>
 					<SelectDropdown />
+					<RenameButton />
 				</HorizontalStack>
 			</Row>
 		</Container>
