@@ -1,11 +1,14 @@
+import TankPath from 'path-generator/lib/path/tank-path';
 import { Container, Row } from 'react-bootstrap';
-
-import RenameButton from './rename-button';
-import { HorizontalStack } from '../common';
 import SelectDropdown from './select-dropdown';
 import SettingsButton from './settings-button';
+import { HorizontalStack } from '../common';
+import RenameButton from './rename-button';
+import ExportButton from './export-button';
 
-export default function Tools() {
+type TProps = { path: TankPath };
+
+export default function Tools({ path }: TProps) {
 	return (
 		<Container className='mb-2 mt-2'>
 			<Row xs='auto'>
@@ -16,6 +19,7 @@ export default function Tools() {
 				<HorizontalStack>
 					<SelectDropdown />
 					<RenameButton />
+					<ExportButton path={path} />
 				</HorizontalStack>
 			</Row>
 		</Container>

@@ -1,4 +1,5 @@
 import { Holonomic, PathConfig, Tank } from 'path-generator';
+import TankPath from 'path-generator/lib/path/tank-path';
 
 import { useGenerateStore, useRobotStore } from '../store';
 import { DriveTypeOption } from '../common/enums';
@@ -17,12 +18,12 @@ const createPath = ({ paths, selected = '' }: any, { pathConfig, driveType }: an
 };
 
 export default function App() {
-	const { coords } = createPath(useGenerateStore(), useRobotStore());
+	const path = createPath(useGenerateStore(), useRobotStore());
 
 	return (
 		<div className='App'>
-			<View coords={coords} />
-			<Tools />
+			<View coords={path.coords} />
+			<Tools path={path as TankPath} />
 			<Loader />
 		</div>
 	);
