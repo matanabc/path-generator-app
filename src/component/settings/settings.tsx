@@ -22,9 +22,11 @@ export default function Settings({ show, onClose }: TSettingsProps) {
 				<RobotDrawConfig />
 				<ExportTypeConfig />
 			</Modal.Body>
-			<Modal.Footer>
-				<UpdateButton />
-			</Modal.Footer>
+			{false && (
+				<Modal.Footer>
+					<UpdateButton />
+				</Modal.Footer>
+			)}
 		</Modal>
 	);
 }

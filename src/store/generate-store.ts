@@ -56,6 +56,10 @@ export default create(
 				},
 			})
 		),
-		{ name: StoreStorageName.Generate, getStorage: () => fs.stateStorage }
+		{
+			name: StoreStorageName.Generate,
+			getStorage: () => fs.stateStorage,
+			partialize: ({ paths }) => ({ paths }),
+		}
 	)
 );

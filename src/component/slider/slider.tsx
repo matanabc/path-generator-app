@@ -10,8 +10,8 @@ type TProps = { coords: Coord[] };
 export default function Slider({ coords }: TProps) {
 	const { robotPosition, pathConfig, setRobotPosition } = useRobotStore();
 
-	const max = coords.length - 1;
 	const { robotLoopTime } = pathConfig;
+	const max = fixNumber(0, coords.length - 1, coords.length);
 	const position = fixNumber(0, robotPosition, max);
 	const time = (position * robotLoopTime).toFixed(2);
 	const totalTime = (max * robotLoopTime).toFixed(2);
@@ -20,9 +20,16 @@ export default function Slider({ coords }: TProps) {
 	return (
 		<Container>
 			<Row>
-				<span>{time}</span>
-				<Form.Control type='range' min={0} value={position} max={max} onChange={onChange} />
-				<span>{totalTime}</span>
+				<span id='Time'>{time}</span>
+				<Form.Control
+					min={0}
+					max={max}
+					type='range'
+					value={position}
+					onChange={onChange}
+					disabled={max === 0}
+				/>
+				<span id='Time'>{totalTime}</span>
 			</Row>
 		</Container>
 	);

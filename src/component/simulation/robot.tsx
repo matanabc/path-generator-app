@@ -8,7 +8,7 @@ const offset = BORDER_SIZE * 2;
 
 export default function Robot({ coords, waypoints, topLeftX, topLeftY, robotPosition, setRobotPosition }: TRobotProps) {
 	document.onwheel = (e: WheelEvent) => {
-		if (robotPosition < 0) return;
+		if (robotPosition < 0 || coords.length === 0) return;
 		setRobotPosition(fixNumber(0, robotPosition + Math.sign(e.deltaY), coords.length - 1));
 	};
 
