@@ -11,7 +11,7 @@ export default function ExportButton({ path }: TProps) {
 	const onClick = async () => exportPath(path);
 
 	return (
-		<Button title='Rename' shortcut={EXPORT_SHORTCUT} onClick={onClick}>
+		<Button title='Save' shortcut={EXPORT_SHORTCUT} onClick={onClick}>
 			<FiDownload />
 		</Button>
 	);

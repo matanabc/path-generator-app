@@ -32,6 +32,12 @@ export default create(
 					selected = newName;
 					set({ paths, selected });
 				},
+				deletePath: () => {
+					let { paths, selected } = get();
+					delete paths[selected];
+					selected = '';
+					set({ paths, selected });
+				},
 				setWaypoint: (index: number, value: any) => {
 					const { paths, selected } = get();
 					Object.assign(paths[selected][index], value);

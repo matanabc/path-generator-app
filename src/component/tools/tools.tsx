@@ -5,6 +5,7 @@ import SettingsButton from './settings-button';
 import { HorizontalStack } from '../common';
 import RenameButton from './rename-button';
 import ExportButton from './export-button';
+import DeleteButton from './delete-button';
 
 type TProps = { path: TankPath };
 
@@ -20,6 +21,7 @@ export default function Tools({ path }: TProps) {
 					<SelectDropdown />
 					<RenameButton />
 					<ExportButton path={path} />
+					<DeleteButton />
 				</HorizontalStack>
 			</Row>
 		</Container>
