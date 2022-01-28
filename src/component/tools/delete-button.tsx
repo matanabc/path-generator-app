@@ -8,7 +8,7 @@ import Button from '../common/button';
 
 export default function DeleteButton() {
 	const [show, setShow] = useState(false);
-	const { deletePath } = useGenerateStore();
+	const deletePath = useGenerateStore((state) => state.deletePath);
 
 	const onClick = () => setShow(true);
 	const onCancel = () => setShow(false);

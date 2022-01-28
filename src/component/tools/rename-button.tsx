@@ -8,7 +8,8 @@ import Button from '../common/button';
 
 export default function RenameButton() {
 	const [show, setShow] = useState(false);
-	const { renamePath, selected } = useGenerateStore();
+	const selected = useGenerateStore((state) => state.selected);
+	const renamePath = useGenerateStore((state) => state.renamePath);
 
 	const onClick = () => setShow(true);
 	const onCancel = () => setShow(false);

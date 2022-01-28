@@ -1,13 +1,11 @@
-import TankPath from 'path-generator/lib/path/tank-path';
 import { exportPath } from '../../handler/export';
 import { FiDownload } from 'react-icons/fi';
 
 import { EXPORT_SHORTCUT } from '../../common/shortcut';
+import { TExportButtonProps } from './types';
 import Button from '../common/button';
 
-type TProps = { path: TankPath };
-
-export default function ExportButton({ path }: TProps) {
+export default function ExportButton({ path }: TExportButtonProps) {
 	const onClick = async () => exportPath(path);
 
 	return (
