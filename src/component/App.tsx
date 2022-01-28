@@ -5,6 +5,7 @@ import { useGenerateStore, useRobotStore } from '../store';
 import { DriveTypeOption } from '../common/enums';
 import { View } from './simulation';
 import { Loader } from './loader';
+import { Slider } from './slider';
 import { Tools } from './tools';
 import './app.css';
 
@@ -23,6 +24,7 @@ export default function App() {
 	return (
 		<div className='App'>
 			<View coords={path.coords} />
+			<Slider coords={path.coords} />
 			<Tools path={path as TankPath} />
 			<Loader />
 		</div>
