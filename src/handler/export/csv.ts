@@ -1,13 +1,18 @@
+import holonomicPath from 'path-generator/lib/path/holonomic-path';
+import tankPath from 'path-generator/lib/path/tank-path';
+
 import Export from './export';
 
 export default class CSVExport extends Export {
-	protected savePath(): void {
+	protected saveTankPath(path: tankPath): void {
 		this.exportFolder = `${this.exportFolder}/${this.pathName}`;
 		this.createFolder(this.exportFolder);
-		this.saveToFile(this.toString(this.path.rightSetpoints, this.setpointKeys), 'right.csv');
-		this.saveToFile(this.toString(this.path.leftSetpoints, this.setpointKeys), 'left.csv');
-		this.saveToFile(this.toString(this.path.coords, this.coordKeys), 'coords.csv');
+		this.saveToFile(this.toString(path.rightSetpoints, this.setpointKeys), 'right.csv');
+		this.saveToFile(this.toString(path.leftSetpoints, this.setpointKeys), 'left.csv');
+		this.saveToFile(this.toString(path.coords, this.coordKeys), 'coords.csv');
 	}
+
+	protected saveHolonomicPath(path: holonomicPath): void {}
 
 	protected toString(objects: any[], keys: string[]) {
 		const info = keys.join(', ');

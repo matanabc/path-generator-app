@@ -1,5 +1,6 @@
+import { Path } from 'path-generator';
+
 import { useFilesStore, useGenerateStore } from '../../store';
-import TankPath from 'path-generator/lib/path/tank-path';
 import { ExportOption } from '../../common/enums';
 import PythonExport from './python';
 import JSONExport from './json';
@@ -13,7 +14,7 @@ const exports = {
 	[ExportOption.Python]: new PythonExport(),
 };
 
-export const exportPath = (path: TankPath) => {
+export const exportPath = (path: Path) => {
 	const { exportType, exportFolder } = useFilesStore.getState();
 	const { selected } = useGenerateStore.getState();
 	exports[exportType].export(path, selected, exportFolder);

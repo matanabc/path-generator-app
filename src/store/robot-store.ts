@@ -2,7 +2,7 @@ import { persist, combine } from 'zustand/middleware';
 import { PathConfig } from 'path-generator';
 import create from 'zustand';
 
-import { StoreStorageName } from '../common/enums';
+import { DriveTypeOption, StoreStorageName } from '../common/enums';
 import { ipc } from '../handler';
 
 export default create(
@@ -10,8 +10,8 @@ export default create(
 		combine(
 			{
 				robotPosition: 0,
-				driveType: 'Tank',
 				pathConfig: new PathConfig(),
+				driveType: DriveTypeOption.Tank as string,
 				drawConfig: { width: 0, length: 0, center: 0 },
 			},
 			(set, get) => ({

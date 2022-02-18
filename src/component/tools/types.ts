@@ -1,4 +1,4 @@
-import TankPath from 'path-generator/lib/path/tank-path';
+import { Path } from 'path-generator';
 
-export type TExportButtonProps = { path: TankPath };
+export type TExportButtonProps = { path: Path };
 export type TToolsProps = TExportButtonProps;

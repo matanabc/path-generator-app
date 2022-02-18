@@ -1,4 +1,9 @@
+import HolonomicPath from 'path-generator/lib/path/holonomic-path';
 import TankPath from 'path-generator/lib/path/tank-path';
+import { Path } from 'path-generator';
+
+import { DriveTypeOption } from '../../common/enums';
+import { useRobotStore } from '../../store';
 import { fs } from '..';
 
 export default abstract class Export {
@@ -10,10 +15,15 @@ export default abstract class Export {
 
 	protected exportFolder = {} as string;
 	protected pathName = {} as string;
-	protected path = {} as TankPath;
 
 	protected abstract toString(objects: any[], keys: string[]): string;
-	protected abstract savePath(): void;
+	protected abstract saveHolonomicPath(path: HolonomicPath): void;
+	protected abstract saveTankPath(path: TankPath): void;
+
+	protected savePath(path: Path): void {
+		if (useRobotStore.getState().driveType === DriveTypeOption.Tank) this.saveTankPath(path as TankPath);
+		else this.saveHolonomicPath(path as HolonomicPath);
+	}
 
 	protected saveToFile(data: string, fileName: string): void {
 		fs.writeFile(`${this.exportFolder}/${fileName}`, data);
@@ -23,10 +33,9 @@ export default abstract class Export {
 		fs.createFolder(path);
 	}
 
-	public export(path: TankPath, pathName: string, exportFolder: string): void {
-		this.path = path;
+	public export(path: Path, pathName: string, exportFolder: string): void {
 		this.pathName = pathName;
 		this.exportFolder = exportFolder;
-		this.savePath();
+		this.savePath(path);
 	}
 }
