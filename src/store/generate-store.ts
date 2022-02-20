@@ -2,10 +2,27 @@ import { persist, combine } from 'zustand/middleware';
 import { Holonomic } from 'path-generator';
 import create from 'zustand';
 
+import { PATHS_FILE_NAME } from '../common/consts';
 import { StoreStorageName } from '../common/enums';
-import { fs } from '../handler';
+import { fs, ipc } from '../handler';
 
 type TPaths = { [key: string]: any };
+
+const getProjectFolder = async () => {
+	const { state = {} } = JSON.parse(await ipc.loadFromStore(StoreStorageName.Files, '{}'));
+	return state.projectFolder || '';
+};
+
+const stateStorage = {
+	removeItem: (name: string) => {},
+	getItem: async (name: string) => {
+		const paths = await fs.loadJSON(`${await getProjectFolder()}/${PATHS_FILE_NAME}`);
+		return JSON.stringify({ state: { paths } });
+	},
+	setItem: async (name: string, value: string) => {
+		await fs.saveJSON(`${await getProjectFolder()}/${PATHS_FILE_NAME}`, JSON.parse(value).state.paths);
+	},
+};
 
 export default create(
 	persist(
@@ -57,8 +74,8 @@ export default create(
 			})
 		),
 		{
+			getStorage: () => stateStorage,
 			name: StoreStorageName.Generate,
-			getStorage: () => fs.stateStorage,
 			partialize: ({ paths }) => ({ paths }),
 		}
 	)
