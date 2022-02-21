@@ -8,6 +8,7 @@ import RenameButton from './rename-button';
 import ExportButton from './export-button';
 import DeleteButton from './delete-button';
 import ErrorButton from './error-button';
+import PlayButton from './play-button';
 import { TToolsProps } from './types';
 
 export default function Tools({ path }: TToolsProps) {
@@ -26,6 +27,7 @@ export default function Tools({ path }: TToolsProps) {
 						<>
 							<RenameButton />
 							{path.isIllegal() ? <ErrorButton path={path} /> : <ExportButton path={path} />}
+							<PlayButton length={path.coords.length} />
 							<DeleteButton />
 						</>
 					)}

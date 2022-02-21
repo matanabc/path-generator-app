@@ -4,3 +4,4 @@ export const RENAME_SHORTCUT = ['command+r', 'ctrl+r'];
 export const EXPORT_SHORTCUT = ['command+s', 'ctrl+s'];
 export const DELETE_SHORTCUT = ['command+d', 'ctrl+d'];
 export const CONFIRM_SHORTCUT = ['return', 'enter'];
+export const PLAY_SHORTCUT = ['space'];
