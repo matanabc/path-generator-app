@@ -5,6 +5,7 @@ import create from 'zustand';
 import { PATHS_FILE_NAME } from '../common/consts';
 import { StoreStorageName } from '../common/enums';
 import { fs, ipc } from '../handler';
+import { useRobotStore } from '.';
 
 type TPaths = { [key: string]: any };
 
@@ -40,6 +41,7 @@ export default create(
 						new Holonomic.Waypoint(1, 1, 0, 0, 0, 1),
 						new Holonomic.Waypoint(2, 1, 0, 0, 0, 1),
 					];
+					useRobotStore.getState().setRobotPosition(0);
 					set({ paths, selected });
 				},
 				renamePath: (newName: string) => {

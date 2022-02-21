@@ -26,7 +26,7 @@ export default function Waypoint({
 	const [showRobot, setShowRobot] = useState(false);
 
 	const { x, y } = materToPixel(waypoint.x, waypoint.y);
-	const position = { x: x + topLeftX, y: y + topLeftY };
+	const position = { x: x + topLeftX + BORDER_SIZE, y: y + topLeftY + BORDER_SIZE };
 	const bounds = {
 		top: topLeftY - OFFSET_SIZE,
 		left: topLeftX - OFFSET_SIZE,
@@ -41,7 +41,7 @@ export default function Waypoint({
 	const onWheel = (e: WheelEvent) =>
 		setWaypoint(index, { angle: Number((waypoint.angle + e.deltaY * 0.1).toFixed(3)) });
 	const onDrag = (e: DraggableEvent, { x, y }: DraggableData) =>
-		setWaypoint(index, pixelToMater(x - topLeftX, y - topLeftY));
+		setWaypoint(index, pixelToMater(x - topLeftX - BORDER_SIZE, y - topLeftY - BORDER_SIZE));
 	const onStart = (e: DraggableEvent, data: DraggableData) => {
 		if (e.ctrlKey) addWaypoint(index);
 		if (e.shiftKey) {
