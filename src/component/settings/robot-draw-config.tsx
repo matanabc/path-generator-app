@@ -13,21 +13,21 @@ export default function RobotDrawConfig() {
 					type='number'
 					title='Width'
 					value={width}
-					tooltip='in meters'
+					tooltip='with bumper'
 					onChange={({ target }) => setDrawConfig({ width: Number(target.value) })}
 				/>
 				<Input
 					type='number'
 					title='Length'
 					value={length}
-					tooltip='in meters'
+					tooltip='with bumper'
 					onChange={({ target }) => setDrawConfig({ length: Number(target.value) })}
 				/>
 				<Input
 					type='number'
 					title='Center'
 					value={center}
-					tooltip='with bumper'
+					tooltip='in meters'
 					onChange={({ target }) => setDrawConfig({ center: Number(target.value) })}
 				/>
 			</Row>

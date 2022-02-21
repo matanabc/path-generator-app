@@ -13,7 +13,11 @@ export default memo(function Path({ coords, topLeftX, topLeftY }: TPathProps) {
 			{coords.map((coord, index) => {
 				const { x, y } = materToPixel(coord.x, coord.y);
 				return (
-					<Draggable key={index} position={{ x: x + topLeftX + offset, y: y + topLeftY + offset }}>
+					<Draggable
+						key={index}
+						disabled={true}
+						position={{ x: x + topLeftX + offset, y: y + topLeftY + offset }}
+					>
 						<div id='Coord' />
 					</Draggable>
 				);
