@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 type TPopup = {
 	title?: string;
 	show: boolean;
@@ -13,5 +15,5 @@ export type TPromptPopupProps = TPopup & {
 export type TConfirmPopupProps = TPopup & {
 	onConfirm: () => void;
 	onCancel: () => void;
-	message: string;
+	message: string | ReactElement;
 };
