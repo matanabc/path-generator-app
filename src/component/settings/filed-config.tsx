@@ -1,9 +1,11 @@
+import { useFieldImage, useFieldInMeter, useUpdateFieldStore } from '../../store/use';
 import SettingsConfig from './settings-config';
-import { useFieldStore } from '../../store';
 import { Input, Row } from '../common';
 
 export default function FiledConfig() {
-	const { widthInMeter, heightInMeter, image, updateFieldStore } = useFieldStore();
+	const { widthInMeter, heightInMeter } = useFieldInMeter();
+	const updateFieldStore = useUpdateFieldStore();
+	const image = useFieldImage();
 
 	return (
 		<SettingsConfig title='Filed Configuration'>

@@ -33,7 +33,10 @@ export default create(
 				selected: '',
 			},
 			(set, get) => ({
-				setSelectedPath: (selected: string) => set({ selected }),
+				setSelectedPath: (selected: string) => {
+					useRobotStore.getState().setRobotPosition(0);
+					set({ selected });
+				},
 				addPath: (pathName: string) => {
 					let { paths, selected } = get();
 					selected = pathName;
@@ -71,6 +74,7 @@ export default create(
 				removeWaypoint: (index: number) => {
 					const { paths, selected } = get();
 					if (paths[selected].length > 2) paths[selected].splice(index, 1);
+					useRobotStore.getState().setRobotPosition(0);
 					set({ paths });
 				},
 			})

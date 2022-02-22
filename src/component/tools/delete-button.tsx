@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 import { DELETE_SHORTCUT } from '../../common/shortcut';
 import { ConfirmPopup } from '../common/popups';
-import { useGenerateStore } from '../../store';
+import { usePath } from '../../store/use';
 import Button from '../common/button';
 
 export default function DeleteButton() {
 	const [show, setShow] = useState(false);
-	const deletePath = useGenerateStore((state) => state.deletePath);
+	const { deletePath } = usePath();
 
 	const onClick = () => setShow(true);
 	const onCancel = () => setShow(false);

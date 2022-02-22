@@ -1,21 +1,16 @@
 import HolonomicWaypoint from 'path-generator/lib/waypoints/holonomic-waypoint';
 import { Modal } from 'react-bootstrap';
-import { memo } from 'react';
 
+import { useFieldInMeter, usePathConfig, useWaypoint } from '../../store/use';
 import { fixNumber } from '../../common/util';
 import { TWaypointInfoProps } from './types';
 import { Input, Row } from '../common';
 
-export default memo(function WaypointInfo({
-	show,
-	index,
-	waypoint,
-	robotVMax,
-	widthInMeter,
-	heightInMeter,
-	onClose,
-	setWaypoint,
-}: TWaypointInfoProps) {
+export default function WaypointInfo({ show, index, waypoint, onClose }: TWaypointInfoProps) {
+	const { heightInMeter, widthInMeter } = useFieldInMeter();
+	const robotVMax = usePathConfig().pathConfig.vMax;
+	const { setWaypoint } = useWaypoint();
+
 	const { x, y, v, vMax, angle } = waypoint;
 
 	return (
@@ -81,4 +76,4 @@ export default memo(function WaypointInfo({
 			</Modal.Body>
 		</Modal>
 	);
-});
+}

@@ -4,7 +4,7 @@ import mousetrap from 'mousetrap';
 import 'mousetrap-global-bind';
 
 import { CREATE_SHORTCUT } from '../../common/shortcut';
-import { useGenerateStore } from '../../store';
+import { usePath, useSelected } from '../../store/use';
 import { PromptPopup } from '../common/popups';
 
 type TPathClick = (selected: string) => void;
@@ -17,11 +17,9 @@ const getPathItems = (paths: string[], selected: string, onClick: TPathClick) =>
 	));
 
 export default function SelectDropdown() {
+	const { paths, addPath } = usePath();
+	const { selected, setSelectedPath } = useSelected();
 	const [showPopup, setShowPopup] = useState(false);
-	const addPath = useGenerateStore((state) => state.addPath);
-	const selected = useGenerateStore((state) => state.selected);
-	const paths = useGenerateStore((state) => Object.keys(state.paths));
-	const setSelectedPath = useGenerateStore((state) => state.setSelectedPath);
 
 	const title = selected === '' ? 'Select Path' : selected;
 
@@ -48,7 +46,7 @@ export default function SelectDropdown() {
 			/>
 
 			<DropdownButton title={title} drop='up'>
-				{getPathItems(paths, selected, setSelectedPath)}
+				{getPathItems(Object.keys(paths), selected, setSelectedPath)}
 				<Dropdown.Divider />
 				<Dropdown.Item onClick={onClick}>New Path</Dropdown.Item>
 			</DropdownButton>

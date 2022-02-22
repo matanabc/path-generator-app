@@ -1,7 +1,8 @@
 import { Rnd, RndResizeCallback } from 'react-rnd';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState } from 'react';
 
-import { TFiledProps } from './types';
+import { useFieldImage, useFieldInPixel, useFieldTopLeft } from '../../store/use';
+import { useProjectFolder, useUpdateFieldStore } from '../../store/use';
 import { fs } from '../../handler';
 
 const styleToNumber = (value: string) => Number(value.replace('px', ''));
@@ -13,15 +14,13 @@ const getImageUrl = async (image: string, projectFolder: string) => {
 	return URL.createObjectURL(new Blob([data]));
 };
 
-export default memo(function Field({
-	image,
-	topLeftX,
-	topLeftY,
-	widthInPixel,
-	heightInPixel,
-	projectFolder,
-	updateFieldStore,
-}: TFiledProps) {
+export default function Field() {
+	const image = useFieldImage();
+	const { projectFolder } = useProjectFolder();
+	const updateFieldStore = useUpdateFieldStore();
+	const { topLeftX, topLeftY } = useFieldTopLeft();
+	const { heightInPixel, widthInPixel } = useFieldInPixel();
+
 	const [imageUrl, setImageUrl] = useState('');
 	const position = { x: topLeftX, y: topLeftY };
 	const style = { backgroundImage: `url('${imageUrl}')` };
@@ -47,4 +46,4 @@ export default memo(function Field({
 			</Rnd>
 		</>
 	);
-});
+}

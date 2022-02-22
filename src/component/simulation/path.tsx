@@ -1,13 +1,15 @@
 import Draggable from 'react-draggable';
-import { memo } from 'react';
 
 import { TPathProps } from './types';
 import { materToPixel } from '../../common/util';
+import { useFieldTopLeft } from '../../store/use';
 import { WAYPOINT_SIZE } from '../../common/consts';
 
 const offset = WAYPOINT_SIZE / 2;
 
-export default memo(function Path({ coords, topLeftX, topLeftY }: TPathProps) {
+export default function Path({ coords }: TPathProps) {
+	const { topLeftX, topLeftY } = useFieldTopLeft();
+
 	return (
 		<>
 			{coords.map((coord, index) => {
@@ -24,4 +26,4 @@ export default memo(function Path({ coords, topLeftX, topLeftY }: TPathProps) {
 			})}
 		</>
 	);
-});
+}

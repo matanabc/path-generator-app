@@ -2,7 +2,7 @@ import { Container, Row } from 'react-bootstrap';
 
 import SelectDropdown from './select-dropdown';
 import SettingsButton from './settings-button';
-import { useGenerateStore } from '../../store';
+import { useSelected } from '../../store/use';
 import { HorizontalStack } from '../common';
 import RenameButton from './rename-button';
 import ExportButton from './export-button';
@@ -12,7 +12,7 @@ import PlayButton from './play-button';
 import { TToolsProps } from './types';
 
 export default function Tools({ path }: TToolsProps) {
-	const { selected } = useGenerateStore();
+	const { selected } = useSelected();
 
 	return (
 		<Container className='mb-2 mt-2'>

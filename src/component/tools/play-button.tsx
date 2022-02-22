@@ -2,6 +2,7 @@ import { MdPlayArrow, MdPause, MdReplay } from 'react-icons/md';
 import { useEffect, useState } from 'react';
 
 import { PLAY_SHORTCUT } from '../../common/shortcut';
+import { useRobotPosition } from '../../store/use';
 import { useRobotStore } from '../../store';
 import { TPlayButtonProps } from './types';
 import Button from '../common/button';
@@ -14,7 +15,7 @@ const changeRobotPosition = () => {
 
 export default function PlayButton({ length }: TPlayButtonProps) {
 	const [intervalID, setIntervalID] = useState<NodeJS.Timer | undefined>(undefined);
-	const { robotPosition, setRobotPosition } = useRobotStore();
+	const { robotPosition, setRobotPosition } = useRobotPosition();
 
 	const stopInterval = () => {
 		if (!intervalID) return;

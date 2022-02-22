@@ -1,29 +1,20 @@
 import Draggable, { DraggableData, DraggableEvent } from 'react-draggable';
 import { useEffect, useRef, useState } from 'react';
 
+import { useRobotPosition, useWaypoint, useFieldInPixel, useFieldTopLeft } from '../../store/use';
 import { BORDER_SIZE, OFFSET_SIZE } from '../../common/consts';
 import { materToPixel, pixelToMater } from '../../common/util';
 import WaypointInfo from './waypoint-info';
 import { TWaypointProps } from './types';
 
-export default function Waypoint({
-	index,
-	waypoint,
-	topLeftX,
-	topLeftY,
-	robotVMax,
-	widthInPixel,
-	widthInMeter,
-	heightInPixel,
-	heightInMeter,
-	setWaypoint,
-	addWaypoint,
-	removeWaypoint,
-	setRobotPosition,
-}: TWaypointProps) {
-	const waypointRef = useRef<HTMLDivElement>(null);
+export default function Waypoint({ index, waypoint }: TWaypointProps) {
+	const { setRobotPosition } = useRobotPosition();
+	const { topLeftX, topLeftY } = useFieldTopLeft();
+	const { heightInPixel, widthInPixel } = useFieldInPixel();
+	const { setWaypoint, addWaypoint, removeWaypoint } = useWaypoint();
 	const [showInfo, setShowInfo] = useState(false);
 	const [showRobot, setShowRobot] = useState(false);
+	const waypointRef = useRef<HTMLDivElement>(null);
 
 	const { x, y } = materToPixel(waypoint.x, waypoint.y);
 	const position = { x: x + topLeftX + BORDER_SIZE, y: y + topLeftY + BORDER_SIZE };
@@ -68,16 +59,7 @@ export default function Waypoint({
 
 	return (
 		<>
-			<WaypointInfo
-				index={index}
-				show={showInfo}
-				onClose={onClose}
-				waypoint={waypoint}
-				robotVMax={robotVMax}
-				setWaypoint={setWaypoint}
-				widthInMeter={widthInMeter}
-				heightInMeter={heightInMeter}
-			/>
+			<WaypointInfo index={index} show={showInfo} onClose={onClose} waypoint={waypoint} />
 			<Draggable position={position} bounds={bounds} onStart={onStart} onDrag={onDrag}>
 				<div id='Waypoint' ref={waypointRef}>
 					{index + 1}

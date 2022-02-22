@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 
+import { useDrawConfig, useRobotPosition, useFieldTopLeft } from '../../store/use';
 import { fixNumber, materToPixel } from '../../common/util';
 import { WAYPOINT_SIZE } from '../../common/consts';
-import { useRobotStore } from '../../store';
 import { TRobotProps } from './types';
 
 const offset = WAYPOINT_SIZE / 2;
@@ -30,9 +30,11 @@ const getStyle = (x: number, y: number, angle: number, drawConfig: any) => {
 	return { transform: `${position} ${rotate} ${center}` };
 };
 
-export default function Robot({ coords, waypoints, topLeftX, topLeftY, robotPosition, setRobotPosition }: TRobotProps) {
+export default function Robot({ coords, waypoints }: TRobotProps) {
+	const { drawConfig } = useDrawConfig();
+	const { topLeftX, topLeftY } = useFieldTopLeft();
+	const { robotPosition, setRobotPosition } = useRobotPosition();
 	const ref = useRef<HTMLCanvasElement>(null);
-	const drawConfig = useRobotStore((state) => state.drawConfig);
 	const robotSize = materToPixel(drawConfig.length, drawConfig.width);
 
 	useEffect(() => {

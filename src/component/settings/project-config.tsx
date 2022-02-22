@@ -1,12 +1,10 @@
 import { Input, Row } from '../common';
-import { useFilesStore } from '../../store';
 import SettingsConfig from './settings-config';
+import { useFileExportFolder, useProjectFolder } from '../../store/use';
 
 export default function ProjectConfig() {
-	const exportFolder = useFilesStore((state) => state.exportFolder);
-	const projectFolder = useFilesStore((state) => state.projectFolder);
-	const setExportFolder = useFilesStore((state) => state.setExportFolder);
-	const setProjectFolder = useFilesStore((state) => state.setProjectFolder);
+	const { projectFolder, setProjectFolder } = useProjectFolder();
+	const { exportFolder, setExportFolder } = useFileExportFolder();
 
 	return (
 		<SettingsConfig title='Folders Configuration'>

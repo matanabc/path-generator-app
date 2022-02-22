@@ -2,14 +2,14 @@ import { MdEdit } from 'react-icons/md';
 import { useState } from 'react';
 
 import { RENAME_SHORTCUT } from '../../common/shortcut';
+import { usePath, useSelected } from '../../store/use';
 import { PromptPopup } from '../common/popups';
-import { useGenerateStore } from '../../store';
 import Button from '../common/button';
 
 export default function RenameButton() {
 	const [show, setShow] = useState(false);
-	const selected = useGenerateStore((state) => state.selected);
-	const renamePath = useGenerateStore((state) => state.renamePath);
+	const { selected } = useSelected();
+	const { renamePath } = usePath();
 
 	const onClick = () => setShow(true);
 	const onCancel = () => setShow(false);

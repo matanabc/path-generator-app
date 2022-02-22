@@ -1,11 +1,10 @@
 import { Row, Button } from '../common';
-import { useFilesStore } from '../../store';
 import SettingsConfig from './settings-config';
 import { ExportOption } from '../../common/enums';
+import { useFileExportType } from '../../store/use';
 
 export default function ExportTypeConfig() {
-	const exportType = useFilesStore((state) => state.exportType);
-	const setExportType = useFilesStore((state) => state.setExportType);
+	const { exportType, setExportType } = useFileExportType();
 
 	return (
 		<SettingsConfig title='Export Type'>
